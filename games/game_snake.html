@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>Snake Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* =============================================
+     CONFIG-DRIVEN CSS VARIABLES
+     (auto-injected from CONFIG below)
+  ============================================= */
+  :root {
+    --primary: #00C896;
+    --primary-dark: #009e75;
+    --primary-light: #e6fff8;
+    --bg: #ffffff;
+    --text: #0d1117;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --cell: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── Header / Branding ── */
+  header {
+    width: 100%;
+    max-width: 680px;
+    padding: 2.5rem 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .logo-text {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .logo-text span {
+    color: var(--primary);
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Game Area ── */
+  main {
+    width: 100%;
+    max-width: 680px;
+    padding: 1.5rem 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Score bar */
+  .score-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 1.1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    background: #fafafa;
+  }
+
+  .score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .score-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+
+  .score-value.bump {
+    color: var(--primary);
+  }
+
+  .speed-pip {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-left: 3px;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+  }
+  .speed-pip.active { opacity: 1; }
+
+  /* Canvas wrapper */
+  .canvas-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 500px;
+    border-radius: 18px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    background: #fafafa;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.06);
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+  }
+
+  /* Overlay (start / game over / pause) */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(4px);
+    transition: opacity 0.25s;
+    z-index: 10;
+  }
+
+  .overlay.hidden { opacity: 0; pointer-events: none; }
+
+  .overlay-icon {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .overlay-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-align: center;
+  }
+
+  .overlay-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 220px;
+    line-height: 1.5;
+  }
+
+  .btn-play {
+    margin-top: 0.25rem;
+    padding: 0.65rem 1.8rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .btn-play:hover { background: var(--primary-dark); }
+  .btn-play:active { transform: scale(0.97); }
+
+  /* Mobile D-pad */
+  .dpad {
+    display: none;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 6px;
+    margin-top: 0.5rem;
+  }
+
+  @media (pointer: coarse) {
+    .dpad { display: grid; }
+  }
+
+  .dpad-btn {
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s, transform 0.08s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .dpad-btn:active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: scale(0.93);
+  }
+
+  .dpad-btn.center {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  .dpad-btn.center:active { background: var(--primary-dark); }
+
+  .dpad-empty { visibility: hidden; }
+
+  /* Keyboard hint */
+  .key-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .key-hint span {
+    display: inline-block;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: #f3f4f6;
+    margin: 0 1px;
+  }
+
+  @media (pointer: coarse) { .key-hint { display: none; } }
+
+  /* ── CTA / Footer section ── */
+  footer {
+    width: 100%;
+    max-width: 680px;
+    padding: 1.5rem 1.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+    border-top: 1.5px solid var(--border);
+    margin-top: 1.5rem;
+  }
+
+  .footer-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    max-width: 380px;
+    line-height: 1.65;
+  }
+
+  .btn-cta {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+  }
+
+  .btn-cta:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.13);
+  }
+
+  .btn-cta:active { transform: scale(0.97); }
+
+  .footer-company {
+    font-size: 0.75rem;
+    color: var(--border);
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     ✏️  EASY CONFIG — edit this section only
+============================================= -->
+<script>
+const CONFIG = {
+  // Brand
+  companyName:   "Konstantinos",
+  companyNameHighlight: "Konstantinos",
+  logoEmoji:     "⚡",
+  tagline:       "Smarter Marketing. Sharper Thinking.",
+
+  // Footer / CTA
+  description:   "Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?",
+  ctaLabel:      "Connect on LinkedIn →",
+  ctaUrl:        "https://www.linkedin.com/in/konstantinos-doukakis/",
+
+  // Theme
+  primaryColor:       "#2563EB",
+  primaryColorDark:   "#1d4ed8",
+  primaryColorLight:  "#eff6ff",
+
+  // Game settings
+  gridSize:      20,    // cells across & down
+  initialSpeed:  180,   // ms per tick (lower = faster)
+  speedUpEvery:  5,     // increase speed every N apples
+  speedStep:     12,    // ms to subtract each time
+  minSpeed:      60,    // fastest possible tick
+};
+</script>
+<!-- ============================================= -->
+
+<!-- Header -->
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon" id="logoIcon"></div>
+    <div class="logo-text" id="logoText"></div>
+  </div>
+  <div class="tagline" id="tagline"></div>
+</header>
+
+<!-- Game -->
+<main>
+  <div class="score-bar">
+    <div class="score-item">
+      <span class="score-label">Score</span>
+      <span class="score-value" id="scoreVal">0</span>
+    </div>
+    <div class="score-item">
+      <span class="score-label">Best</span>
+      <span class="score-value" id="bestVal">0</span>
+    </div>
+    <div class="score-item">
+      <span class="score-label">Speed</span>
+      <div style="display:flex;gap:3px;align-items:center;margin-top:2px">
+        <span class="speed-pip" id="pip1"></span>
+        <span class="speed-pip" id="pip2"></span>
+        <span class="speed-pip" id="pip3"></span>
+        <span class="speed-pip" id="pip4"></span>
+        <span class="speed-pip" id="pip5"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay">
+      <div class="overlay-icon" id="overlayIcon">🐍</div>
+      <div class="overlay-title" id="overlayTitle">Snake</div>
+      <div class="overlay-sub" id="overlaySub">Arrow keys or WASD on desktop. Swipe or use the D-pad on mobile. Eat 🍎 to grow!</div>
+      <button class="btn-play" id="overlayBtn">Start Game</button>
+    </div>
+  </div>
+
+  <!-- Mobile D-pad -->
+  <div class="dpad" id="dpad">
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dUp">▲</button>
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dLeft">◀</button>
+    <button class="dpad-btn center" id="dPause">⏸</button>
+    <button class="dpad-btn" id="dRight">▶</button>
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dDown">▼</button>
+    <div class="dpad-empty"></div>
+  </div>
+
+  <p class="key-hint">
+    Move: <span>↑</span><span>↓</span><span>←</span><span>→</span> or
+    <span>W</span><span>A</span><span>S</span><span>D</span> &nbsp;|&nbsp;
+    Pause: <span>Space</span> &nbsp;|&nbsp; Mobile: swipe or D-pad
+  </p>
+</main>
+
+<!-- Footer CTA -->
+<footer>
+  <p class="footer-desc" id="footerDesc"></p>
+  <a class="btn-cta" id="footerCta" href="#" target="_blank" rel="noopener"></a>
+  <p class="footer-company" id="footerCompany"></p>
+</footer>
+
+<script>
+/* ── Apply CONFIG to DOM & CSS ─────────────────── */
+(function applyConfig() {
+  const C = CONFIG;
+
+  // CSS variables
+  const root = document.documentElement.style;
+  root.setProperty('--primary',       C.primaryColor);
+  root.setProperty('--primary-dark',  C.primaryColorDark);
+  root.setProperty('--primary-light', C.primaryColorLight);
+
+  // Logo
+  document.getElementById('logoIcon').textContent = C.logoEmoji;
+  const hl = C.companyNameHighlight;
+  const name = C.companyName;
+  const idx = name.lastIndexOf(hl);
+  document.getElementById('logoText').innerHTML =
+    idx >= 0
+      ? name.slice(0, idx) + '<span>' + hl + '</span>' + name.slice(idx + hl.length)
+      : name;
+
+  document.getElementById('tagline').textContent     = C.tagline;
+  document.getElementById('footerDesc').textContent  = C.description;
+  document.getElementById('footerCta').textContent   = C.ctaLabel;
+  document.getElementById('footerCta').href          = C.ctaUrl;
+  document.getElementById('footerCompany').textContent = '© ' + new Date().getFullYear() + ' ' + C.companyName;
+})();
+
+/* ── Game Engine ───────────────────────────────── */
+const canvas  = document.getElementById('gameCanvas');
+const ctx     = canvas.getContext('2d');
+const overlay = document.getElementById('overlay');
+const overlayIcon  = document.getElementById('overlayIcon');
+const overlayTitle = document.getElementById('overlayTitle');
+const overlaySub   = document.getElementById('overlaySub');
+const overlayBtn   = document.getElementById('overlayBtn');
+const scoreEl = document.getElementById('scoreVal');
+const bestEl  = document.getElementById('bestVal');
+const pips    = [1,2,3,4,5].map(i => document.getElementById('pip' + i));
+
+const G = CONFIG.gridSize;
+let cellPx, W, H;
+let snake, dir, nextDir, apple, score, best = 0, loop, speed, appleCount;
+let running = false, paused = false, gameOver = false;
+
+function resize() {
+  const wrapper = canvas.parentElement;
+  const size    = wrapper.clientWidth;
+  canvas.width  = size;
+  canvas.height = size;
+  cellPx = size / G;
+  if (running && !paused) draw();
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+/* State helpers */
+function rand(max) { return Math.floor(Math.random() * max); }
+
+function newApple() {
+  let a;
+  do { a = { x: rand(G), y: rand(G) }; }
+  while (snake.some(s => s.x === a.x && s.y === a.y));
+  return a;
+}
+
+function initGame() {
+  const mid = Math.floor(G / 2);
+  snake    = [{ x: mid, y: mid }, { x: mid - 1, y: mid }, { x: mid - 2, y: mid }];
+  dir      = { x: 1, y: 0 };
+  nextDir  = { x: 1, y: 0 };
+  score    = 0;
+  appleCount = 0;
+  speed    = CONFIG.initialSpeed;
+  apple    = newApple();
+  updateUI();
+  updatePips();
+}
+
+function updateUI() {
+  scoreEl.textContent = score;
+  bestEl.textContent  = best;
+}
+
+function updatePips() {
+  const level = Math.min(Math.floor(appleCount / CONFIG.speedUpEvery), 5);
+  pips.forEach((p, i) => p.classList.toggle('active', i < level));
+}
+
+function bumpScore() {
+  scoreEl.classList.add('bump');
+  setTimeout(() => scoreEl.classList.remove('bump'), 300);
+}
+
+/* Drawing */
+function draw() {
+  const cs = cellPx;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Grid dots
+  ctx.fillStyle = '#f0f0f0';
+  for (let x = 0; x < G; x++)
+    for (let y = 0; y < G; y++) {
+      ctx.beginPath();
+      ctx.arc(x * cs + cs / 2, y * cs + cs / 2, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+  // Apple
+  const ax = apple.x * cs + cs / 2;
+  const ay = apple.y * cs + cs / 2;
+  ctx.font = `${cs * 0.75}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🍎', ax, ay);
+
+  // Snake
+  snake.forEach((seg, i) => {
+    const x = seg.x * cs;
+    const y = seg.y * cs;
+    const pad = cs * 0.08;
+    const r   = cs * 0.32;
+    const t   = i / (snake.length - 1 || 1);
+
+    // Gradient from head (primary) to tail (lighter)
+    const alpha = 1 - t * 0.55;
+    ctx.fillStyle = hexToRgba(CONFIG.primaryColor, alpha);
+    roundRect(ctx, x + pad, y + pad, cs - pad * 2, cs - pad * 2, r);
+    ctx.fill();
+
+    // Eyes on head
+    if (i === 0) {
+      ctx.fillStyle = '#fff';
+      const ex = dir.x, ey = dir.y;
+      // two eye positions perpendicular to direction
+      const perp = { x: -ey, y: ex };
+      for (const s of [1, -1]) {
+        const ex2 = cs / 2 + (ex * cs * 0.18) + (perp.x * s * cs * 0.18);
+        const ey2 = cs / 2 + (ey * cs * 0.18) + (perp.y * s * cs * 0.18);
+        ctx.beginPath();
+        ctx.arc(x + ex2, y + ey2, cs * 0.11, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#0d1117';
+        ctx.beginPath();
+        ctx.arc(x + ex2 + ex * cs * 0.03, y + ey2 + ey * cs * 0.03, cs * 0.055, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+      }
+    }
+  });
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.arcTo(x + w, y, x + w, y + r, r);
+  c.lineTo(x + w, y + h - r);
+  c.arcTo(x + w, y + h, x + w - r, y + h, r);
+  c.lineTo(x + r, y + h);
+  c.arcTo(x, y + h, x, y + h - r, r);
+  c.lineTo(x, y + r);
+  c.arcTo(x, y, x + r, y, r);
+  c.closePath();
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+/* Game tick */
+function tick() {
+  dir = { ...nextDir };
+  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+  // Wall collision
+  if (head.x < 0 || head.x >= G || head.y < 0 || head.y >= G) return endGame();
+  // Self collision
+  if (snake.some(s => s.x === head.x && s.y === head.y)) return endGame();
+
+  snake.unshift(head);
+
+  if (head.x === apple.x && head.y === apple.y) {
+    score++;
+    appleCount++;
+    if (score > best) best = score;
+    bumpScore();
+    updateUI();
+    apple = newApple();
+    if (appleCount % CONFIG.speedUpEvery === 0) {
+      speed = Math.max(CONFIG.minSpeed, speed - CONFIG.speedStep);
+      restartLoop();
+    }
+    updatePips();
+  } else {
+    snake.pop();
+  }
+
+  draw();
+}
+
+function restartLoop() {
+  clearInterval(loop);
+  loop = setInterval(tick, speed);
+}
+
+/* Game states */
+function startGame() {
+  initGame();
+  overlay.classList.add('hidden');
+  running = true;
+  paused  = false;
+  gameOver = false;
+  resize();
+  draw();
+  restartLoop();
+}
+
+function endGame() {
+  clearInterval(loop);
+  running  = false;
+  gameOver = true;
+  overlayIcon.textContent  = '💀';
+  overlayTitle.textContent = 'Game Over';
+  overlaySub.textContent   = `You scored ${score} point${score !== 1 ? 's' : ''}. Try again!`;
+  overlayBtn.textContent   = 'Play Again';
+  overlay.classList.remove('hidden');
+}
+
+function togglePause() {
+  if (!running && !gameOver) return;
+  if (gameOver) return;
+  if (paused) {
+    paused = false;
+    restartLoop();
+    overlay.classList.add('hidden');
+    document.getElementById('dPause').textContent = '⏸';
+  } else {
+    paused = true;
+    clearInterval(loop);
+    overlayIcon.textContent  = '⏸';
+    overlayTitle.textContent = 'Paused';
+    overlaySub.textContent   = 'Press Space or tap ⏸ to resume.';
+    overlayBtn.textContent   = 'Resume';
+    overlay.classList.remove('hidden');
+    document.getElementById('dPause').textContent = '▶';
+  }
+}
+
+/* Controls */
+const KEY_MAP = {
+  ArrowUp:'U', w:'U', W:'U',
+  ArrowDown:'D', s:'D', S:'D',
+  ArrowLeft:'L', a:'L', A:'L',
+  ArrowRight:'R', d:'R', D:'R',
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === ' ' || e.key === 'Escape') { e.preventDefault(); togglePause(); return; }
+  const mv = KEY_MAP[e.key];
+  if (!mv) return;
+  e.preventDefault();
+  applyDir(mv);
+});
+
+function applyDir(mv) {
+  if (!running || paused) return;
+  const map = { U:{x:0,y:-1}, D:{x:0,y:1}, L:{x:-1,y:0}, R:{x:1,y:0} };
+  const nd = map[mv];
+  // Prevent reversing
+  if (nd.x === -dir.x && nd.y === -dir.y) return;
+  nextDir = nd;
+}
+
+// D-pad
+document.getElementById('dUp').addEventListener('click',    () => applyDir('U'));
+document.getElementById('dDown').addEventListener('click',  () => applyDir('D'));
+document.getElementById('dLeft').addEventListener('click',  () => applyDir('L'));
+document.getElementById('dRight').addEventListener('click', () => applyDir('R'));
+document.getElementById('dPause').addEventListener('click', togglePause);
+
+// Swipe support
+let touchStartX = 0, touchStartY = 0;
+canvas.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+canvas.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+  if (Math.abs(dx) > Math.abs(dy)) applyDir(dx > 0 ? 'R' : 'L');
+  else applyDir(dy > 0 ? 'D' : 'U');
+}, { passive: true });
+
+// Overlay button
+overlayBtn.addEventListener('click', () => {
+  if (gameOver || !running) startGame();
+  else togglePause();
+});
+</script>
+</body>
+</html>

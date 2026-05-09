@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Konstantinos — Game Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --primary: #2563EB;
+  --primary-dark: #1d4ed8;
+  --primary-light: #eff6ff;
+  --bg: #ffffff;
+  --text: #0d1117;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --card-bg: #fafafa;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Animated background dots ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, #2563EB0d 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Nav ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.nav-logo-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--text);
+}
+
+.nav-logo-text span { color: var(--primary); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+
+.nav-cta {
+  padding: .45rem 1.1rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s, transform .1s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 5rem 2rem 3.5rem;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  font-weight: 500;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid #bfdbfe;
+  padding: .3rem .85rem;
+  border-radius: 999px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  animation: fadeUp .6s ease both;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1.08;
+  color: var(--text);
+  margin-bottom: 1.1rem;
+  animation: fadeUp .6s .1s ease both;
+}
+
+.hero h1 span { color: var(--primary); }
+
+.hero p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+  animation: fadeUp .6s .2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp .6s .3s ease both;
+}
+
+.btn-primary {
+  padding: .75rem 1.8rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s, transform .12s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(37,99,235,.22);
+}
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.28); }
+
+.btn-secondary {
+  padding: .75rem 1.8rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid var(--border);
+  transition: border-color .2s, transform .12s;
+}
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+
+/* ── Stats strip ── */
+.stats-strip {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  animation: fadeUp .6s .4s ease both;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+  padding: 1.1rem 1rem;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+}
+
+.stat:first-child { border-radius: 14px 0 0 14px; }
+.stat:last-child { border-radius: 0 14px 14px 0; border-left: none; }
+.stat:not(:first-child):not(:last-child) { border-left: none; }
+
+.stat-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-lbl {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: .3rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── Filter bar ── */
+.filter-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-right: .2rem;
+}
+
+.filter-btn {
+  padding: .35rem .9rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all .15s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* ── Search ── */
+.search-wrap {
+  margin-left: auto;
+}
+
+.search-input {
+  padding: .38rem .9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem;
+  outline: none;
+  transition: border-color .2s;
+  width: 160px;
+  color: var(--text);
+}
+.search-input:focus { border-color: var(--primary); }
+.search-input::placeholder { color: var(--text-muted); }
+
+/* ── Game grid ── */
+.grid-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ── Game card ── */
+.game-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 1.3rem 1.2rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, border-color .18s;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary)08, transparent 60%);
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.game-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(37,99,235,.12);
+  border-color: #bfdbfe;
+}
+
+.game-card:hover::before { opacity: 1; }
+
+.game-card.hidden { display: none; }
+
+.card-emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+  display: block;
+}
+
+.card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  font-weight: 500;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: .18rem .55rem;
+  border-radius: 999px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: .78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: .4rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--border);
+}
+
+.card-controls {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  color: var(--text-muted);
+}
+
+.card-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8rem;
+  transition: transform .15s;
+  flex-shrink: 0;
+}
+
+.game-card:hover .card-arrow {
+  transform: translateX(3px);
+}
+
+/* No results */
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: .9rem;
+  display: none;
+}
+
+/* ── Footer ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1.5px solid var(--border);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  text-align: center;
+}
+
+.footer-desc {
+  font-size: .88rem;
+  color: var(--text-muted);
+  max-width: 420px;
+  line-height: 1.65;
+}
+
+.btn-cta {
+  display: inline-block;
+  padding: .75rem 2rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s, transform .1s, box-shadow .2s;
+  box-shadow: 0 4px 18px rgba(0,0,0,.1);
+}
+.btn-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+.footer-copy {
+  font-size: .75rem;
+  color: var(--border);
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.game-card {
+  animation: fadeUp .5s ease both;
+}
+
+/* stagger cards */
+.game-card:nth-child(1)  { animation-delay: .05s; }
+.game-card:nth-child(2)  { animation-delay: .08s; }
+.game-card:nth-child(3)  { animation-delay: .11s; }
+.game-card:nth-child(4)  { animation-delay: .14s; }
+.game-card:nth-child(5)  { animation-delay: .17s; }
+.game-card:nth-child(6)  { animation-delay: .20s; }
+.game-card:nth-child(7)  { animation-delay: .23s; }
+.game-card:nth-child(8)  { animation-delay: .26s; }
+.game-card:nth-child(9)  { animation-delay: .29s; }
+.game-card:nth-child(10) { animation-delay: .32s; }
+.game-card:nth-child(n+11) { animation-delay: .35s; }
+
+@media (max-width: 600px) {
+  .hero { padding: 3.5rem 1.2rem 2.5rem; }
+  .stats-strip { padding: 0 1.2rem; }
+  .filter-wrap { padding: 0 1.2rem; }
+  .grid-section { padding: 0 1.2rem 4rem; }
+  .game-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  nav { padding: .8rem 1.2rem; }
+  .nav-count { display: none; }
+  .search-wrap { width: 100%; order: 10; }
+  .search-input { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">⚡</div>
+    <div class="nav-logo-text"><span>Konstantinos</span></div>
+  </a>
+  <div class="nav-right">
+    <span class="nav-count" id="navCount">20 games</span>
+    <a class="nav-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">⚡ Interactive Portfolio</div>
+  <h1>Play. Think.<br><span>Level Up.</span></h1>
+  <p>20 browser games built to explore strategy, creativity and quick thinking — the same skills behind great marketing and AI work.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#games">Browse Games ↓</a>
+    <a class="btn-secondary" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">Games</div></div>
+  <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Categories</div></div>
+  <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Free to Play</div></div>
+</div>
+
+<!-- Filters + Search -->
+<div class="filter-wrap" id="games">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="arcade">Arcade</button>
+  <button class="filter-btn" data-filter="puzzle">Puzzle</button>
+  <button class="filter-btn" data-filter="strategy">Strategy</button>
+  <button class="filter-btn" data-filter="memory">Memory</button>
+  <button class="filter-btn" data-filter="reflex">Reflex</button>
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="search" placeholder="Search games…" autocomplete="off"/>
+  </div>
+</div>
+
+<!-- Game Grid -->
+<section class="grid-section">
+  <div class="game-grid" id="gameGrid">
+
+    <a class="game-card" href="games/game_snake.html" data-cat="arcade" data-tags="snake grow eat classic">
+      <span class="card-emoji">🐍</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Snake</div>
+      <div class="card-desc">Grow your snake by eating apples without hitting the walls or yourself.</div>
+      <div class="card-footer">
+        <span class="card-controls">Arrow keys / Swipe</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_flappy.html" data-cat="arcade" data-tags="flappy bird fly dodge tap">
+      <span class="card-emoji">🐦</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Flappy Bird</div>
+      <div class="card-desc">Tap to flap through the gaps. Deceptively simple, brutally hard.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Space</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_runner.html" data-cat="arcade" data-tags="run jump endless obstacles">
+      <span class="card-emoji">🏃</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Endless Runner</div>
+      <div class="card-desc">Jump and double-jump over obstacles as the world speeds up around you.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Space</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_breakout.html" data-cat="arcade" data-tags="breakout brick ball paddle classic">
+      <span class="card-emoji">🧱</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Breakout</div>
+      <div class="card-desc">Keep the ball in play and smash every brick off the board.</div>
+      <div class="card-footer">
+        <span class="card-controls">Mouse / Drag</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_pong.html" data-cat="arcade" data-tags="pong ball paddle versus ai">
+      <span class="card-emoji">🏓</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Pong</div>
+      <div class="card-desc">You vs AI. First to 7 points wins. A timeless duel.</div>
+      <div class="card-footer">
+        <span class="card-controls">W S / Drag</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_asteroids.html" data-cat="arcade" data-tags="asteroids shoot space rocket dodge">
+      <span class="card-emoji">🚀</span>
+      <span class="card-tag">Arcade</span>
+      <div class="card-title">Asteroids</div>
+      <div class="card-desc">Rotate, thrust and shoot drifting rocks before they destroy your ship.</div>
+      <div class="card-footer">
+        <span class="card-controls">Arrow keys</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_whackamole.html" data-cat="reflex" data-tags="whack mole tap speed reflex">
+      <span class="card-emoji">🦔</span>
+      <span class="card-tag">Reflex</span>
+      <div class="card-title">Whack-a-Mole</div>
+      <div class="card-desc">30 seconds. Tap every mole before it disappears. Go!</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_colormatch.html" data-cat="reflex" data-tags="stroop color match ink word speed reflex">
+      <span class="card-emoji">🎨</span>
+      <span class="card-tag">Reflex</span>
+      <div class="card-title">Color Match</div>
+      <div class="card-desc">Match the ink color of the word — not what it says. The Stroop effect in action.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_rps.html" data-cat="reflex" data-tags="rock paper scissors chance quick">
+      <span class="card-emoji">🪨</span>
+      <span class="card-tag">Reflex</span>
+      <div class="card-title">Rock Paper Scissors</div>
+      <div class="card-desc">The classic hand game against an AI opponent. Beat it on a streak.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_typing.html" data-cat="reflex" data-tags="typing speed wpm words keyboard fast">
+      <span class="card-emoji">⌨️</span>
+      <span class="card-tag">Reflex</span>
+      <div class="card-title">Typing Speed</div>
+      <div class="card-desc">Race the clock typing marketing quotes. Find out your real WPM.</div>
+      <div class="card-footer">
+        <span class="card-controls">Keyboard</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_tetris.html" data-cat="puzzle" data-tags="tetris blocks lines stack classic">
+      <span class="card-emoji">🟦</span>
+      <span class="card-tag">Puzzle</span>
+      <div class="card-title">Tetris</div>
+      <div class="card-desc">Stack falling tetrominoes and clear lines before the board fills up.</div>
+      <div class="card-footer">
+        <span class="card-controls">Arrow keys / Swipe</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_2048.html" data-cat="puzzle" data-tags="2048 slide merge tiles numbers">
+      <span class="card-emoji">🔢</span>
+      <span class="card-tag">Puzzle</span>
+      <div class="card-title">2048</div>
+      <div class="card-desc">Slide and merge tiles to reach 2048. Easy to learn, hard to master.</div>
+      <div class="card-footer">
+        <span class="card-controls">Arrow keys / Swipe</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_minesweeper.html" data-cat="puzzle" data-tags="minesweeper mine flag logic grid">
+      <span class="card-emoji">💣</span>
+      <span class="card-tag">Puzzle</span>
+      <div class="card-title">Minesweeper</div>
+      <div class="card-desc">Reveal the grid without triggering any mines. Easy, Medium or Hard.</div>
+      <div class="card-footer">
+        <span class="card-controls">Click / Long-press</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_maze.html" data-cat="puzzle" data-tags="maze navigate find exit path generate">
+      <span class="card-emoji">🧩</span>
+      <span class="card-tag">Puzzle</span>
+      <div class="card-title">Maze</div>
+      <div class="card-desc">Every maze is uniquely generated. Find the exit as fast as you can.</div>
+      <div class="card-footer">
+        <span class="card-controls">Arrow keys / Swipe</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_wordscramble.html" data-cat="puzzle" data-tags="word scramble unscramble letters marketing vocabulary">
+      <span class="card-emoji">🔤</span>
+      <span class="card-tag">Puzzle</span>
+      <div class="card-title">Word Scramble</div>
+      <div class="card-desc">Unscramble 10 marketing and AI words against the clock.</div>
+      <div class="card-footer">
+        <span class="card-controls">Keyboard</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_memory.html" data-cat="memory" data-tags="memory match cards flip pairs concentrate">
+      <span class="card-emoji">🃏</span>
+      <span class="card-tag">Memory</span>
+      <div class="card-title">Memory Match</div>
+      <div class="card-desc">Flip cards and find all 8 matching pairs in the fewest moves.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_simon.html" data-cat="memory" data-tags="simon says colors sequence repeat pattern">
+      <span class="card-emoji">🟥</span>
+      <span class="card-tag">Memory</span>
+      <div class="card-title">Simon Says</div>
+      <div class="card-desc">Watch and repeat the growing color sequence. How long can your streak go?</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_trivia.html" data-cat="memory" data-tags="trivia quiz marketing ai knowledge questions">
+      <span class="card-emoji">🧠</span>
+      <span class="card-tag">Memory</span>
+      <div class="card-title">Marketing Trivia</div>
+      <div class="card-desc">10 questions on digital marketing and AI. How sharp is your knowledge?</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_towerdefense.html" data-cat="strategy" data-tags="tower defense place upgrade waves enemies">
+      <span class="card-emoji">🏰</span>
+      <span class="card-tag">Strategy</span>
+      <div class="card-title">Tower Defense</div>
+      <div class="card-desc">Place and upgrade towers to stop waves of enemies reaching your base.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/game_dice_rpg.html" data-cat="strategy" data-tags="dice rpg dungeon combat roll fight">
+      <span class="card-emoji">🎲</span>
+      <span class="card-tag">Strategy</span>
+      <div class="card-title">Dice RPG</div>
+      <div class="card-desc">Roll dice and choose wisely to battle through 10 floors of dungeon monsters.</div>
+      <div class="card-footer">
+        <span class="card-controls">Tap / Click</span>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <div class="no-results" id="noResults">No games found. Try a different search or filter.</div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-copy">© 2025 Konstantinos</p>
+</footer>
+
+<script>
+const cards = [...document.querySelectorAll('.game-card')];
+const filterBtns = document.querySelectorAll('.filter-btn');
+const searchInput = document.getElementById('searchInput');
+const noResults = document.getElementById('noResults');
+const navCount = document.getElementById('navCount');
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+function applyFilters() {
+  let visible = 0;
+  cards.forEach(card => {
+    const cat = card.dataset.cat;
+    const tags = card.dataset.tags || '';
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+    const q = searchQuery.toLowerCase();
+
+    const matchFilter = activeFilter === 'all' || cat === activeFilter;
+    const matchSearch = !q || title.includes(q) || desc.includes(q) || tags.includes(q) || cat.includes(q);
+
+    const show = matchFilter && matchSearch;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+  navCount.textContent = visible === 20 ? '20 games' : `${visible} of 20`;
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value.trim();
+  applyFilters();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Endless Runner – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:600px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.canvas-wrapper{position:relative;width:100%;max-width:560px;border-radius:18px;border:2px solid var(--border);overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.06);}
+canvas{display:block;width:100%;height:100%;}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);z-index:10;transition:opacity .25s;}
+.overlay.hidden{opacity:0;pointer-events:none;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.tap-btn{width:100%;max-width:300px;padding:1rem;border-radius:16px;border:2px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .1s,transform .08s;}
+.tap-btn:active{background:var(--primary-light);transform:scale(.97);}
+.key-hint{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+.key-hint span{display:inline-block;padding:.1rem .35rem;border:1px solid var(--border);border-radius:5px;background:#f3f4f6;margin:0 1px;}
+@media(pointer:coarse){.key-hint{display:none;}}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">Score</span><span class="score-value" id="scoreVal">0</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">0</span></div>
+    <div class="score-item"><span class="score-label">Speed</span><span class="score-value" id="speedVal">1x</span></div>
+  </div>
+  <div class="canvas-wrapper" id="wrapper">
+    <canvas id="c"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="overlay-icon">🏃</div>
+      <div class="overlay-title" id="oTitle">Endless Runner</div>
+      <div class="overlay-sub" id="oSub">Jump over obstacles to keep running! Tap, click or press Space to jump.</div>
+      <button class="btn-play" id="oBtn">Run!</button>
+    </div>
+  </div>
+  <button class="tap-btn" id="tapBtn">👆 Tap to Jump</button>
+  <p class="key-hint">Jump: <span>Space</span> or <span>↑</span></p>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const wrapper=document.getElementById('wrapper');
+const overlay=document.getElementById('overlay'),oTitle=document.getElementById('oTitle'),oSub=document.getElementById('oSub'),oBtn=document.getElementById('oBtn');
+const scoreEl=document.getElementById('scoreVal'),bestEl=document.getElementById('bestVal'),speedEl=document.getElementById('speedVal');
+
+let W,H,ground,player,obstacles,score,best=0,running,gameOverFlag,raf,bgOffset,lastFrameT,lastObsT;
+// Physics in pixels-per-second
+const GRAVITY_PPS=900,JUMP_VEL=-460,BASE_SPEED_PPS=200;
+
+function resize(){
+  W=wrapper.clientWidth;H=Math.round(W*.42);
+  canvas.width=W;canvas.height=H;wrapper.style.height=H+'px';
+  ground=H*0.72;
+}
+
+function initGame(){
+  const ph=H*0.14,pw=H*0.14;
+  player={x:W*.13,y:ground,vy:0,w:pw,h:ph,onGround:true,doubleJump:true};
+  obstacles=[];score=0;bgOffset=0;
+  scoreEl.textContent=0;speedEl.textContent='1x';
+}
+
+function jump(){
+  if(!running||gameOverFlag)return;
+  if(player.onGround){player.vy=JUMP_VEL;player.onGround=false;}
+  else if(player.doubleJump){player.vy=JUMP_VEL*0.75;player.doubleJump=false;}
+}
+
+const OBS_TYPES=[
+  {type:'cactus',wf:0.035,hf:0.16,emoji:'🌵'},
+  {type:'rock',wf:0.05,hf:0.10,emoji:'🪨'},
+  {type:'box',wf:0.06,hf:0.12,emoji:'📦'},
+];
+
+function spawnObstacle(speedPPS){
+  const t=OBS_TYPES[Math.floor(Math.random()*OBS_TYPES.length)];
+  const ow=W*t.wf,oh=H*t.hf;
+  obstacles.push({x:W+ow,w:ow,h:oh,emoji:t.emoji,y:ground-oh});
+}
+
+function loop(ts){
+  if(!running)return;
+  const dt=Math.min((ts-lastFrameT)/1000,0.05);lastFrameT=ts;
+  const speedMult=1+Math.floor(score/300)*0.2;
+  const speedPPS=BASE_SPEED_PPS*speedMult;
+  bgOffset+=speedPPS*dt*0.4;
+
+  // spawn obstacles
+  const minGap=Math.max(1000,2000-score*1.5);
+  if(ts-lastObsT>minGap+Math.random()*800){lastObsT=ts;spawnObstacle(speedPPS);}
+
+  // physics
+  player.vy+=GRAVITY_PPS*dt;
+  player.y+=player.vy*dt;
+  if(player.y>=ground){player.y=ground;player.vy=0;player.onGround=true;player.doubleJump=true;}
+
+  // obstacles
+  obstacles.forEach(o=>o.x-=speedPPS*dt);
+  obstacles=obstacles.filter(o=>o.x+o.w>-10);
+
+  // collision (forgiving hitbox)
+  const hitShrink=0.25;
+  for(const o of obstacles){
+    const px=player.x+player.w*hitShrink,pw=player.w*(1-hitShrink*2);
+    const py=player.y-player.h+player.h*hitShrink,ph=player.h*(1-hitShrink);
+    if(px+pw>o.x+o.w*0.1&&px<o.x+o.w*0.9&&py+ph>o.y&&py<o.y+o.h){endGame();return;}
+  }
+
+  score++;if(score>best)best=score;
+  scoreEl.textContent=score;bestEl.textContent=best;
+  speedEl.textContent=speedMult.toFixed(1)+'x';
+
+  draw();raf=requestAnimationFrame(loop);
+}
+
+function draw(){
+  ctx.fillStyle='#eff6ff';ctx.fillRect(0,0,W,H);
+  // clouds
+  ctx.fillStyle='rgba(255,255,255,.85)';
+  for(let i=0;i<4;i++){
+    const cx=((bgOffset*.25+i*W*.28)%W+W)%W,cy=H*.12+i*H*.06;
+    const r=W*.03+i*W*.005;
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.arc(cx+r*.9,cy-r*.4,r*.7,0,Math.PI*2);
+    ctx.arc(cx+r*1.8,cy,r*.85,0,Math.PI*2);ctx.fill();
+  }
+  // ground strip
+  ctx.fillStyle='#bfdbfe';ctx.fillRect(0,ground,W,H-ground);
+  ctx.fillStyle='#60a5fa';ctx.fillRect(0,ground,W,3);
+  // animated ground dashes
+  ctx.fillStyle='rgba(147,197,253,.5)';
+  for(let i=0;i<10;i++){const dx=((bgOffset*1.5+i*(W/5))%W+W)%W;ctx.fillRect(dx,ground+10,W*.06,3);}
+
+  // obstacles
+  obstacles.forEach(o=>{
+    ctx.font=`${o.h}px serif`;ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.fillText(o.emoji,o.x+o.w/2,o.y+o.h);
+  });
+
+  // player — flip canvas horizontally so 🏃 faces right
+  ctx.save();
+  ctx.translate(player.x+player.w/2,player.y);
+  ctx.scale(-1,1); // mirror to face right
+  ctx.font=`${player.h}px serif`;ctx.textAlign='center';ctx.textBaseline='bottom';
+  ctx.fillText('🏃',0,0);
+  ctx.restore();
+}
+
+function startGame(){
+  initGame();overlay.classList.add('hidden');running=true;gameOverFlag=false;
+  resize();lastFrameT=performance.now();lastObsT=performance.now();
+  draw();raf=requestAnimationFrame(loop);
+}
+
+function endGame(){
+  running=false;gameOverFlag=true;cancelAnimationFrame(raf);
+  oTitle.textContent='Game Over';
+  oSub.textContent=`Score: ${score}. ${score>=500?'🔥 Incredible!':score>=200?'👍 Well run!':'Keep going!'}`;
+  oBtn.textContent='Run Again';overlay.classList.remove('hidden');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'||e.key==='ArrowUp'){e.preventDefault();
+    if(gameOverFlag||!running)startGame();else jump();}
+});
+document.getElementById('tapBtn').addEventListener('click',()=>{if(gameOverFlag||!running)startGame();else jump();});
+document.getElementById('tapBtn').addEventListener('touchstart',e=>{e.preventDefault();if(gameOverFlag||!running)startGame();else jump();},{passive:false});
+canvas.addEventListener('click',()=>{if(gameOverFlag||!running)startGame();else jump();});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();if(gameOverFlag||!running)startGame();else jump();},{passive:false});
+oBtn.addEventListener('click',startGame);
+window.addEventListener('resize',resize);
+resize();
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Whack-a-Mole – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:680px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);transition:color .2s;}
+.score-value.bump{color:var(--primary);}
+.timer-bar-wrap{width:100%;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+.timer-bar{height:100%;background:var(--primary);width:100%;transition:width .1s linear,background .3s;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:420px;padding:1rem 0;}
+.hole{position:relative;background:#f3f4f6;border-radius:50%;aspect-ratio:1/1;overflow:hidden;border:2px solid var(--border);cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:border-color .1s;}
+.hole:active{border-color:var(--primary);}
+.mole{position:absolute;bottom:-100%;left:50%;transform:translateX(-50%);font-size:clamp(2rem,10vw,3.5rem);line-height:1;transition:bottom .12s cubic-bezier(.34,1.56,.64,1);pointer-events:none;user-select:none;}
+.hole.up .mole{bottom:5%;}
+.hole.whacked .mole{bottom:-100%;filter:grayscale(1);}
+.whack-fx{position:absolute;top:10%;left:50%;transform:translateX(-50%);font-size:1.4rem;font-weight:800;color:var(--primary);opacity:0;pointer-events:none;animation:whackpop .5s ease forwards;}
+@keyframes whackpop{0%{opacity:1;transform:translateX(-50%) scale(.8) translateY(0);}100%{opacity:0;transform:translateX(-50%) scale(1.3) translateY(-30px);}}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:2rem 1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:260px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">Score</span><span class="score-value" id="scoreVal">0</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">0</span></div>
+    <div class="score-item"><span class="score-label">Time</span><span class="score-value" id="timeVal">30</span></div>
+  </div>
+  <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar"></div></div>
+
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🦔</div>
+    <div class="overlay-title">Whack-a-Mole</div>
+    <div class="overlay-sub">Tap the moles before they disappear! You have 30 seconds. Go!</div>
+    <button class="btn-play" id="startBtn">Start Game</button>
+  </div>
+
+  <div class="grid hidden" id="grid"></div>
+
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon">🏆</div>
+    <div class="overlay-title">Time's Up!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="restartBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const HOLES=9,GAME_TIME=30;
+const MOLES=['🦔','🐭','🐹','🦫'];
+let score=0,best=0,timeLeft,timerInterval,moleTimeouts=[];
+let running=false;
+
+const scoreEl=document.getElementById('scoreVal');
+const bestEl=document.getElementById('bestVal');
+const timeEl=document.getElementById('timeVal');
+const timerBar=document.getElementById('timerBar');
+const grid=document.getElementById('grid');
+const startScreen=document.getElementById('startScreen');
+const endScreen=document.getElementById('endScreen');
+const endSub=document.getElementById('endSub');
+
+// Build grid
+for(let i=0;i<HOLES;i++){
+  const hole=document.createElement('div');
+  hole.className='hole';
+  const mole=document.createElement('div');
+  mole.className='mole';
+  mole.textContent=MOLES[Math.floor(Math.random()*MOLES.length)];
+  hole.appendChild(mole);
+  hole.addEventListener('click',()=>whack(hole));
+  hole.addEventListener('touchstart',e=>{e.preventDefault();whack(hole);},{passive:false});
+  grid.appendChild(hole);
+}
+
+function whack(hole){
+  if(!running||!hole.classList.contains('up'))return;
+  hole.classList.remove('up');
+  hole.classList.add('whacked');
+  score++;if(score>best)best=score;
+  scoreEl.textContent=score;bestEl.textContent=best;
+  scoreEl.classList.add('bump');setTimeout(()=>scoreEl.classList.remove('bump'),300);
+  const fx=document.createElement('div');fx.className='whack-fx';fx.textContent='+1';
+  hole.appendChild(fx);setTimeout(()=>fx.remove(),500);
+  setTimeout(()=>hole.classList.remove('whacked'),300);
+}
+
+function popMole(){
+  if(!running)return;
+  const holes=[...grid.querySelectorAll('.hole')].filter(h=>!h.classList.contains('up'));
+  if(!holes.length)return;
+  const hole=holes[Math.floor(Math.random()*holes.length)];
+  hole.querySelector('.mole').textContent=MOLES[Math.floor(Math.random()*MOLES.length)];
+  hole.classList.add('up');
+  const dur=600+Math.random()*600;
+  const t=setTimeout(()=>{hole.classList.remove('up');},dur);
+  moleTimeouts.push(t);
+  const next=400+Math.random()*400;
+  const t2=setTimeout(popMole,next);
+  moleTimeouts.push(t2);
+}
+
+function startGame(){
+  score=0;timeLeft=GAME_TIME;
+  scoreEl.textContent=0;timeEl.textContent=GAME_TIME;
+  timerBar.style.width='100%';timerBar.style.background='var(--primary)';
+  startScreen.classList.add('hidden');endScreen.classList.add('hidden');
+  grid.classList.remove('hidden');running=true;
+  moleTimeouts.forEach(clearTimeout);moleTimeouts=[];
+  popMole();
+  timerInterval=setInterval(()=>{
+    timeLeft--;timeEl.textContent=timeLeft;
+    timerBar.style.width=(timeLeft/GAME_TIME*100)+'%';
+    if(timeLeft<=5)timerBar.style.background='#ef4444';
+    if(timeLeft<=0){clearInterval(timerInterval);endGame();}
+  },1000);
+}
+
+function endGame(){
+  running=false;
+  moleTimeouts.forEach(clearTimeout);moleTimeouts=[];
+  grid.querySelectorAll('.hole').forEach(h=>h.classList.remove('up'));
+  grid.classList.add('hidden');
+  endSub.textContent=`You whacked ${score} mole${score!==1?'s':''}!${score>=20?' 🔥 Amazing!':score>=10?' 👍 Well done!':' Keep practising!'}`;
+  endScreen.classList.remove('hidden');
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

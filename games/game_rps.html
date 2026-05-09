@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Rock Paper Scissors – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:480px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.4rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--text);}
+.arena{width:100%;border:2px solid var(--border);border-radius:18px;padding:1.5rem 1rem;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#fafafa;}
+.hands-row{display:flex;align-items:center;justify-content:space-around;width:100%;gap:.5rem;}
+.hand-wrap{display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+.hand-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+.hand{font-size:clamp(3rem,15vw,5rem);line-height:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1);display:inline-block;}
+.hand.shake{animation:shake .5s ease;}
+@keyframes shake{0%,100%{transform:translateY(0);}25%{transform:translateY(-12px);}75%{transform:translateY(8px);}}
+.vs{font-size:1.2rem;font-weight:800;color:var(--border);}
+.result-badge{padding:.5rem 1.4rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.02em;transition:all .3s;}
+.result-badge.win{background:var(--primary-light);color:var(--primary);}
+.result-badge.lose{background:#fee2e2;color:#dc2626;}
+.result-badge.draw{background:#f3f4f6;color:var(--text-muted);}
+.result-badge.idle{background:#f3f4f6;color:var(--text-muted);}
+.choices{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.choice-btn{width:80px;height:80px;border-radius:20px;border:2px solid var(--border);background:#fff;font-size:2.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s,transform .1s,background .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.choice-btn:hover{border-color:var(--primary);background:var(--primary-light);box-shadow:0 4px 16px rgba(37,99,235,.15);}
+.choice-btn:active{transform:scale(.9);}
+.btn-reset{padding:.5rem 1.2rem;border-radius:999px;border:1.5px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all .15s;}
+.btn-reset:hover{border-color:var(--primary);color:var(--primary);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">You</span><span class="score-value" id="scoreYou">0</span></div>
+    <div class="score-item"><span class="score-label">Draws</span><span class="score-value" id="scoreDraws">0</span></div>
+    <div class="score-item"><span class="score-label">AI</span><span class="score-value" id="scoreAI">0</span></div>
+  </div>
+  <div class="arena">
+    <div class="hands-row">
+      <div class="hand-wrap">
+        <span class="hand-label">You</span>
+        <span class="hand" id="handYou">🤜</span>
+      </div>
+      <span class="vs">VS</span>
+      <div class="hand-wrap">
+        <span class="hand-label">AI</span>
+        <span class="hand" id="handAI">🤛</span>
+      </div>
+    </div>
+    <div class="result-badge idle" id="resultBadge">Make your move!</div>
+  </div>
+  <div class="choices">
+    <button class="choice-btn" data-choice="rock" title="Rock">🪨</button>
+    <button class="choice-btn" data-choice="paper" title="Paper">📄</button>
+    <button class="choice-btn" data-choice="scissors" title="Scissors">✂️</button>
+  </div>
+  <button class="btn-reset" id="resetBtn">Reset Score</button>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const CHOICES=['rock','paper','scissors'];
+const EMOJI={rock:'🪨',paper:'📄',scissors:'✂️'};
+const BEATS={rock:'scissors',paper:'rock',scissors:'paper'};
+let sYou=0,sAI=0,sDraws=0,playing=false;
+
+const handYou=document.getElementById('handYou'),handAI=document.getElementById('handAI');
+const badge=document.getElementById('resultBadge');
+const sYouEl=document.getElementById('scoreYou'),sAIEl=document.getElementById('scoreAI'),sDrawsEl=document.getElementById('scoreDraws');
+
+document.querySelectorAll('.choice-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(playing)return;
+    playing=true;
+    const choice=btn.dataset.choice;
+    const ai=CHOICES[Math.floor(Math.random()*3)];
+    // animate shake
+    handYou.classList.add('shake');handAI.classList.add('shake');
+    handYou.textContent='✊';handAI.textContent='✊';
+    badge.className='result-badge idle';badge.textContent='…';
+    setTimeout(()=>{
+      handYou.classList.remove('shake');handAI.classList.remove('shake');
+      handYou.textContent=EMOJI[choice];handAI.textContent=EMOJI[ai];
+      let result,cls;
+      if(choice===ai){result='Draw! 🤝';cls='draw';sDraws++;}
+      else if(BEATS[choice]===ai){result='You Win! 🎉';cls='win';sYou++;}
+      else{result='AI Wins! 🤖';cls='lose';sAI++;}
+      badge.className='result-badge '+cls;badge.textContent=result;
+      sYouEl.textContent=sYou;sAIEl.textContent=sAI;sDrawsEl.textContent=sDraws;
+      playing=false;
+    },600);
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  sYou=0;sAI=0;sDraws=0;
+  sYouEl.textContent=0;sAIEl.textContent=0;sDrawsEl.textContent=0;
+  handYou.textContent='🤜';handAI.textContent='🤛';
+  badge.className='result-badge idle';badge.textContent='Make your move!';
+});
+</script>
+</body>
+</html>

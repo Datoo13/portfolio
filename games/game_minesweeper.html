@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Minesweeper – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:500px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.diff-row{display:flex;gap:8px;}
+.diff-btn{padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;}
+.diff-btn.active,.diff-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+.grid-wrap{width:100%;overflow:auto;}
+.grid{display:inline-grid;gap:3px;padding:10px;background:#e2e8f0;border-radius:14px;border:2px solid var(--border);}
+.cell{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.85rem;font-weight:500;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .1s,transform .08s;background:#fff;border:1.5px solid var(--border);}
+.cell:active{transform:scale(.9);}
+.cell.hidden-cell{background:#dbeafe;border-color:#93c5fd;}
+.cell.hidden-cell:hover{background:#bfdbfe;}
+.cell.revealed{background:#f8fafc;border-color:#e2e8f0;cursor:default;}
+.cell.flagged{background:#fef3c7;border-color:#fcd34d;}
+.cell.mine{background:#fee2e2;border-color:#fca5a5;}
+.cell.n1{color:#2563EB;}.cell.n2{color:#16a34a;}.cell.n3{color:#dc2626;}.cell.n4{color:#7c3aed;}.cell.n5{color:#b91c1c;}.cell.n6{color:#0891b2;}.cell.n7{color:#374151;}.cell.n8{color:#6b7280;}
+.hint{font-size:.78rem;color:var(--text-muted);text-align:center;line-height:1.5;}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:260px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">💣</div>
+    <div class="overlay-title">Minesweeper</div>
+    <div class="overlay-sub">Reveal all safe cells without hitting a mine. Long-press to flag on mobile!</div>
+    <div class="diff-row">
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+    <button class="btn-play" id="startBtn">Start</button>
+  </div>
+  <div class="score-bar hidden" id="scoreBar">
+    <div class="score-item"><span class="score-label">Mines</span><span class="score-value" id="minesVal">0</span></div>
+    <div class="score-item"><span class="score-label">Flags</span><span class="score-value" id="flagsVal">0</span></div>
+    <div class="score-item"><span class="score-label">Time</span><span class="score-value" id="timeVal">0</span></div>
+    <div class="score-item"><button class="btn-play" id="restartBtn" style="font-size:.7rem;padding:.3rem .8rem;">↺ New</button></div>
+  </div>
+  <div class="grid-wrap hidden" id="gridWrap"><div class="grid" id="grid"></div></div>
+  <p class="hint hidden" id="hint">Click to reveal · Right-click or long-press to flag</p>
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon" id="endIcon">🏆</div>
+    <div class="overlay-title" id="endTitle">You Win!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="endBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const DIFFS={easy:{rows:9,cols:9,mines:10},medium:{rows:12,cols:12,mines:25},hard:{rows:16,cols:16,mines:50}};
+let diff='easy',board=[],revealed=[],flagged=[],timer,elapsed=0,running=false,firstClick=true;
+let R,C,MINES;
+
+const gridEl=document.getElementById('grid');
+const minesEl=document.getElementById('minesVal'),flagsEl=document.getElementById('flagsVal'),timeEl=document.getElementById('timeVal');
+let activeDiff=document.querySelector('.diff-btn.active');
+document.querySelectorAll('.diff-btn').forEach(b=>b.addEventListener('click',()=>{
+  diff=b.dataset.diff;
+  document.querySelectorAll('.diff-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+}));
+
+function placeMines(safeR,safeC){
+  let placed=0;
+  while(placed<MINES){
+    const r=Math.floor(Math.random()*R),c=Math.floor(Math.random()*C);
+    if(!board[r][c]&&!(r===safeR&&c===safeC)){board[r][c]=-1;placed++;}
+  }
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+    if(board[r][c]===-1)continue;
+    let n=0;
+    neighbors(r,c).forEach(([nr,nc])=>{if(board[nr][nc]===-1)n++;});
+    board[r][c]=n;
+  }
+}
+
+function neighbors(r,c){
+  const res=[];
+  for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+    if(!dr&&!dc)continue;
+    const nr=r+dr,nc=c+dc;
+    if(nr>=0&&nr<R&&nc>=0&&nc<C)res.push([nr,nc]);
+  }return res;
+}
+
+function reveal(r,c){
+  if(revealed[r][c]||flagged[r][c])return;
+  revealed[r][c]=true;
+  if(board[r][c]===0)neighbors(r,c).forEach(([nr,nc])=>reveal(nr,nc));
+}
+
+function buildGrid(){
+  const{rows,cols,mines}=DIFFS[diff];R=rows;C=cols;MINES=mines;
+  board=Array.from({length:R},()=>Array(C).fill(0));
+  revealed=Array.from({length:R},()=>Array(C).fill(false));
+  flagged=Array.from({length:R},()=>Array(C).fill(false));
+  elapsed=0;firstClick=true;running=false;
+  minesEl.textContent=MINES;flagsEl.textContent=0;timeEl.textContent=0;
+  gridEl.style.gridTemplateColumns=`repeat(${C},32px)`;
+  gridEl.innerHTML='';
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+    const cell=document.createElement('div');
+    cell.className='cell hidden-cell';
+    cell.dataset.r=r;cell.dataset.c=c;
+    // click
+    cell.addEventListener('click',()=>clickCell(r,c));
+    // right click flag
+    cell.addEventListener('contextmenu',e=>{e.preventDefault();toggleFlag(r,c);});
+    // long press flag on mobile
+    let pressTimer;
+    cell.addEventListener('touchstart',()=>{pressTimer=setTimeout(()=>toggleFlag(r,c),500);},{passive:true});
+    cell.addEventListener('touchend',()=>clearTimeout(pressTimer),{passive:true});
+    cell.addEventListener('touchmove',()=>clearTimeout(pressTimer),{passive:true});
+    gridEl.appendChild(cell);
+  }
+}
+
+function getCell(r,c){return gridEl.children[r*C+c];}
+
+function renderCell(r,c){
+  const cell=getCell(r,c);
+  if(revealed[r][c]){
+    cell.className='cell revealed';
+    const v=board[r][c];
+    if(v===-1){cell.className='cell mine';cell.textContent='💣';}
+    else if(v>0){cell.textContent=v;cell.classList.add('n'+v);}
+    else cell.textContent='';
+  } else if(flagged[r][c]){
+    cell.className='cell flagged';cell.textContent='🚩';
+  } else {
+    cell.className='cell hidden-cell';cell.textContent='';
+  }
+}
+
+function clickCell(r,c){
+  if(!running&&!firstClick)return;
+  if(revealed[r][c]||flagged[r][c])return;
+  if(firstClick){
+    firstClick=false;placeMines(r,c);running=true;
+    timer=setInterval(()=>{elapsed++;timeEl.textContent=elapsed;},1000);
+  }
+  if(board[r][c]===-1){revealAll();endGame(false);return;}
+  reveal(r,c);
+  for(let rr=0;rr<R;rr++)for(let cc=0;cc<C;cc++)renderCell(rr,cc);
+  checkWin();
+}
+
+function toggleFlag(r,c){
+  if(revealed[r][c]||!running&&firstClick)return;
+  flagged[r][c]=!flagged[r][c];
+  let f=0;for(let rr=0;rr<R;rr++)for(let cc=0;cc<C;cc++)if(flagged[rr][cc])f++;
+  flagsEl.textContent=f;renderCell(r,c);
+}
+
+function revealAll(){
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){revealed[r][c]=true;renderCell(r,c);}
+}
+
+function checkWin(){
+  let safe=0;for(let r=0;r<R;r++)for(let c=0;c<C;c++)if(board[r][c]!==-1&&revealed[r][c])safe++;
+  if(safe===R*C-MINES)endGame(true);
+}
+
+function endGame(win){
+  clearInterval(timer);running=false;
+  if(win)revealAll();
+  document.getElementById('gridWrap').classList.add('hidden');
+  document.getElementById('scoreBar').classList.add('hidden');
+  document.getElementById('hint').classList.add('hidden');
+  document.getElementById('endIcon').textContent=win?'🏆':'💥';
+  document.getElementById('endTitle').textContent=win?'You Win!':'Boom!';
+  document.getElementById('endSub').textContent=win?`Cleared in ${elapsed} seconds!`:`Hit a mine. Better luck next time!`;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+function startGame(){
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('scoreBar').classList.remove('hidden');
+  document.getElementById('gridWrap').classList.remove('hidden');
+  document.getElementById('hint').classList.remove('hidden');
+  clearInterval(timer);buildGrid();
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+document.getElementById('endBtn').addEventListener('click',()=>{
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('startScreen').classList.remove('hidden');
+});
+</script>
+</body>
+</html>

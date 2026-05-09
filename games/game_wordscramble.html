@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Word Scramble – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:500px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);transition:color .2s;}
+.score-value.bump{color:var(--primary);}
+.timer-bar-wrap{width:100%;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+.timer-bar{height:100%;background:var(--primary);width:100%;transition:width .1s linear;}
+.word-card{width:100%;border:2px solid var(--border);border-radius:18px;padding:1.5rem;background:#fafafa;display:flex;flex-direction:column;align-items:center;gap:.8rem;}
+.scrambled{font-family:'DM Mono',monospace;font-size:clamp(1.8rem,8vw,2.8rem);font-weight:500;letter-spacing:.15em;color:var(--primary);text-align:center;}
+.hint-text{font-size:.8rem;color:var(--text-muted);text-align:center;}
+.category-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:999px;background:var(--primary-light);color:var(--primary);}
+.input-row{display:flex;gap:8px;width:100%;}
+.guess-input{flex:1;padding:.75rem 1rem;border:2px solid var(--border);border-radius:12px;font-family:'DM Mono',monospace;font-size:1.1rem;outline:none;transition:border-color .2s;text-transform:uppercase;}
+.guess-input:focus{border-color:var(--primary);}
+.guess-input.wrong{border-color:#ef4444;animation:wrongShake .3s ease;}
+.guess-input.correct{border-color:#22c55e;background:#f0fdf4;}
+@keyframes wrongShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.btn-submit{padding:.75rem 1.2rem;border-radius:12px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-submit:hover{background:var(--primary-dark);}
+.btn-row{display:flex;gap:8px;width:100%;justify-content:center;}
+.btn-secondary{padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all .15s;}
+.btn-secondary:hover{border-color:var(--primary);color:var(--primary);}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:260px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🔤</div>
+    <div class="overlay-title">Word Scramble</div>
+    <div class="overlay-sub">Unscramble the letters to find the hidden word. 10 words, 20 seconds each!</div>
+    <button class="btn-play" id="startBtn">Start</button>
+  </div>
+  <div class="score-bar hidden" id="scoreBar">
+    <div class="score-item"><span class="score-label">Score</span><span class="score-value" id="scoreVal">0</span></div>
+    <div class="score-item"><span class="score-label">Word</span><span class="score-value" id="wordNum">1/10</span></div>
+    <div class="score-item"><span class="score-label">Time</span><span class="score-value" id="timeVal">20</span></div>
+  </div>
+  <div class="timer-bar-wrap hidden" id="timerWrap"><div class="timer-bar" id="timerBar"></div></div>
+  <div class="word-card hidden" id="wordCard">
+    <span class="category-badge" id="catBadge">Marketing</span>
+    <div class="scrambled" id="scrambled">ELPAM</div>
+    <div class="hint-text" id="hintText">Hint: loading…</div>
+    <div class="input-row">
+      <input class="guess-input" id="guessInput" type="text" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" placeholder="Your answer…"/>
+      <button class="btn-submit" id="submitBtn">→</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" id="skipBtn">Skip word</button>
+    </div>
+  </div>
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon">🏁</div>
+    <div class="overlay-title">Game Over!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="restartBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const WORDS=[
+  {word:'STRATEGY',hint:'A plan designed to achieve a long-term goal',cat:'Marketing'},
+  {word:'BRANDING',hint:'The process of giving meaning to a product or service',cat:'Marketing'},
+  {word:'ALGORITHM',hint:'A process or set of rules followed by a computer',cat:'Technology'},
+  {word:'ANALYTICS',hint:'Discovery and communication of meaningful patterns in data',cat:'Data'},
+  {word:'CONVERSION',hint:'Turning a prospect into a paying customer',cat:'Marketing'},
+  {word:'FUNNEL',hint:'The journey a customer takes before buying',cat:'Marketing'},
+  {word:'CAMPAIGN',hint:'An organized course of action to achieve a goal',cat:'Marketing'},
+  {word:'AUDIENCE',hint:'The group of people you are targeting',cat:'Marketing'},
+  {word:'GROWTH',hint:'The process of increasing in size or importance',cat:'Business'},
+  {word:'CONTENT',hint:'Information created to engage a specific audience',cat:'Marketing'},
+  {word:'DIGITAL',hint:'Relating to technology using binary digits',cat:'Technology'},
+  {word:'OPTIMIZE',hint:'Make as effective or functional as possible',cat:'Marketing'},
+  {word:'INSIGHT',hint:'A deep understanding of a person or thing',cat:'Data'},
+  {word:'ENGAGEMENT',hint:'Interaction between a brand and its audience',cat:'Marketing'},
+  {word:'INFLUENCE',hint:'The capacity to have an effect on someone',cat:'Marketing'},
+];
+
+function shuffle(arr){return arr.sort(()=>Math.random()-.5);}
+function scramble(word){let a=word.split('');while(a.join('')===word)shuffle(a);return a.join('');}
+
+let queue,idx,score,timer,timeLeft;
+const ROUND=10,WORD_TIME=20;
+
+const startScreen=document.getElementById('startScreen'),endScreen=document.getElementById('endScreen');
+const scoreBar=document.getElementById('scoreBar'),timerWrap=document.getElementById('timerWrap'),wordCard=document.getElementById('wordCard');
+const scoreEl=document.getElementById('scoreVal'),wordNumEl=document.getElementById('wordNum'),timeEl=document.getElementById('timeVal');
+const timerBar=document.getElementById('timerBar');
+const scrambledEl=document.getElementById('scrambled'),hintEl=document.getElementById('hintText'),catEl=document.getElementById('catBadge');
+const guessInput=document.getElementById('guessInput'),submitBtn=document.getElementById('submitBtn'),skipBtn=document.getElementById('skipBtn');
+
+function startGame(){
+  queue=shuffle([...WORDS]).slice(0,ROUND);
+  idx=0;score=0;scoreEl.textContent=0;
+  startScreen.classList.add('hidden');endScreen.classList.add('hidden');
+  scoreBar.classList.remove('hidden');timerWrap.classList.remove('hidden');wordCard.classList.remove('hidden');
+  loadWord();
+}
+
+function loadWord(){
+  if(idx>=ROUND){endGame();return;}
+  clearInterval(timer);
+  const{word,hint,cat}=queue[idx];
+  wordNumEl.textContent=`${idx+1}/${ROUND}`;
+  scrambledEl.textContent=scramble(word);
+  hintEl.textContent='Hint: '+hint;
+  catEl.textContent=cat;
+  guessInput.value='';guessInput.className='guess-input';guessInput.disabled=false;guessInput.focus();
+  timeLeft=WORD_TIME;timeEl.textContent=timeLeft;timerBar.style.width='100%';timerBar.style.background='var(--primary)';
+  timer=setInterval(()=>{
+    timeLeft--;timeEl.textContent=timeLeft;timerBar.style.width=(timeLeft/WORD_TIME*100)+'%';
+    if(timeLeft<=5)timerBar.style.background='#ef4444';
+    if(timeLeft<=0){clearInterval(timer);showAnswer(false);}
+  },1000);
+}
+
+function checkGuess(){
+  const guess=guessInput.value.trim().toUpperCase();
+  const correct=queue[idx].word;
+  if(!guess)return;
+  if(guess===correct){
+    clearInterval(timer);score++;scoreEl.textContent=score;
+    scoreEl.classList.add('bump');setTimeout(()=>scoreEl.classList.remove('bump'),300);
+    guessInput.className='guess-input correct';guessInput.disabled=true;
+    setTimeout(()=>{idx++;loadWord();},700);
+  } else {
+    guessInput.className='guess-input wrong';
+    guessInput.addEventListener('animationend',()=>{guessInput.className='guess-input';},{once:true});
+  }
+}
+
+function showAnswer(skipped){
+  clearInterval(timer);guessInput.disabled=true;
+  guessInput.value=queue[idx].word;guessInput.className='guess-input';
+  setTimeout(()=>{idx++;loadWord();},900);
+}
+
+submitBtn.addEventListener('click',checkGuess);
+guessInput.addEventListener('keydown',e=>{if(e.key==='Enter')checkGuess();});
+skipBtn.addEventListener('click',()=>showAnswer(true));
+
+function endGame(){
+  wordCard.classList.add('hidden');scoreBar.classList.add('hidden');timerWrap.classList.add('hidden');
+  document.getElementById('endSub').textContent=`You got ${score} out of ${ROUND} words correct!${score>=8?' 🔥 Brilliant!':score>=5?' 👍 Not bad!':' Keep practising!'}`;
+  endScreen.classList.remove('hidden');
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

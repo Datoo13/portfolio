@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Typing Speed – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:640px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.timer-bar-wrap{width:100%;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+.timer-bar{height:100%;background:var(--primary);width:100%;transition:width .1s linear;}
+.passage{font-family:'DM Mono',monospace;font-size:1.05rem;line-height:1.8;padding:1.2rem 1.4rem;border:2px solid var(--border);border-radius:16px;background:#fafafa;width:100%;letter-spacing:.02em;}
+.passage .correct{color:var(--primary);}
+.passage .wrong{color:#ef4444;background:#fef2f2;border-radius:3px;}
+.passage .cursor{border-right:2px solid var(--primary);animation:blink .7s infinite;}
+@keyframes blink{0%,100%{border-color:var(--primary);}50%{border-color:transparent;}}
+.type-input{width:100%;padding:.85rem 1rem;border:2px solid var(--border);border-radius:14px;font-family:'DM Mono',monospace;font-size:1rem;outline:none;transition:border-color .2s;resize:none;}
+.type-input:focus{border-color:var(--primary);}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:300px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px;}
+.result-card{background:#fafafa;border:1.5px solid var(--border);border-radius:14px;padding:1rem;text-align:center;}
+.result-val{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:var(--primary);}
+.result-lbl{font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem;}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">⌨️</div>
+    <div class="overlay-title">Typing Speed Test</div>
+    <div class="overlay-sub">Type the passage as fast and accurately as possible. You have 60 seconds. Start typing to begin!</div>
+    <button class="btn-play" id="startBtn">Ready — Let's Go!</button>
+  </div>
+
+  <div class="score-bar hidden" id="scoreBar">
+    <div class="score-item"><span class="score-label">WPM</span><span class="score-value" id="wpmVal">0</span></div>
+    <div class="score-item"><span class="score-label">Accuracy</span><span class="score-value" id="accVal">100%</span></div>
+    <div class="score-item"><span class="score-label">Time</span><span class="score-value" id="timeVal">60</span></div>
+  </div>
+  <div class="timer-bar-wrap hidden" id="timerWrap"><div class="timer-bar" id="timerBar"></div></div>
+  <div class="passage hidden" id="passage"></div>
+  <textarea class="type-input hidden" id="typeInput" rows="2" placeholder="Start typing here…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+
+  <div id="endScreen" class="hidden overlay-page">
+    <div class="overlay-icon">🏁</div>
+    <div class="overlay-title">Test Complete!</div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <button class="btn-play" id="restartBtn">Try Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const PASSAGES=[
+  "The best marketing doesn't feel like marketing at all. It tells a story that people want to be part of.",
+  "Artificial intelligence is not a replacement for human creativity. It is a powerful amplifier of it.",
+  "Data without context is just noise. Strategy turns noise into signal and signal into growth.",
+  "The brands that win tomorrow are the ones building genuine connections with their audience today.",
+  "Speed matters in digital marketing. Test quickly, learn fast, and never stop optimizing your approach."
+];
+
+let passage='',typed='',timeLeft=60,timer=null,started=false,errors=0,totalTyped=0;
+const passageEl=document.getElementById('passage');
+const inputEl=document.getElementById('typeInput');
+const wpmEl=document.getElementById('wpmVal'),accEl=document.getElementById('accVal'),timeEl=document.getElementById('timeVal');
+const timerBar=document.getElementById('timerBar');
+
+function renderPassage(){
+  let html='';
+  for(let i=0;i<passage.length;i++){
+    if(i<typed.length){
+      const match=typed[i]===passage[i];
+      html+=`<span class="${match?'correct':'wrong'}">${passage[i]==' '&&!match?'_':passage[i]}</span>`;
+    } else if(i===typed.length){
+      html+=`<span class="cursor">${passage[i]}</span>`;
+    } else {
+      html+=passage[i];
+    }
+  }
+  passageEl.innerHTML=html;
+}
+
+function calcWPM(){
+  const elapsed=(60-timeLeft)||1;
+  return Math.round((typed.length/5)/(elapsed/60));
+}
+
+function calcAcc(){
+  if(!totalTyped)return 100;
+  return Math.round(((totalTyped-errors)/totalTyped)*100);
+}
+
+function startGame(){
+  passage=PASSAGES[Math.floor(Math.random()*PASSAGES.length)];
+  typed='';errors=0;totalTyped=0;timeLeft=60;started=false;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('scoreBar').classList.remove('hidden');
+  document.getElementById('timerWrap').classList.remove('hidden');
+  passageEl.classList.remove('hidden');
+  inputEl.classList.remove('hidden');
+  inputEl.value='';
+  wpmEl.textContent=0;accEl.textContent='100%';timeEl.textContent=60;
+  timerBar.style.width='100%';timerBar.style.background='var(--primary)';
+  renderPassage();
+  inputEl.focus();
+}
+
+inputEl.addEventListener('input',()=>{
+  if(!started){
+    started=true;
+    timer=setInterval(()=>{
+      timeLeft--;timeEl.textContent=timeLeft;
+      timerBar.style.width=(timeLeft/60*100)+'%';
+      if(timeLeft<=10)timerBar.style.background='#ef4444';
+      wpmEl.textContent=calcWPM();accEl.textContent=calcAcc()+'%';
+      if(timeLeft<=0){clearInterval(timer);endGame();}
+    },1000);
+  }
+  const val=inputEl.value;
+  totalTyped=val.length;
+  errors=0;
+  for(let i=0;i<val.length;i++) if(val[i]!==passage[i])errors++;
+  typed=val.slice(0,passage.length);
+  renderPassage();
+  wpmEl.textContent=calcWPM();accEl.textContent=calcAcc()+'%';
+  if(typed===passage){clearInterval(timer);endGame();}
+});
+
+function endGame(){
+  started=false;clearInterval(timer);
+  passageEl.classList.add('hidden');inputEl.classList.add('hidden');
+  document.getElementById('scoreBar').classList.add('hidden');
+  document.getElementById('timerWrap').classList.add('hidden');
+  const wpm=calcWPM(),acc=calcAcc();
+  document.getElementById('resultsGrid').innerHTML=`
+    <div class="result-card"><div class="result-val">${wpm}</div><div class="result-lbl">WPM</div></div>
+    <div class="result-card"><div class="result-val">${acc}%</div><div class="result-lbl">Accuracy</div></div>
+    <div class="result-card"><div class="result-val">${60-timeLeft}s</div><div class="result-lbl">Time Used</div></div>
+    <div class="result-card"><div class="result-val">${errors}</div><div class="result-lbl">Errors</div></div>`;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

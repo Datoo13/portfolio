@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Flappy – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:480px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.canvas-wrapper{position:relative;width:100%;max-width:420px;border-radius:18px;border:2px solid var(--border);overflow:hidden;background:#eff6ff;box-shadow:0 4px 32px rgba(0,0,0,.06);}
+canvas{display:block;width:100%;height:100%;}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:rgba(255,255,255,.93);backdrop-filter:blur(4px);z-index:10;transition:opacity .25s;}
+.overlay.hidden{opacity:0;pointer-events:none;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:220px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+.tap-btn{margin-top:.5rem;width:100%;max-width:300px;padding:1rem;border-radius:16px;border:2px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .1s,border-color .1s,transform .08s;}
+.tap-btn:active{background:var(--primary-light);border-color:var(--primary);transform:scale(.97);}
+.key-hint{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+.key-hint span{display:inline-block;padding:.1rem .35rem;border:1px solid var(--border);border-radius:5px;background:#f3f4f6;margin:0 1px;}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">Score</span><span class="score-value" id="scoreVal">0</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">0</span></div>
+  </div>
+  <div class="canvas-wrapper" id="wrapper">
+    <canvas id="c"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="overlay-icon">🐦</div>
+      <div class="overlay-title" id="oTitle">Flappy</div>
+      <div class="overlay-sub" id="oSub">Tap, click, or press Space to flap and fly through the gaps!</div>
+      <button class="btn-play" id="oBtn">Start</button>
+    </div>
+  </div>
+  <button class="tap-btn" id="tapBtn">👆 Tap to Flap</button>
+  <p class="key-hint">Desktop: <span>Space</span> or <span>↑</span> to flap</p>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const wrapper=document.getElementById('wrapper');
+const overlay=document.getElementById('overlay'),oTitle=document.getElementById('oTitle'),oSub=document.getElementById('oSub'),oBtn=document.getElementById('oBtn');
+const scoreEl=document.getElementById('scoreVal'),bestEl=document.getElementById('bestVal');
+
+let W,H,bird,pipes,score,best=0,running=false,gameOver=false,raf;
+const PIPE_W_FRAC=0.12;  // pipe width as fraction of canvas width
+const GAP_FRAC=0.32;      // gap height as fraction of canvas height
+const PIPE_SPEED_PX=120;  // pixels per second
+const GRAVITY_PPS=800;    // pixels per second²
+const FLAP_VEL=-360;      // pixels per second (upward)
+const PIPE_INTERVAL=1800; // ms between pipes
+
+function resize(){
+  W=wrapper.clientWidth;H=Math.round(W*1.5);
+  canvas.width=W;canvas.height=H;
+  wrapper.style.height=H+'px';
+}
+
+function initGame(){
+  bird={x:W*0.22,y:H*0.4,vy:0,r:W*0.045};
+  pipes=[];score=0;scoreEl.textContent=0;
+}
+
+function flap(){
+  if(!running||gameOver)return;
+  bird.vy=FLAP_VEL;
+}
+
+let lastPipeTime=0,lastFrameT=0;
+function loop(t){
+  if(!running||gameOver)return;
+  const dt=Math.min((t-lastFrameT)/1000,0.05);lastFrameT=t;
+  const GAP=H*GAP_FRAC;
+  const PW=W*PIPE_W_FRAC;
+
+  ctx.clearRect(0,0,W,H);
+  // sky
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#dbeafe');sky.addColorStop(1,'#eff6ff');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+
+  // spawn pipes on timer
+  if(t-lastPipeTime>PIPE_INTERVAL){
+    const minH=H*0.12,maxH=H-GAP-H*0.12;
+    pipes.push({x:W,topH:minH+Math.random()*(maxH-minH),passed:false});
+    lastPipeTime=t;
+  }
+
+  // move & draw pipes
+  pipes.forEach(p=>{
+    p.x-=PIPE_SPEED_PX*dt;
+    ctx.fillStyle='#2563EB';
+    roundRect2(p.x,0,PW,p.topH,6);ctx.fill();
+    ctx.fillStyle='#1d4ed8';
+    roundRect2(p.x-4,p.topH-20,PW+8,20,4);ctx.fill();
+    ctx.fillStyle='#2563EB';
+    roundRect2(p.x,p.topH+GAP,PW,H-p.topH-GAP,6);ctx.fill();
+    ctx.fillStyle='#1d4ed8';
+    roundRect2(p.x-4,p.topH+GAP,PW+8,20,4);ctx.fill();
+    // score
+    if(!p.passed&&bird.x>p.x+PW){p.passed=true;score++;if(score>best)best=score;scoreEl.textContent=score;bestEl.textContent=best;}
+    // collision (shrink hitbox slightly for fairness)
+    const hr=bird.r*0.7;
+    if(bird.x+hr>p.x+4&&bird.x-hr<p.x+PW-4){
+      if(bird.y-hr<p.topH||bird.y+hr>p.topH+GAP)endGame();
+    }
+  });
+  pipes=pipes.filter(p=>p.x+PW>0);
+
+  // bird physics
+  bird.vy+=GRAVITY_PPS*dt;
+  bird.y+=bird.vy*dt;
+  if(bird.y-bird.r<0){bird.y=bird.r;bird.vy=0;}
+  if(bird.y+bird.r>H){endGame();return;}
+
+  // bird draw
+  const angle=Math.min(Math.max(bird.vy/10,-30),60)*Math.PI/180;
+  ctx.save();ctx.translate(bird.x,bird.y);ctx.rotate(angle);
+  ctx.font=`${bird.r*2.2}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🐦',0,0);
+  ctx.restore();
+
+  requestAnimationFrame(loop);
+}
+
+function roundRect2(x,y,w,h,r){
+  ctx.beginPath();r=Math.min(r,w/2,h/2);
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+
+function startGame(){
+  initGame();overlay.classList.add('hidden');running=true;gameOver=false;
+  lastPipeTime=performance.now();lastFrameT=performance.now();
+  resize();requestAnimationFrame(loop);
+}
+
+function endGame(){
+  running=false;gameOver=true;
+  oTitle.textContent='Game Over';
+  oSub.textContent=`Score: ${score}. ${score>=10?'Great job! 🔥':'Keep flying! ✈️'}`;
+  oBtn.textContent='Play Again';
+  overlay.classList.remove('hidden');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'||e.key==='ArrowUp'){e.preventDefault();
+    if(gameOver||!running)startGame();else flap();}
+});
+document.getElementById('tapBtn').addEventListener('click',()=>{if(gameOver||!running)startGame();else flap();});
+document.getElementById('tapBtn').addEventListener('touchstart',e=>{e.preventDefault();if(gameOver||!running)startGame();else flap();},{passive:false});
+canvas.addEventListener('click',()=>{if(gameOver||!running)startGame();else flap();});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();if(gameOver||!running)startGame();else flap();},{passive:false});
+oBtn.addEventListener('click',startGame);
+window.addEventListener('resize',resize);
+resize();
+</script>
+</body>
+</html>

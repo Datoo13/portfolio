@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Dice RPG – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:500px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.1rem;}
+.dungeon-hud{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.combatant{border:2px solid var(--border);border-radius:16px;padding:1rem;background:#fafafa;display:flex;flex-direction:column;gap:.5rem;}
+.combatant.hero{border-color:#2563EB22;}
+.combatant.enemy{border-color:#ef444422;}
+.comb-head{display:flex;align-items:center;gap:.5rem;}
+.comb-emoji{font-size:1.8rem;}
+.comb-name{font-size:.85rem;font-weight:700;}
+.hp-bar-wrap{height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+.hp-bar{height:100%;border-radius:99px;transition:width .4s ease;}
+.hero .hp-bar{background:#2563EB;}
+.enemy .hp-bar{background:#ef4444;}
+.hp-text{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+.comb-stats{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-muted);}
+.arena{width:100%;border:2px solid var(--border);border-radius:18px;padding:1.2rem;background:#fafafa;display:flex;flex-direction:column;align-items:center;gap:.8rem;}
+.battle-log{width:100%;max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;font-size:.82rem;line-height:1.5;}
+.log-entry{padding:.25rem .6rem;border-radius:8px;background:#fff;border:1px solid var(--border);}
+.log-entry.hero-action{border-color:#93c5fd;background:#eff6ff;}
+.log-entry.enemy-action{border-color:#fca5a5;background:#fef2f2;}
+.log-entry.system{color:var(--text-muted);font-style:italic;}
+.dice-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.die{width:52px;height:52px;border-radius:12px;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;transition:transform .15s,background .15s,border-color .15s;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
+.die.rolling{animation:dieRoll .4s ease;}
+.die.selected{border-color:var(--primary);background:var(--primary-light);}
+@keyframes dieRoll{0%,100%{transform:rotate(0);}25%{transform:rotate(-18deg);}75%{transform:rotate(18deg);}}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn-action{padding:.6rem 1.2rem;border-radius:12px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;-webkit-tap-highlight-color:transparent;}
+.btn-action:hover{background:var(--primary-dark);}
+.btn-action:active{transform:scale(.96);}
+.btn-action:disabled{background:#d1d5db;cursor:not-allowed;}
+.btn-action.secondary{background:#fafafa;color:var(--text);border:2px solid var(--border);}
+.btn-action.secondary:hover{border-color:var(--primary);color:var(--primary);background:#fff;}
+.floor-badge{font-size:.78rem;font-weight:700;color:var(--primary);text-align:center;letter-spacing:.04em;}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:280px;line-height:1.55;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🎲</div>
+    <div class="overlay-title">Dice RPG</div>
+    <div class="overlay-sub">Roll dice to battle dungeon monsters! Higher rolls deal more damage. Roll 3 dice — pick your best two to attack!</div>
+    <button class="btn-play" id="startBtn">Enter the Dungeon</button>
+  </div>
+
+  <div class="floor-badge hidden" id="floorBadge">⚔️ Floor 1 — Round 1</div>
+
+  <div class="dungeon-hud hidden" id="hud">
+    <div class="combatant hero">
+      <div class="comb-head"><span class="comb-emoji">🧙</span><span class="comb-name" id="heroName">Hero</span></div>
+      <div class="hp-bar-wrap"><div class="hp-bar" id="heroHpBar" style="width:100%"></div></div>
+      <div class="hp-text" id="heroHpText">30 / 30</div>
+      <div class="comb-stats" id="heroStats">ATK: 1-6 | DEF: 2</div>
+    </div>
+    <div class="combatant enemy">
+      <div class="comb-head"><span class="comb-emoji" id="enemyEmoji">👾</span><span class="comb-name" id="enemyName">Goblin</span></div>
+      <div class="hp-bar-wrap"><div class="hp-bar" id="enemyHpBar" style="width:100%"></div></div>
+      <div class="hp-text" id="enemyHpText">20 / 20</div>
+      <div class="comb-stats" id="enemyStats">ATK: 1-4 | DEF: 1</div>
+    </div>
+  </div>
+
+  <div class="arena hidden" id="arena">
+    <div class="battle-log" id="battleLog"></div>
+    <div class="dice-row" id="diceRow">
+      <div class="die" id="die0">?</div>
+      <div class="die" id="die1">?</div>
+      <div class="die" id="die2">?</div>
+    </div>
+    <div style="font-size:.75rem;color:var(--text-muted);text-align:center;">Tap dice to select the 2 you want to use</div>
+    <div class="action-row">
+      <button class="btn-action" id="rollBtn">🎲 Roll Dice</button>
+      <button class="btn-action secondary" id="attackBtn" disabled>⚔️ Attack!</button>
+    </div>
+  </div>
+
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon" id="endIcon">🏆</div>
+    <div class="overlay-title" id="endTitle">Victory!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="restartBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const ENEMIES=[
+  {name:'Goblin',emoji:'👾',hp:20,atk:4,def:1},
+  {name:'Orc',emoji:'🧟',hp:35,atk:6,def:2},
+  {name:'Troll',emoji:'🐲',hp:50,atk:8,def:3},
+  {name:'Witch',emoji:'🧙‍♀️',hp:40,atk:10,def:2},
+  {name:'Dragon',emoji:'🐉',hp:70,atk:12,def:4},
+];
+
+let hero,enemy,floor,round,diceVals,selected,rolled,locked,totalKills,totalDmg;
+
+const floorBadge=document.getElementById('floorBadge');
+const hud=document.getElementById('hud'),arena=document.getElementById('arena');
+const heroHpBar=document.getElementById('heroHpBar'),heroHpText=document.getElementById('heroHpText'),heroStats=document.getElementById('heroStats');
+const enemyEmoji=document.getElementById('enemyEmoji'),enemyName=document.getElementById('enemyName');
+const enemyHpBar=document.getElementById('enemyHpBar'),enemyHpText=document.getElementById('enemyHpText'),enemyStats=document.getElementById('enemyStats');
+const battleLog=document.getElementById('battleLog');
+const diceEls=[document.getElementById('die0'),document.getElementById('die1'),document.getElementById('die2')];
+const rollBtn=document.getElementById('rollBtn'),attackBtn=document.getElementById('attackBtn');
+
+function d(n){return 1+Math.floor(Math.random()*n);}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+function log(msg,cls=''){
+  const el=document.createElement('div');el.className='log-entry '+(cls||'');el.textContent=msg;
+  battleLog.appendChild(el);battleLog.scrollTop=battleLog.scrollHeight;
+}
+
+function updateHeroUI(){
+  const pct=clamp(hero.hp/hero.maxHp*100,0,100);
+  heroHpBar.style.width=pct+'%';heroHpText.textContent=`${Math.max(0,hero.hp)} / ${hero.maxHp}`;
+  heroStats.textContent=`ATK: 1-${hero.atk} | DEF: ${hero.def}`;
+}
+
+function updateEnemyUI(){
+  const pct=clamp(enemy.hp/enemy.maxHp*100,0,100);
+  enemyHpBar.style.width=pct+'%';enemyHpText.textContent=`${Math.max(0,enemy.hp)} / ${enemy.maxHp}`;
+  enemyEmoji.textContent=enemy.emoji;enemyName.textContent=enemy.name;
+  enemyStats.textContent=`ATK: 1-${enemy.atk} | DEF: ${enemy.def}`;
+}
+
+function spawnEnemy(idx){
+  const base=ENEMIES[Math.min(idx,ENEMIES.length-1)];
+  const scale=1+floor*.25;
+  enemy={...base,hp:Math.round(base.hp*scale),maxHp:Math.round(base.hp*scale),atk:Math.round(base.atk*scale),def:Math.round(base.def*scale)};
+  updateEnemyUI();
+  log(`A ${enemy.name} appears! HP: ${enemy.hp}`, 'system');
+}
+
+function rollDice(){
+  if(locked)return;
+  rolled=true;selected=new Set();diceVals=[d(6),d(6),d(6)];
+  diceEls.forEach((el,i)=>{
+    el.classList.add('rolling');el.classList.remove('selected');
+    setTimeout(()=>{el.classList.remove('rolling');el.textContent=diceVals[i];},400);
+  });
+  attackBtn.disabled=true;rollBtn.disabled=true;
+  setTimeout(()=>{
+    rollBtn.disabled=false;
+    log(`You rolled: ${diceVals.join(', ')} — tap 2 dice, then Attack!`,'hero-action');
+  },450);
+}
+
+function selectDie(i){
+  if(!rolled||locked)return;
+  if(selected.has(i)){selected.delete(i);diceEls[i].classList.remove('selected');}
+  else if(selected.size<2){selected.add(i);diceEls[i].classList.add('selected');}
+  attackBtn.disabled=selected.size<2;
+}
+
+function resetForNextRound(){
+  diceEls.forEach(el=>{el.textContent='?';el.classList.remove('selected');});
+  diceVals=[0,0,0];rolled=false;locked=false;selected=new Set();
+  attackBtn.disabled=true;rollBtn.disabled=false;
+}
+
+function doAttack(){
+  if(selected.size<2)return;
+  locked=true;rollBtn.disabled=true;attackBtn.disabled=true;
+  const vals=[...selected].map(i=>diceVals[i]);
+  const raw=vals.reduce((a,b)=>a+b,0);
+  const dmg=Math.max(1,raw-enemy.def);
+  enemy.hp-=dmg;totalDmg+=dmg;updateEnemyUI();
+  log(`⚔️ You hit ${enemy.name} for ${dmg} damage! (rolled ${vals.join('+')} = ${raw} − DEF ${enemy.def} = ${dmg})`, 'hero-action');
+  if(enemy.hp<=0){setTimeout(()=>killEnemy(),400);return;}
+  // enemy counter-attacks
+  setTimeout(()=>{
+    const eRaw=d(enemy.atk)+d(enemy.atk);
+    const eDmg=Math.max(1,eRaw-hero.def);
+    hero.hp-=eDmg;updateHeroUI();
+    log(`💢 ${enemy.name} retaliates for ${eDmg} damage!`, 'enemy-action');
+    if(hero.hp<=0){setTimeout(()=>endGame(false),400);return;}
+    round++;floorBadge.textContent=`⚔️ Floor ${floor} — Round ${round}`;
+    resetForNextRound();
+  },700);
+}
+
+function killEnemy(){
+  totalKills++;
+  log(`✨ ${enemy.name} defeated! You gain ${10+floor*5} gold.`, 'system');
+  if(floor%2===0){hero.atk++;hero.def++;updateHeroUI();log(`📈 You grew stronger! ATK+1, DEF+1`,'system');}
+  floor++;
+  if(floor>10){endGame(true);return;}
+  const eIdx=Math.min(floor-1,ENEMIES.length-1);
+  spawnEnemy(eIdx);round=1;
+  floorBadge.textContent=`⚔️ Floor ${floor} — Round ${round}`;
+  resetForNextRound();
+}
+
+function startGame(){
+  hero={name:'Hero',hp:40,maxHp:40,atk:6,def:2};
+  floor=1;round=1;rolled=false;locked=false;selected=new Set();totalKills=0;totalDmg=0;
+  diceVals=[0,0,0];
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  hud.classList.remove('hidden');arena.classList.remove('hidden');floorBadge.classList.remove('hidden');
+  battleLog.innerHTML='';
+  log('Welcome, hero. The dungeon awaits!', 'system');
+  updateHeroUI();spawnEnemy(0);
+  floorBadge.textContent=`⚔️ Floor 1 — Round 1`;
+  attackBtn.disabled=true;rollBtn.disabled=false;
+}
+
+function endGame(win){
+  hud.classList.add('hidden');arena.classList.add('hidden');floorBadge.classList.add('hidden');
+  document.getElementById('endIcon').textContent=win?'🏆':'💀';
+  document.getElementById('endTitle').textContent=win?'Dungeon Cleared!':'You Fell…';
+  document.getElementById('endSub').textContent=win
+    ?`You conquered all 10 floors! ${totalKills} monsters slain, ${totalDmg} total damage dealt.`
+    :`Reached floor ${floor}. ${totalKills} monsters slain. Rise and try again!`;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+diceEls.forEach((el,i)=>el.addEventListener('click',()=>selectDie(i)));
+rollBtn.addEventListener('click',rollDice);
+attackBtn.addEventListener('click',doAttack);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

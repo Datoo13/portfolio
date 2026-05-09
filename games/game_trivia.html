@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Trivia – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:560px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.progress-row{width:100%;display:flex;align-items:center;gap:.8rem;}
+.progress-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+.progress-bar{height:100%;background:var(--primary);border-radius:99px;transition:width .4s ease;}
+.progress-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text-muted);white-space:nowrap;}
+.timer-ring-wrap{display:flex;align-items:center;gap:.4rem;}
+.timer-val{font-family:'DM Mono',monospace;font-size:.95rem;font-weight:500;min-width:24px;text-align:center;}
+.question-card{width:100%;border:2px solid var(--border);border-radius:20px;padding:1.6rem;background:#fafafa;display:flex;flex-direction:column;gap:1rem;}
+.q-category{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:999px;background:var(--primary-light);color:var(--primary);align-self:flex-start;}
+.q-text{font-size:1.05rem;font-weight:700;line-height:1.5;color:var(--text);}
+.options{display:flex;flex-direction:column;gap:10px;margin-top:.4rem;}
+.opt-btn{width:100%;padding:.8rem 1rem;border-radius:13px;border:2px solid var(--border);background:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,transform .08s;display:flex;align-items:center;gap:.7rem;-webkit-tap-highlight-color:transparent;}
+.opt-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-light);}
+.opt-btn:active:not(:disabled){transform:scale(.98);}
+.opt-btn.correct{border-color:#22c55e;background:#f0fdf4;color:#15803d;}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.opt-letter{width:28px;height:28px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.75rem;font-weight:500;flex-shrink:0;transition:background .15s;}
+.opt-btn.correct .opt-letter{background:#22c55e;color:#fff;}
+.opt-btn.wrong .opt-letter{background:#ef4444;color:#fff;}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:280px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;}
+.result-card{background:#fafafa;border:1.5px solid var(--border);border-radius:14px;padding:1rem;text-align:center;}
+.result-val{font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--primary);}
+.result-lbl{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem;}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🧠</div>
+    <div class="overlay-title">Marketing &amp; AI Trivia</div>
+    <div class="overlay-sub">10 questions on digital marketing and AI. 15 seconds per question. How smart are you?</div>
+    <button class="btn-play" id="startBtn">Start Quiz</button>
+  </div>
+  <div class="progress-row hidden" id="progressRow">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <span class="progress-label" id="progressLabel">1 / 10</span>
+    <div class="timer-ring-wrap">⏱ <span class="timer-val" id="timerVal">15</span></div>
+  </div>
+  <div class="question-card hidden" id="qCard">
+    <span class="q-category" id="qCat">Marketing</span>
+    <div class="q-text" id="qText">Question goes here</div>
+    <div class="options" id="options"></div>
+  </div>
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon" id="endIcon">🏆</div>
+    <div class="overlay-title" id="endTitle">Results</div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <button class="btn-play" id="restartBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const ALL_QUESTIONS=[
+  {q:"What does SEO stand for?",cat:"Marketing",opts:["Search Engine Optimization","Social Engagement Output","Site Experience Overview","Search Engagement Operator"],ans:0},
+  {q:"Which metric measures the percentage of visitors who leave after viewing only one page?",cat:"Analytics",opts:["Click-Through Rate","Bounce Rate","Conversion Rate","Impression Rate"],ans:1},
+  {q:"What is A/B testing?",cat:"Marketing",opts:["A type of cybersecurity test","Comparing two versions to see which performs better","A coding methodology","An AI training technique"],ans:1},
+  {q:"What does CTA stand for in marketing?",cat:"Marketing",opts:["Click To Action","Cost To Acquire","Call To Action","Content Target Audience"],ans:2},
+  {q:"GPT in AI stands for what?",cat:"AI",opts:["General Purpose Technology","Generative Pre-trained Transformer","Global Processing Tool","Graph Processing Theory"],ans:1},
+  {q:"Which platform is primarily B2B focused for marketing?",cat:"Social Media",opts:["Instagram","TikTok","LinkedIn","Pinterest"],ans:2},
+  {q:"What is the primary goal of content marketing?",cat:"Marketing",opts:["Sell products directly","Run paid ads","Build audience trust and long-term relationships","Increase server traffic"],ans:2},
+  {q:"What does ROI stand for?",cat:"Business",opts:["Rate of Interest","Return On Investment","Reach Of Impressions","Revenue Over Income"],ans:1},
+  {q:"Which of these is NOT a Google ranking factor?",cat:"SEO",opts:["Page speed","Backlinks","Social media likes","Mobile-friendliness"],ans:2},
+  {q:"Large Language Models (LLMs) are primarily used for?",cat:"AI",opts:["Image recognition","Natural language processing","Video editing","Database management"],ans:1},
+  {q:"What is a marketing 'funnel'?",cat:"Marketing",opts:["A shape used in logo design","A customer journey model from awareness to purchase","A type of email template","A social media algorithm"],ans:1},
+  {q:"What does CTR stand for?",cat:"Analytics",opts:["Cost-To-Revenue","Click-Through Rate","Content Target Reach","Customer Tracking Report"],ans:1},
+  {q:"Which AI technique trains models using example data?",cat:"AI",opts:["Supervised Learning","Keyword Stuffing","Retargeting","Split Testing"],ans:0},
+  {q:"What is 'organic traffic'?",cat:"SEO",opts:["Traffic from paid ads","Traffic from social media shares","Visitors who find your site via search engines without paid ads","Email subscribers"],ans:2},
+  {q:"What is programmatic advertising?",cat:"Marketing",opts:["Writing ads by hand","Automated buying and selling of digital ad space","Programming websites to show ads","A type of influencer deal"],ans:1},
+];
+
+function shuffle(arr){return arr.sort(()=>Math.random()-.5);}
+const LETTERS=['A','B','C','D'];
+const TIME_PER_Q=15;
+
+let questions,qIdx,score,correct,timer,totalTime,answered;
+const progressRow=document.getElementById('progressRow'),progressBar=document.getElementById('progressBar'),progressLabel=document.getElementById('progressLabel');
+const timerVal=document.getElementById('timerVal'),qCard=document.getElementById('qCard'),qCat=document.getElementById('qCat'),qText=document.getElementById('qText'),optionsEl=document.getElementById('options');
+
+function startGame(){
+  questions=shuffle([...ALL_QUESTIONS]).slice(0,10);
+  qIdx=0;score=0;correct=0;totalTime=0;answered=false;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  progressRow.classList.remove('hidden');qCard.classList.remove('hidden');
+  loadQuestion();
+}
+
+function loadQuestion(){
+  clearInterval(timer);answered=false;
+  if(qIdx>=questions.length){endGame();return;}
+  const q=questions[qIdx];
+  progressLabel.textContent=`${qIdx+1} / ${questions.length}`;
+  progressBar.style.width=((qIdx)/questions.length*100)+'%';
+  qCat.textContent=q.cat;qText.textContent=q.q;
+  // shuffle options keeping track of correct
+  const opts=q.opts.map((o,i)=>({text:o,correct:i===q.ans}));
+  shuffle(opts);
+  optionsEl.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-letter">${LETTERS[i]}</span>${opt.text}`;
+    btn.addEventListener('click',()=>answer(btn,opt.correct,opts));
+    optionsEl.appendChild(btn);
+  });
+  let timeLeft=TIME_PER_Q;timerVal.textContent=timeLeft;
+  timer=setInterval(()=>{
+    timeLeft--;timerVal.textContent=timeLeft;totalTime++;
+    if(timeLeft<=0){clearInterval(timer);revealAll(opts);setTimeout(()=>{qIdx++;loadQuestion();},1200);}
+  },1000);
+}
+
+function answer(btn,isCorrect,opts){
+  if(answered)return;answered=true;clearInterval(timer);
+  totalTime+=(TIME_PER_Q-parseInt(timerVal.textContent));
+  if(isCorrect){btn.classList.add('correct');score+=10+parseInt(timerVal.textContent);correct++;}
+  else{btn.classList.add('wrong');}
+  revealAll(opts);
+  setTimeout(()=>{qIdx++;loadQuestion();},1000);
+}
+
+function revealAll(opts){
+  [...optionsEl.children].forEach((btn,i)=>{
+    btn.disabled=true;
+    if(opts[i].correct&&!btn.classList.contains('wrong'))btn.classList.add('correct');
+  });
+}
+
+function endGame(){
+  progressRow.classList.add('hidden');qCard.classList.add('hidden');
+  const pct=Math.round(correct/questions.length*100);
+  document.getElementById('endIcon').textContent=pct>=80?'🏆':pct>=50?'👍':'💪';
+  document.getElementById('endTitle').textContent=pct>=80?'Excellent!':pct>=50?'Good Job!':'Keep Learning!';
+  document.getElementById('resultsGrid').innerHTML=`
+    <div class="result-card"><div class="result-val">${score}</div><div class="result-lbl">Score</div></div>
+    <div class="result-card"><div class="result-val">${correct}/${questions.length}</div><div class="result-lbl">Correct</div></div>
+    <div class="result-card"><div class="result-val">${pct}%</div><div class="result-lbl">Accuracy</div></div>
+    <div class="result-card"><div class="result-val">${Math.round(totalTime/questions.length)}s</div><div class="result-lbl">Avg Time</div></div>`;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Tetris – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:520px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.game-row{display:flex;gap:16px;align-items:flex-start;justify-content:center;width:100%;}
+.canvas-wrapper{position:relative;border-radius:16px;border:2px solid var(--border);overflow:hidden;background:#fafafa;box-shadow:0 4px 32px rgba(0,0,0,.06);}
+canvas{display:block;}
+.side-panel{display:flex;flex-direction:column;gap:12px;min-width:90px;}
+.panel-box{border:1.5px solid var(--border);border-radius:12px;padding:.7rem;background:#fafafa;text-align:center;}
+.panel-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;}
+.panel-val{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500;}
+.next-canvas{display:block;margin:0 auto;}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);z-index:10;transition:opacity .25s;}
+.overlay.hidden{opacity:0;pointer-events:none;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.82rem;color:var(--text-muted);text-align:center;max-width:180px;line-height:1.5;}
+.btn-play{padding:.6rem 1.5rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.dpad{display:none;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,54px);gap:6px;margin-top:.5rem;}
+@media(pointer:coarse){.dpad{display:grid;}}
+.dpad-btn{border-radius:12px;border:2px solid var(--border);background:#fafafa;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .1s,transform .08s;}
+.dpad-btn:active{background:var(--primary-light);border-color:var(--primary);transform:scale(.92);}
+.dpad-empty{visibility:hidden;}
+.key-hint{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-muted);}
+.key-hint span{display:inline-block;padding:.1rem .3rem;border:1px solid var(--border);border-radius:4px;background:#f3f4f6;margin:0 1px;}
+@media(pointer:coarse){.key-hint{display:none;}}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="game-row">
+    <div class="canvas-wrapper" id="wrapper">
+      <canvas id="c"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="overlay-icon">🟦</div>
+        <div class="overlay-title" id="oTitle">Tetris</div>
+        <div class="overlay-sub" id="oSub">Stack blocks and clear lines! Arrow keys or mobile D-pad.</div>
+        <button class="btn-play" id="oBtn">Start</button>
+      </div>
+    </div>
+    <div class="side-panel">
+      <div class="panel-box"><div class="panel-label">Score</div><div class="panel-val" id="scoreVal">0</div></div>
+      <div class="panel-box"><div class="panel-label">Lines</div><div class="panel-val" id="linesVal">0</div></div>
+      <div class="panel-box"><div class="panel-label">Level</div><div class="panel-val" id="levelVal">1</div></div>
+      <div class="panel-box"><div class="panel-label">Next</div><canvas class="next-canvas" id="nextC" width="72" height="72"></canvas></div>
+    </div>
+  </div>
+  <div class="dpad">
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dUp">🔄</button>
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dLeft">◀</button>
+    <button class="dpad-btn" id="dDown">▼</button>
+    <button class="dpad-btn" id="dRight">▶</button>
+  </div>
+  <p class="key-hint"><span>←</span><span>→</span> move &nbsp;<span>↑</span> rotate &nbsp;<span>↓</span> soft drop &nbsp;<span>Space</span> hard drop</p>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const COLS=10,ROWS=20,CELL=28;
+const COLORS=['','#2563EB','#3b82f6','#60a5fa','#1d4ed8','#93c5fd','#6366f1','#a78bfa'];
+const SHAPES=[
+  [],
+  [[1,1,1,1]],
+  [[2,0],[2,0],[2,2]],
+  [[0,3],[0,3],[3,3]],
+  [[4,4],[4,4]],
+  [[0,5,5],[5,5,0]],
+  [[0,6],[6,6],[6,0]],
+  [[7,0],[7,7],[0,7]]
+];
+
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const nextC=document.getElementById('nextC'),nCtx=nextC.getContext('2d');
+const wrapper=document.getElementById('wrapper');
+canvas.width=COLS*CELL;canvas.height=ROWS*CELL;
+wrapper.style.width=(COLS*CELL+2)+'px';wrapper.style.height=(ROWS*CELL+2)+'px';
+
+const overlay=document.getElementById('overlay'),oTitle=document.getElementById('oTitle'),oSub=document.getElementById('oSub'),oBtn=document.getElementById('oBtn');
+const scoreEl=document.getElementById('scoreVal'),linesEl=document.getElementById('linesVal'),levelEl=document.getElementById('levelVal');
+
+let board,piece,nextPiece,score,lines,level,dropInterval,lastDrop,running,gameOverFlag,raf;
+
+function emptyBoard(){return Array.from({length:ROWS},()=>Array(COLS).fill(0));}
+
+function randPiece(){
+  const id=1+Math.floor(Math.random()*(SHAPES.length-1));
+  const shape=SHAPES[id].map(r=>[...r]);
+  return{id,shape,x:Math.floor(COLS/2)-Math.ceil(shape[0].length/2),y:0};
+}
+
+function valid(p,dx=0,dy=0,shape=p.shape){
+  return shape.every((row,r)=>row.every((v,c)=>{
+    if(!v)return true;
+    const nx=p.x+c+dx,ny=p.y+r+dy;
+    return nx>=0&&nx<COLS&&ny<ROWS&&(ny<0||!board[ny][nx]);
+  }));
+}
+
+function rotate(shape){
+  return shape[0].map((_,i)=>shape.map(r=>r[i]).reverse());
+}
+
+function place(p){
+  p.shape.forEach((row,r)=>row.forEach((v,c)=>{if(v&&p.y+r>=0)board[p.y+r][p.x+c]=v;}));
+}
+
+function clearLines(){
+  let cleared=0;
+  for(let r=ROWS-1;r>=0;){
+    if(board[r].every(v=>v)){board.splice(r,1);board.unshift(Array(COLS).fill(0));cleared++;}
+    else r--;
+  }
+  if(cleared){
+    const pts=[0,100,300,500,800][cleared]*level;
+    score+=pts;lines+=cleared;level=Math.floor(lines/10)+1;
+    dropInterval=Math.max(100,600-level*50);
+    scoreEl.textContent=score;linesEl.textContent=lines;levelEl.textContent=level;
+  }
+}
+
+function drawCell(c,x,y,size=CELL){
+  if(!c)return;
+  ctx.fillStyle=COLORS[c];
+  ctx.beginPath();const r=4;
+  ctx.moveTo(x+r,y);ctx.lineTo(x+size-r,y);ctx.arcTo(x+size,y,x+size,y+r,r);
+  ctx.lineTo(x+size,y+size-r);ctx.arcTo(x+size,y+size,x+size-r,y+size,r);
+  ctx.lineTo(x+r,y+size);ctx.arcTo(x,y+size,x,y+size-r,r);
+  ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.25)';
+  ctx.beginPath();ctx.moveTo(x+r,y+2);ctx.lineTo(x+size-r,y+2);ctx.arcTo(x+size-2,y+2,x+size-2,y+r,r-2);ctx.lineTo(x+size-2,y+size*.4);ctx.lineTo(x+2,y+size*.4);ctx.lineTo(x+2,y+r);ctx.arcTo(x+2,y+2,x+r,y+2,r-2);ctx.closePath();ctx.fill();
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // grid
+  ctx.strokeStyle='#f0f0f0';ctx.lineWidth=1;
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){ctx.strokeRect(c*CELL,r*CELL,CELL,CELL);}
+  // board
+  board.forEach((row,r)=>row.forEach((v,c)=>drawCell(v,c*CELL,r*CELL)));
+  // ghost
+  let ghost={...piece,shape:piece.shape.map(r=>[...r])};
+  while(valid(ghost,0,1))ghost.y++;
+  ghost.shape.forEach((row,r)=>row.forEach((v,c)=>{
+    if(!v)return;
+    ctx.fillStyle='rgba(37,99,235,.15)';
+    ctx.fillRect((ghost.x+c)*CELL,(ghost.y+r)*CELL,CELL,CELL);
+  }));
+  // piece
+  piece.shape.forEach((row,r)=>row.forEach((v,c)=>{if(v)drawCell(v,(piece.x+c)*CELL,(piece.y+r)*CELL);}));
+  // next
+  nCtx.clearRect(0,0,72,72);
+  const ns=nextPiece.shape,ns2=nextPiece.id;
+  const ox=Math.floor((4-ns[0].length)/2)*18,oy=Math.floor((4-ns.length)/2)*18;
+  ns.forEach((row,r)=>row.forEach((v,c)=>{
+    if(!v)return;
+    nCtx.fillStyle=COLORS[ns2];
+    nCtx.beginPath();nCtx.roundRect(ox+c*18+1,oy+r*18+1,16,16,3);nCtx.fill();
+  }));
+}
+
+function gameLoop(t){
+  if(!running)return;
+  if(t-lastDrop>dropInterval){
+    lastDrop=t;
+    if(valid(piece,0,1)){piece.y++;}
+    else{
+      place(piece);clearLines();
+      piece=nextPiece;nextPiece=randPiece();
+      if(!valid(piece)){endGame();return;}
+    }
+  }
+  draw();
+  raf=requestAnimationFrame(gameLoop);
+}
+
+function startGame(){
+  board=emptyBoard();score=0;lines=0;level=1;dropInterval=550;
+  scoreEl.textContent=0;linesEl.textContent=0;levelEl.textContent=1;
+  piece=randPiece();nextPiece=randPiece();
+  overlay.classList.add('hidden');running=true;gameOverFlag=false;
+  lastDrop=performance.now();raf=requestAnimationFrame(gameLoop);
+}
+
+function endGame(){
+  running=false;gameOverFlag=true;cancelAnimationFrame(raf);
+  oTitle.textContent='Game Over';
+  oSub.textContent=`Score: ${score} | Lines: ${lines}`;
+  oBtn.textContent='Play Again';overlay.classList.remove('hidden');
+}
+
+function moveLeft(){if(running&&valid(piece,-1))piece.x--;}
+function moveRight(){if(running&&valid(piece,1))piece.x++;}
+function softDrop(){if(running&&valid(piece,0,1))piece.y++;}
+function hardDrop(){if(!running)return;while(valid(piece,0,1))piece.y++;place(piece);clearLines();piece=nextPiece;nextPiece=randPiece();if(!valid(piece))endGame();}
+function rot(){if(!running)return;const r=rotate(piece.shape);if(valid(piece,0,0,r))piece.shape=r;}
+
+document.addEventListener('keydown',e=>{
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))e.preventDefault();
+  if(e.key==='ArrowLeft')moveLeft();
+  else if(e.key==='ArrowRight')moveRight();
+  else if(e.key==='ArrowUp')rot();
+  else if(e.key==='ArrowDown')softDrop();
+  else if(e.key===' '){if(!running)startGame();else hardDrop();}
+});
+
+document.getElementById('dLeft').addEventListener('click',moveLeft);
+document.getElementById('dRight').addEventListener('click',moveRight);
+document.getElementById('dUp').addEventListener('click',rot);
+document.getElementById('dDown').addEventListener('click',softDrop);
+
+// swipe
+let tx0=0,ty0=0;
+canvas.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;
+  if(Math.abs(dx)<8&&Math.abs(dy)<8){rot();return;}
+  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)moveRight();else moveLeft();}
+  else{if(dy>0)softDrop();else hardDrop();}
+},{passive:true});
+
+oBtn.addEventListener('click',startGame);
+</script>
+</body>
+</html>

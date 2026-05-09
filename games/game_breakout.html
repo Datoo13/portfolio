@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Breakout – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:680px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);transition:color .2s;}
+.score-value.bump{color:var(--primary);}
+.canvas-wrapper{position:relative;width:100%;max-width:500px;border-radius:18px;border:2px solid var(--border);overflow:hidden;background:#fafafa;box-shadow:0 4px 32px rgba(0,0,0,.06);}
+canvas{display:block;width:100%;height:100%;}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);transition:opacity .25s;z-index:10;}
+.overlay.hidden{opacity:0;pointer-events:none;}
+.overlay-icon{font-size:3rem;line-height:1;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.5;}
+.btn-play{margin-top:.25rem;padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+.touch-row{display:flex;gap:12px;margin-top:.5rem;}
+.touch-btn{width:80px;height:56px;border-radius:14px;border:2px solid var(--border);background:#fafafa;font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .1s,border-color .1s,transform .08s;}
+.touch-btn:active{background:var(--primary-light);border-color:var(--primary);transform:scale(.93);}
+.key-hint{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+.key-hint span{display:inline-block;padding:.1rem .35rem;border:1px solid var(--border);border-radius:5px;background:#f3f4f6;margin:0 1px;}
+@media(pointer:coarse){.key-hint{display:none;}}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">Score</span><span class="score-value" id="scoreVal">0</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">0</span></div>
+    <div class="score-item"><span class="score-label">Lives</span><span class="score-value" id="livesVal">3</span></div>
+  </div>
+  <div class="canvas-wrapper" id="wrapper">
+    <canvas id="c"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="overlay-icon">🧱</div>
+      <div class="overlay-title" id="oTitle">Breakout</div>
+      <div class="overlay-sub" id="oSub">Move the paddle to bounce the ball and break all bricks.<br>Mouse/drag or ◀ ▶ buttons on mobile.</div>
+      <button class="btn-play" id="oBtn">Start Game</button>
+    </div>
+  </div>
+  <div class="touch-row">
+    <button class="touch-btn" id="tLeft">◀</button>
+    <button class="touch-btn" id="tRight">▶</button>
+  </div>
+  <p class="key-hint">Move: <span>← →</span> or mouse &nbsp;|&nbsp; Pause: <span>Space</span></p>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const wrapper=document.getElementById('wrapper');
+const overlay=document.getElementById('overlay');
+const oTitle=document.getElementById('oTitle'),oSub=document.getElementById('oSub'),oBtn=document.getElementById('oBtn');
+const scoreEl=document.getElementById('scoreVal'),bestEl=document.getElementById('bestVal'),livesEl=document.getElementById('livesVal');
+
+let W,H,scale;
+let paddleX,paddleW,paddleH,paddleSpeed;
+let ballX,ballY,ballDX,ballDY,ballR;
+let bricks,score,best=0,lives;
+let running=false,paused=false,gameOver=false,won=false;
+let keys={};
+let leftHeld=false,rightHeld=false;
+
+const COLS=8,ROWS=5,BRICK_PAD=4;
+const COLORS=['#2563EB','#3b82f6','#60a5fa','#93c5fd','#bfdbfe'];
+
+function resize(){
+  W=wrapper.clientWidth;
+  H=Math.round(W*1.2);
+  canvas.width=W;canvas.height=H;
+  wrapper.style.height=H+'px';
+  scale=W/400;
+  paddleW=80*scale;paddleH=12*scale;paddleSpeed=6*scale;
+  ballR=7*scale;
+  if(running&&!paused)draw();
+}
+
+function initGame(){
+  paddleX=(W-paddleW)/2;
+  ballX=W/2;ballY=H*0.65;
+  const spd=3.5*scale;
+  ballDX=spd*(Math.random()>.5?1:-1);ballDY=-spd;
+  bricks=[];
+  const bW=(W-BRICK_PAD*(COLS+1))/COLS;
+  const bH=18*scale;
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)
+    bricks.push({x:BRICK_PAD+(bW+BRICK_PAD)*c,y:60*scale+(bH+BRICK_PAD)*r,w:bW,h:bH,alive:true,color:COLORS[r]});
+  score=0;lives=3;
+  updateUI();
+}
+
+function updateUI(){
+  scoreEl.textContent=score;bestEl.textContent=best;livesEl.textContent=lives;
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // bricks
+  bricks.forEach(b=>{
+    if(!b.alive)return;
+    ctx.fillStyle=b.color;
+    roundRect(b.x,b.y,b.w,b.h,4*scale);
+    ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.2)';
+    roundRect(b.x,b.y,b.w,b.h*.35,4*scale);
+    ctx.fill();
+  });
+  // paddle
+  ctx.fillStyle='#2563EB';
+  roundRect(paddleX,H-paddleH-10*scale,paddleW,paddleH,paddleH/2);
+  ctx.fill();
+  // ball
+  ctx.beginPath();
+  ctx.arc(ballX,ballY,ballR,0,Math.PI*2);
+  ctx.fillStyle='#0d1117';ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.4)';
+  ctx.beginPath();ctx.arc(ballX-ballR*.3,ballY-ballR*.3,ballR*.3,0,Math.PI*2);ctx.fill();
+}
+
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+
+let lastT=0;
+function loop(t){
+  if(!running||paused)return;
+  const dt=Math.min((t-lastT)/16.67,3);lastT=t;
+  // paddle move
+  if(keys['ArrowLeft']||keys['a']||leftHeld) paddleX=Math.max(0,paddleX-paddleSpeed*dt);
+  if(keys['ArrowRight']||keys['d']||rightHeld) paddleX=Math.min(W-paddleW,paddleX+paddleSpeed*dt);
+  // ball move
+  ballX+=ballDX*dt;ballY+=ballDY*dt;
+  // walls
+  if(ballX-ballR<0){ballX=ballR;ballDX=Math.abs(ballDX);}
+  if(ballX+ballR>W){ballX=W-ballR;ballDX=-Math.abs(ballDX);}
+  if(ballY-ballR<0){ballY=ballR;ballDY=Math.abs(ballDY);}
+  // paddle collision
+  const py=H-paddleH-10*scale;
+  if(ballY+ballR>py&&ballY+ballR<py+paddleH+ballR&&ballX>paddleX&&ballX<paddleX+paddleW){
+    ballDY=-Math.abs(ballDY);
+    const rel=(ballX-(paddleX+paddleW/2))/(paddleW/2);
+    ballDX=rel*5*scale;
+  }
+  // floor
+  if(ballY-ballR>H){
+    lives--;updateUI();
+    if(lives<=0){endGame(false);return;}
+    ballX=W/2;ballY=H*.65;
+    const spd=3.5*scale;ballDX=spd*(Math.random()>.5?1:-1);ballDY=-spd;
+  }
+  // brick collision
+  bricks.forEach(b=>{
+    if(!b.alive)return;
+    if(ballX+ballR>b.x&&ballX-ballR<b.x+b.w&&ballY+ballR>b.y&&ballY-ballR<b.y+b.h){
+      b.alive=false;score++;if(score>best)best=score;updateUI();
+      // which side?
+      const overlapL=ballX+ballR-b.x,overlapR=b.x+b.w-ballX+ballR;
+      const overlapT=ballY+ballR-b.y,overlapB=b.y+b.h-ballY+ballR;
+      const minH=Math.min(overlapL,overlapR),minV=Math.min(overlapT,overlapB);
+      if(minH<minV)ballDX*=-1;else ballDY*=-1;
+    }
+  });
+  if(bricks.every(b=>!b.alive)){endGame(true);return;}
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function startGame(){
+  initGame();overlay.classList.add('hidden');
+  running=true;paused=false;gameOver=false;won=false;
+  resize();draw();lastT=performance.now();requestAnimationFrame(loop);
+}
+
+function endGame(win){
+  running=false;gameOver=true;won=win;
+  oTitle.textContent=win?'You Win! 🎉':'Game Over';
+  oSub.textContent=win?`Amazing! Score: ${score}`:`Score: ${score}. Try again!`;
+  oBtn.textContent='Play Again';
+  overlay.classList.remove('hidden');
+}
+
+function togglePause(){
+  if(gameOver||!running)return;
+  paused=!paused;
+  if(!paused){lastT=performance.now();requestAnimationFrame(loop);overlay.classList.add('hidden');}
+  else{oTitle.textContent='Paused';oSub.textContent='Tap Resume to continue.';oBtn.textContent='Resume';overlay.classList.remove('hidden');}
+}
+
+document.addEventListener('keydown',e=>{
+  keys[e.key]=true;
+  if(e.key===' '){e.preventDefault();if(gameOver||!running)startGame();else togglePause();}
+});
+document.addEventListener('keyup',e=>{keys[e.key]=false;});
+
+// Mouse
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  paddleX=Math.max(0,Math.min(W-paddleW,(e.clientX-rect.left)*(W/rect.width)-paddleW/2));
+});
+// Touch drag
+let touchX0=0;
+canvas.addEventListener('touchstart',e=>{touchX0=e.touches[0].clientX;},{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const dx=e.touches[0].clientX-touchX0;touchX0=e.touches[0].clientX;
+  paddleX=Math.max(0,Math.min(W-paddleW,paddleX+dx));
+},{passive:false});
+
+// Buttons
+document.getElementById('tLeft').addEventListener('touchstart',()=>{leftHeld=true;},{passive:true});
+document.getElementById('tLeft').addEventListener('touchend',()=>{leftHeld=false;},{passive:true});
+document.getElementById('tRight').addEventListener('touchstart',()=>{rightHeld=true;},{passive:true});
+document.getElementById('tRight').addEventListener('touchend',()=>{rightHeld=false;},{passive:true});
+document.getElementById('tLeft').addEventListener('mousedown',()=>{leftHeld=true;});
+document.getElementById('tLeft').addEventListener('mouseup',()=>{leftHeld=false;});
+document.getElementById('tRight').addEventListener('mousedown',()=>{rightHeld=true;});
+document.getElementById('tRight').addEventListener('mouseup',()=>{rightHeld=false;});
+
+oBtn.addEventListener('click',()=>{if(gameOver||!running)startGame();else togglePause();});
+window.addEventListener('resize',resize);
+resize();
+</script>
+</body>
+</html>

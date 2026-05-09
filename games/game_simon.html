@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Simon Says – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:480px;padding:1.5rem 1rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.status{font-size:.9rem;font-weight:600;color:var(--text-muted);text-align:center;min-height:1.4em;transition:color .2s;}
+.status.watching{color:var(--primary);}
+.status.your-turn{color:#22c55e;}
+.status.wrong{color:#ef4444;}
+.simon-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:360px;padding:.5rem;}
+.simon-btn{aspect-ratio:1/1;border-radius:24px;border:4px solid rgba(0,0,0,.1);cursor:pointer;transition:filter .08s,transform .08s;-webkit-tap-highlight-color:transparent;user-select:none;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.simon-btn:active{transform:scale(.95);}
+.simon-btn.lit{filter:brightness(1.55) saturate(1.4);transform:scale(.96);box-shadow:0 0 28px currentColor;}
+.simon-btn.dim{filter:brightness(.45) saturate(.6);}
+.simon-btn[data-i="0"]{background:#ef4444;color:#ef4444;}
+.simon-btn[data-i="1"]{background:#3b82f6;color:#3b82f6;}
+.simon-btn[data-i="2"]{background:#22c55e;color:#22c55e;}
+.simon-btn[data-i="3"]{background:#eab308;color:#eab308;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:260px;line-height:1.5;}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🟥🟦</div>
+    <div class="overlay-title">Simon Says</div>
+    <div class="overlay-sub">Watch the sequence of flashing colors, then repeat it in the correct order. How far can you go?</div>
+    <button class="btn-play" id="startBtn">Start</button>
+  </div>
+
+  <div class="score-bar hidden" id="scoreBar">
+    <div class="score-item"><span class="score-label">Round</span><span class="score-value" id="roundVal">1</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">0</span></div>
+  </div>
+  <div class="status hidden" id="status">Watch carefully…</div>
+
+  <div class="simon-board hidden" id="board">
+    <button class="simon-btn" data-i="0">🔴</button>
+    <button class="simon-btn" data-i="1">🔵</button>
+    <button class="simon-btn" data-i="2">🟢</button>
+    <button class="simon-btn" data-i="3">🟡</button>
+  </div>
+
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon">😬</div>
+    <div class="overlay-title">Wrong!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="restartBtn">Try Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const FLASH_DUR=420,FLASH_GAP=180;
+let sequence=[],playerIdx,round,best=0,phase,locked;
+const roundEl=document.getElementById('roundVal'),bestEl=document.getElementById('bestVal');
+const statusEl=document.getElementById('status'),board=document.getElementById('board');
+const btns=[...board.querySelectorAll('.simon-btn')];
+
+function setStatus(msg,cls=''){statusEl.className='status '+(cls||'');statusEl.textContent=msg;}
+
+function light(i,on){
+  btns.forEach((b,bi)=>b.classList.toggle('lit',on&&bi===i));
+  btns.forEach((b,bi)=>b.classList.toggle('dim',!on||bi!==i));
+}
+function allNormal(){btns.forEach(b=>{b.classList.remove('lit','dim');});}
+
+function playSequence(){
+  phase='watching';locked=true;setStatus('Watch carefully…','watching');
+  allNormal();
+  let i=0;
+  const step=()=>{
+    if(i>=sequence.length){setTimeout(()=>{allNormal();beginPlayerTurn();},FLASH_GAP);return;}
+    light(sequence[i],true);
+    setTimeout(()=>{light(sequence[i],false);allNormal();i++;setTimeout(step,FLASH_GAP);},FLASH_DUR-20);
+  };
+  setTimeout(step,600);
+}
+
+function beginPlayerTurn(){
+  phase='input';locked=false;playerIdx=0;
+  setStatus('Your turn! Repeat the sequence.','your-turn');
+}
+
+function handlePress(i){
+  if(locked||phase!=='input')return;
+  locked=true;
+  light(i,true);
+  setTimeout(()=>{
+    allNormal();
+    if(i!==sequence[playerIdx]){endGame();return;}
+    playerIdx++;
+    if(playerIdx>=sequence.length){
+      round++;if(round-1>best)best=round-1;
+      roundEl.textContent=round;bestEl.textContent=best;
+      setStatus('Correct! 🎉 Next round…','watching');
+      locked=true;
+      setTimeout(()=>{sequence.push(Math.floor(Math.random()*4));playSequence();},800);
+    } else {locked=false;}
+  },180);
+}
+
+btns.forEach((b,i)=>{
+  b.addEventListener('click',()=>handlePress(i));
+  b.addEventListener('touchstart',e=>{e.preventDefault();handlePress(i);},{passive:false});
+});
+
+function startGame(){
+  sequence=[Math.floor(Math.random()*4)];round=1;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('scoreBar').classList.remove('hidden');
+  statusEl.classList.remove('hidden');board.classList.remove('hidden');
+  roundEl.textContent=1;bestEl.textContent=best;
+  playSequence();
+}
+
+function endGame(){
+  board.classList.add('hidden');statusEl.classList.add('hidden');document.getElementById('scoreBar').classList.add('hidden');
+  document.getElementById('endSub').textContent=`You reached round ${round}. Best: ${Math.max(best,round-1)}.${round>=10?' 🔥 Excellent!':round>=5?' 👍 Good!':' Keep practising!'}`;
+  if(round>best)best=round;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

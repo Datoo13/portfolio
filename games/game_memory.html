@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Memory Match – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:520px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;padding:.5rem 0;}
+.card{aspect-ratio:1/1;perspective:600px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.card.flipped .card-inner,.card.matched .card-inner{transform:rotateY(180deg);}
+.card-front,.card-back{position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.card-front{background:var(--primary);border:2px solid var(--primary-dark);}
+.card-front::after{content:'?';font-size:1.5rem;font-weight:800;color:rgba(255,255,255,.5);}
+.card-back{background:#f3f4f6;border:2px solid var(--border);transform:rotateY(180deg);font-size:clamp(1.5rem,7vw,2.2rem);}
+.card.matched .card-back{background:var(--primary-light);border-color:var(--primary);}
+.overlay-page{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1.5rem 1rem;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;}
+.overlay-sub{font-size:.85rem;color:var(--text-muted);text-align:center;max-width:260px;line-height:1.5;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div id="startScreen" class="overlay-page">
+    <div class="overlay-icon">🃏</div>
+    <div class="overlay-title">Memory Match</div>
+    <div class="overlay-sub">Flip cards to find all matching pairs. Challenge your memory!</div>
+    <button class="btn-play" id="startBtn">Start Game</button>
+  </div>
+  <div class="score-bar hidden" id="scoreBar">
+    <div class="score-item"><span class="score-label">Moves</span><span class="score-value" id="movesVal">0</span></div>
+    <div class="score-item"><span class="score-label">Pairs</span><span class="score-value" id="pairsVal">0/8</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">—</span></div>
+  </div>
+  <div class="grid hidden" id="grid"></div>
+  <div id="endScreen" class="overlay-page hidden">
+    <div class="overlay-icon">🎉</div>
+    <div class="overlay-title">You Won!</div>
+    <div class="overlay-sub" id="endSub"></div>
+    <button class="btn-play" id="restartBtn">Play Again</button>
+  </div>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const EMOJIS=['🚀','🎯','💡','🔥','⚡','🌍','🤖','🎨'];
+let flipped=[],matched=0,moves=0,best=null,lock=false;
+const grid=document.getElementById('grid');
+const movesEl=document.getElementById('movesVal'),pairsEl=document.getElementById('pairsVal'),bestEl=document.getElementById('bestVal');
+
+function shuffle(arr){return arr.sort(()=>Math.random()-.5);}
+
+function buildGrid(){
+  grid.innerHTML='';matched=0;moves=0;lock=false;flipped=[];
+  movesEl.textContent=0;pairsEl.textContent='0/8';
+  const cards=shuffle([...EMOJIS,...EMOJIS]);
+  cards.forEach(emoji=>{
+    const card=document.createElement('div');card.className='card';
+    card.innerHTML=`<div class="card-inner"><div class="card-front"></div><div class="card-back">${emoji}</div></div>`;
+    card.dataset.emoji=emoji;
+    card.addEventListener('click',()=>flip(card));
+    grid.appendChild(card);
+  });
+}
+
+function flip(card){
+  if(lock||card.classList.contains('flipped')||card.classList.contains('matched'))return;
+  card.classList.add('flipped');
+  flipped.push(card);
+  if(flipped.length===2){
+    lock=true;moves++;movesEl.textContent=moves;
+    const [a,b]=flipped;
+    if(a.dataset.emoji===b.dataset.emoji){
+      a.classList.add('matched');b.classList.add('matched');
+      matched++;pairsEl.textContent=`${matched}/8`;
+      flipped=[];lock=false;
+      if(matched===8)setTimeout(endGame,400);
+    } else {
+      setTimeout(()=>{a.classList.remove('flipped');b.classList.remove('flipped');flipped=[];lock=false;},900);
+    }
+  }
+}
+
+function endGame(){
+  if(best===null||moves<best)best=moves;
+  bestEl.textContent=best;
+  document.getElementById('endSub').textContent=`Completed in ${moves} moves!${moves<=18?' 🔥 Excellent!':moves<=25?' 👍 Good job!':' Keep practising!'}`;
+  document.getElementById('scoreBar').classList.add('hidden');
+  grid.classList.add('hidden');
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+
+function startGame(){
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('scoreBar').classList.remove('hidden');
+  grid.classList.remove('hidden');
+  buildGrid();
+}
+
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('restartBtn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

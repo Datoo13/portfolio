@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Maze – Konstantinos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+header{width:100%;max-width:680px;padding:2.5rem 1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;}
+.logo-wrap{display:flex;align-items:center;gap:.6rem;}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.logo-text{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;color:var(--primary);}
+.tagline{font-size:.85rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem;}
+main{width:100%;max-width:520px;padding:1.5rem 1rem .5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.score-bar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:.65rem 1.1rem;border:1.5px solid var(--border);border-radius:14px;background:#fafafa;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem;}
+.score-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+.score-value{font-family:'DM Mono',monospace;font-size:1.3rem;font-weight:500;color:var(--text);}
+.canvas-wrapper{position:relative;width:100%;max-width:500px;border-radius:18px;border:2px solid var(--border);overflow:hidden;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.07);}
+canvas{display:block;width:100%;height:100%;}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);z-index:10;transition:opacity .25s;}
+.overlay.hidden{opacity:0;pointer-events:none;}
+.overlay-icon{font-size:3rem;}
+.overlay-title{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;text-align:center;}
+.overlay-sub{font-size:.83rem;color:var(--text-muted);text-align:center;max-width:240px;line-height:1.55;}
+.btn-play{padding:.65rem 1.8rem;border-radius:999px;border:none;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-play:hover{background:var(--primary-dark);}
+.btn-play:active{transform:scale(.97);}
+.dpad{display:none;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;margin-top:.5rem;}
+@media(pointer:coarse){.dpad{display:grid;}}
+.dpad-btn{border-radius:12px;border:2px solid var(--border);background:#fafafa;display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .1s,transform .08s;}
+.dpad-btn:active{background:var(--primary-light);border-color:var(--primary);transform:scale(.92);}
+.dpad-empty{visibility:hidden;}
+.diff-row{display:flex;gap:8px;}
+.diff-btn{padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--border);background:#fafafa;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;}
+.diff-btn.active,.diff-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+.key-hint{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+.key-hint span{display:inline-block;padding:.1rem .35rem;border:1px solid var(--border);border-radius:5px;background:#f3f4f6;margin:0 1px;}
+@media(pointer:coarse){.key-hint{display:none;}}
+footer{width:100%;max-width:680px;padding:1.5rem 1.5rem 2.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;border-top:1.5px solid var(--border);margin-top:1.5rem;}
+.footer-desc{font-size:.88rem;color:var(--text-muted);max-width:380px;line-height:1.65;}
+.btn-cta{display:inline-block;padding:.75rem 2rem;border-radius:999px;background:var(--primary);color:#fff;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+.btn-cta:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.footer-company{font-size:.75rem;color:var(--border);margin-top:.5rem;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">Konstantinos</div>
+  </div>
+  <div class="tagline">Smarter Marketing. Sharper Thinking.</div>
+</header>
+<main>
+  <div class="score-bar">
+    <div class="score-item"><span class="score-label">Time</span><span class="score-value" id="timeVal">0s</span></div>
+    <div class="score-item"><span class="score-label">Best</span><span class="score-value" id="bestVal">—</span></div>
+    <div class="score-item"><span class="score-label">Level</span><span class="score-value" id="levelVal">1</span></div>
+  </div>
+  <div class="canvas-wrapper" id="wrapper">
+    <canvas id="c"></canvas>
+    <div class="overlay" id="overlay">
+      <div class="overlay-icon">🧩</div>
+      <div class="overlay-title" id="oTitle">Maze</div>
+      <div class="overlay-sub" id="oSub">Navigate from 🟢 to 🔴. Use arrow keys on desktop or the D-pad on mobile. Swipe also works!</div>
+      <div class="diff-row">
+        <button class="diff-btn active" data-size="11">Easy</button>
+        <button class="diff-btn" data-size="17">Medium</button>
+        <button class="diff-btn" data-size="23">Hard</button>
+      </div>
+      <button class="btn-play" id="oBtn">Start</button>
+    </div>
+  </div>
+  <div class="dpad">
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dUp">▲</button>
+    <div class="dpad-empty"></div>
+    <button class="dpad-btn" id="dLeft">◀</button>
+    <button class="dpad-btn" id="dDown">▼</button>
+    <button class="dpad-btn" id="dRight">▶</button>
+  </div>
+  <p class="key-hint">Move: <span>↑</span><span>↓</span><span>←</span><span>→</span> or swipe</p>
+</main>
+<footer>
+  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth. Ready to level up?</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
+  <p class="footer-company">© 2025 Konstantinos</p>
+</footer>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const wrapper=document.getElementById('wrapper');
+const overlay=document.getElementById('overlay'),oTitle=document.getElementById('oTitle'),oSub=document.getElementById('oSub'),oBtn=document.getElementById('oBtn');
+const timeEl=document.getElementById('timeVal'),bestEl=document.getElementById('bestVal'),levelEl=document.getElementById('levelVal');
+
+let MAZE_SIZE=11,CELL,W,H;
+let maze,player,start,end,running,startTime,elapsed,timerInterval,best=null,level=1,mazeSizeVal=11;
+
+function resize(){
+  W=wrapper.clientWidth;H=W;
+  canvas.width=W;canvas.height=H;wrapper.style.height=H+'px';
+  CELL=W/MAZE_SIZE;
+}
+
+// Recursive backtracker maze generation
+function generateMaze(size){
+  // size must be odd
+  const s=size%2===0?size+1:size;
+  const grid=Array.from({length:s},()=>Array(s).fill(1));// 1=wall, 0=path
+  function carve(x,y){
+    const dirs=[[0,-2],[0,2],[-2,0],[2,0]].sort(()=>Math.random()-.5);
+    grid[y][x]=0;
+    dirs.forEach(([dx,dy])=>{
+      const nx=x+dx,ny=y+dy;
+      if(nx>=0&&nx<s&&ny>=0&&ny<s&&grid[ny][nx]===1){
+        grid[y+dy/2][x+dx/2]=0;carve(nx,ny);
+      }
+    });
+  }
+  carve(1,1);
+  // ensure start and end are paths
+  grid[1][1]=0;grid[s-2][s-2]=0;
+  return{grid,size:s};
+}
+
+function drawMaze(){
+  ctx.clearRect(0,0,W,H);
+  const{grid,size}=maze;
+  const c=W/size;
+  // background
+  ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);
+  // walls
+  grid.forEach((row,r)=>row.forEach((cell,col)=>{
+    if(cell===1){
+      ctx.fillStyle='#1e40af';
+      ctx.fillRect(col*c,r*c,c,c);
+    }
+  }));
+  // subtle grid lines
+  ctx.strokeStyle='rgba(30,64,175,.08)';ctx.lineWidth=.5;
+  grid.forEach((row,r)=>row.forEach((cell,col)=>{
+    if(cell===0){ctx.strokeRect(col*c+.5,r*c+.5,c-1,c-1);}
+  }));
+  // end
+  const[ec,er]=end;
+  ctx.fillStyle='#fee2e2';ctx.fillRect(ec*c+2,er*c+2,c-4,c-4);
+  ctx.font=`${c*.65}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🔴',ec*c+c/2,er*c+c/2);
+  // player
+  const[pc,pr]=player;
+  ctx.font=`${c*.65}px serif`;
+  ctx.fillText('🟢',pc*c+c/2,pr*c+c/2);
+}
+
+function tryMove(dc,dr){
+  if(!running)return;
+  const[px,py]=player;const[nx,ny]=[px+dc,py+dr];
+  const{grid,size}=maze;
+  if(nx<0||ny<0||nx>=size||ny>=size)return;
+  if(grid[ny][nx]===1)return;
+  player=[nx,ny];
+  drawMaze();
+  if(nx===end[0]&&ny===end[1])win();
+}
+
+function win(){
+  clearInterval(timerInterval);running=false;
+  const secs=Math.round((Date.now()-startTime)/1000);
+  elapsed=secs;timeEl.textContent=secs+'s';
+  if(best===null||secs<best)best=secs;
+  bestEl.textContent=best+'s';
+  level++;levelEl.textContent=level;
+  oTitle.textContent='You Escaped! 🎉';
+  oSub.textContent=`Solved in ${secs} seconds! Best: ${best}s. Ready for the next maze?`;
+  oBtn.textContent='Next Maze';
+  overlay.classList.remove('hidden');
+}
+
+function startGame(){
+  MAZE_SIZE=mazeSizeVal;resize();
+  maze=generateMaze(MAZE_SIZE);
+  player=[1,1];end=[MAZE_SIZE-2,MAZE_SIZE-2];
+  overlay.classList.add('hidden');running=true;
+  clearInterval(timerInterval);startTime=Date.now();
+  timerInterval=setInterval(()=>{
+    timeEl.textContent=Math.round((Date.now()-startTime)/1000)+'s';
+  },500);
+  drawMaze();
+}
+
+document.addEventListener('keydown',e=>{
+  const map={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],
+    w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};
+  if(map[e.key]){e.preventDefault();const[dc,dr]=map[e.key];tryMove(dc,dr);}
+});
+
+document.getElementById('dUp').addEventListener('click',()=>tryMove(0,-1));
+document.getElementById('dDown').addEventListener('click',()=>tryMove(0,1));
+document.getElementById('dLeft').addEventListener('click',()=>tryMove(-1,0));
+document.getElementById('dRight').addEventListener('click',()=>tryMove(1,0));
+
+let tx0=0,ty0=0;
+canvas.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;
+  if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+  if(Math.abs(dx)>Math.abs(dy)){tryMove(dx>0?1:-1,0);}
+  else{tryMove(0,dy>0?1:-1);}
+},{passive:true});
+
+document.querySelectorAll('.diff-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    mazeSizeVal=parseInt(b.dataset.size);
+    document.querySelectorAll('.diff-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+  });
+});
+
+oBtn.addEventListener('click',startGame);
+window.addEventListener('resize',()=>{resize();if(running)drawMaze();});
+resize();
+</script>
+</body>
+</html>
