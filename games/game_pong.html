@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>Pong – Konstantinos</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{--primary:#2563EB;--primary-dark:#1d4ed8;--primary-light:#eff6ff;--bg:#fff;--text:#0d1117;--text-muted:#6b7280;--border:#e5e7eb;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -102,7 +101,7 @@ function draw(){
   ctx.setLineDash([8,8]);ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();ctx.setLineDash([]);
   // scores
-  ctx.font=`bold ${H*.12}px 'DM Mono', monospace`;ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.font=`bold ${H*.12}px Tahoma, sans-serif`;ctx.textAlign='center';ctx.textBaseline='top';
   ctx.fillStyle='rgba(255,255,255,.15)';
   ctx.fillText(scoreP1,W*.25,H*.05);ctx.fillText(scoreP2,W*.75,H*.05);
   // paddles
