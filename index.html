@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Konstantinos — Portfolio</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧩</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -664,6 +664,14 @@ footer {
 }
 .btn-cta:hover { opacity: .88; transform: translateY(-2px); }
 
+.footer-linkedin-url {
+  font-family: Tahoma, sans-serif;
+  font-size: .72rem;
+  color: var(--accent);
+  opacity: .7;
+  letter-spacing: .01em;
+}
+
 .footer-copy {
   font-family: Tahoma, sans-serif;
   font-size: .62rem;
@@ -701,6 +709,368 @@ footer {
 .game-card:nth-child(10) { animation-delay: .32s; }
 .game-card:nth-child(n+11) { animation-delay: .35s; }
 
+/* ── About Section ── */
+.about-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+/* Positioning blurb */
+.about-blurb {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 16px 16px 0;
+  padding: 1.4rem 1.8rem;
+  margin-bottom: 2.5rem;
+  max-width: 780px;
+}
+
+.about-blurb p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.about-blurb strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Two-col layout: skills left, experience right */
+.about-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ── Skills panel ── */
+.skills-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.skills-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.3rem 1.3rem 1.1rem;
+}
+
+.skills-block-label {
+  font-family: Tahoma, sans-serif;
+  font-size: .58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  margin-bottom: .9rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+
+.skill-tag {
+  font-family: Tahoma, sans-serif;
+  font-size: .68rem;
+  padding: .28rem .7rem;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition: border-color .15s, color .15s;
+}
+
+.skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+.skill-tag.accent {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: rgba(37,99,235,.2);
+}
+
+.lang-row {
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.lang-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lang-name {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.lang-level {
+  font-family: Tahoma, sans-serif;
+  font-size: .6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── Timeline ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0 1.2rem;
+  position: relative;
+}
+
+/* vertical line */
+.timeline-item:not(:last-child) .tl-line {
+  position: absolute;
+  left: 9px;
+  top: 22px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--border);
+}
+
+.tl-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+  transition: border-color .2s;
+}
+
+.timeline-item:first-child .tl-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.tl-body {
+  padding-bottom: 2.2rem;
+}
+
+.tl-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: .5rem;
+}
+
+.tl-role {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.02em;
+  line-height: 1.2;
+}
+
+.tl-dates {
+  font-family: Tahoma, sans-serif;
+  font-size: .65rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  margin-top: .15rem;
+}
+
+.tl-company {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: .7rem;
+}
+
+.tl-company-note {
+  font-family: Tahoma, sans-serif;
+  font-size: .6rem;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.tl-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin-bottom: .75rem;
+}
+
+.tl-bullets li {
+  font-size: .8rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.tl-bullets li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--border-light);
+  font-size: .7rem;
+}
+
+.tl-clients {
+  font-family: Tahoma, sans-serif;
+  font-size: .65rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.tl-clients strong {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ── Value Props ── */
+.value-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+.value-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  margin-bottom: 2rem;
+}
+
+.value-number-item {
+  padding: 1.4rem 1.6rem;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+.value-number-item:last-child { border-right: none; }
+
+.value-number-val {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.value-number-lbl {
+  font-family: Tahoma, sans-serif;
+  font-size: .65rem;
+  color: var(--text-muted);
+  margin-top: .4rem;
+  line-height: 1.4;
+}
+
+.value-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.value-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.8rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, border-color .2s;
+}
+
+.value-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 0 0 20px 20px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.value-card:nth-child(1)::after { background: var(--accent); }
+.value-card:nth-child(2)::after { background: var(--accent-2); }
+.value-card:nth-child(3)::after { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(37,99,235,.1);
+  border-color: #bfdbfe;
+}
+
+.value-card:hover::after { opacity: 1; }
+
+.value-card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.value-card-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin-bottom: .6rem;
+  line-height: 1.2;
+}
+
+.value-card-desc {
+  font-size: .8rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.value-card:nth-child(3) .value-card-title {
+  color: var(--accent);
+}
+
+@media (max-width: 840px) {
+  .value-cards { grid-template-columns: 1fr; }
+  .value-numbers { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-section { padding: 0 1.2rem 4rem; }
+  .about-blurb { padding: 1.1rem 1.3rem; }
+  .value-section { padding: 0 1.2rem 4rem; }
+  .value-numbers { grid-template-columns: 1fr 1fr 1fr; }
+  .value-number-val { font-size: 1.4rem; }
+}
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   nav { padding: .8rem 1.2rem; }
@@ -732,30 +1102,286 @@ footer {
   </a>
   <div class="nav-right">
     <div class="nav-pills">
+      <a class="nav-pill" href="#about">About</a>
       <a class="nav-pill" href="#apps">Apps</a>
       <a class="nav-pill" href="#games">Games</a>
     </div>
-    <a class="nav-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect →</a>
+    <a class="nav-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">LinkedIn →</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
   <div class="hero-eyebrow">Interactive Portfolio</div>
-  <h1>Build. Play.<br><em>Ship things.</em></h1>
-  <p>12 apps and 20 browser games — all built from scratch. Marketing strategy meets engineering curiosity.</p>
+  <h1>Market. Build.<br><em>Ship things.</em></h1>
+  <p>Performance marketer with 10+ years running campaigns for global brands — and enough technical range to build the tools most marketers can only ask for.</p>
   <div class="hero-actions">
-    <a class="btn-primary" href="#apps">See My Apps ↓</a>
-    <a class="btn-ghost" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+    <a class="btn-primary" href="#about">About Me ↓</a>
+    <a class="btn-ghost" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">🔗 Find me on LinkedIn</a>
   </div>
 </section>
 
 <!-- Stats -->
 <div class="stats-strip">
+  <div class="stat"><div class="stat-val">10+</div><div class="stat-lbl">Years Experience</div></div>
   <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">Apps Built</div></div>
-  <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">Games Made</div></div>
-  <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Categories</div></div>
-  <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Browser-Based</div></div>
+  <div class="stat"><div class="stat-val">20</div><div class="stat-lbl">Browser Games</div></div>
+  <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Ad Platforms</div></div>
+</div>
+
+<!-- About Section Header -->
+<div class="section-header" id="about">
+  <div class="section-title-group">
+    <div class="section-label">◆ About Me</div>
+    <div class="section-title">10 years in. Still building.</div>
+  </div>
+  <div class="section-desc">Performance marketer with enough technical range to build the tools most marketers can only ask for.</div>
+</div>
+
+<!-- About Section -->
+<section class="about-section">
+
+  <div class="about-blurb">
+    <p>I'm a <strong>Senior Performance Marketing Specialist</strong> with over a decade running campaigns for global brands — LG, Lenovo, Dell, AWS, Microsoft — and enough technical curiosity to self-host my own media platforms, build AI pipelines, and train generative models on the side. I sit somewhere between strategist and builder, which means I can own a campaign from brief to result, and still push a working prototype by the end of the week.</p>
+  </div>
+
+  <div class="about-grid">
+
+    <!-- Left: Skills -->
+    <div class="skills-panel">
+
+      <div class="skills-block">
+        <div class="skills-block-label">Marketing & Advertising</div>
+        <div class="skill-tags">
+          <span class="skill-tag accent">Google Ads</span>
+          <span class="skill-tag accent">Meta Ads</span>
+          <span class="skill-tag accent">LinkedIn Ads</span>
+          <span class="skill-tag accent">TikTok Ads</span>
+          <span class="skill-tag">GA4</span>
+          <span class="skill-tag">Google Tag Manager</span>
+          <span class="skill-tag">Looker Studio</span>
+          <span class="skill-tag">Mailchimp</span>
+          <span class="skill-tag">MailerLite</span>
+          <span class="skill-tag">CRO</span>
+          <span class="skill-tag">Performance Strategy</span>
+        </div>
+      </div>
+
+      <div class="skills-block">
+        <div class="skills-block-label">Technical & Build</div>
+        <div class="skill-tags">
+          <span class="skill-tag accent">Python</span>
+          <span class="skill-tag accent">Flask</span>
+          <span class="skill-tag">HTML</span>
+          <span class="skill-tag">WordPress</span>
+          <span class="skill-tag">Elementor</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Self-hosted Infra</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Ollama</span>
+          <span class="skill-tag">PC Building</span>
+        </div>
+      </div>
+
+      <div class="skills-block">
+        <div class="skills-block-label">AI & Creative</div>
+        <div class="skill-tags">
+          <span class="skill-tag accent">ComfyUI</span>
+          <span class="skill-tag">Image Generation</span>
+          <span class="skill-tag">Video Generation</span>
+          <span class="skill-tag">Custom Workflows</span>
+          <span class="skill-tag">Photoshop</span>
+          <span class="skill-tag">Illustrator</span>
+          <span class="skill-tag">Canva</span>
+          <span class="skill-tag">DaVinci Resolve</span>
+        </div>
+      </div>
+
+      <div class="skills-block">
+        <div class="skills-block-label">Languages</div>
+        <div class="lang-row">
+          <div class="lang-item">
+            <span class="lang-name">Greek</span>
+            <span class="lang-level">Native</span>
+          </div>
+          <div class="lang-item">
+            <span class="lang-name">English</span>
+            <span class="lang-level">Full Proficiency — CPE Michigan</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Experience Timeline -->
+    <div class="timeline">
+
+      <!-- Current role -->
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-body">
+          <div class="tl-header">
+            <div class="tl-role">Senior Performance Marketing Specialist</div>
+            <div class="tl-dates">2020 — Present</div>
+          </div>
+          <div class="tl-company">Social Handlers</div>
+          <ul class="tl-bullets">
+            <li>Own full-funnel performance strategy, budgets, and KPIs across awareness, lead generation, and traffic campaigns.</li>
+            <li>Analyze and interpret campaign data, translating results into actionable insights for clients and internal teams.</li>
+            <li>Collaborate cross-functionally with creative, account, and dev teams — providing performance briefs and CRO recommendations.</li>
+            <li>Onboarded and trained multiple junior specialists over the years; most moved up quickly.</li>
+          </ul>
+          <div class="tl-clients"><strong>Key clients:</strong> LG, LG Business Solutions, Lenovo Greece, Lenovo Official Store, Motorola, Dell Technologies, Logitech, AWS (EMEA), Info Quest Technologies</div>
+        </div>
+      </div>
+
+      <!-- Performance Marketing Specialist -->
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-body">
+          <div class="tl-header">
+            <div class="tl-role">Performance Marketing Specialist</div>
+            <div class="tl-dates">2018 — 2020</div>
+          </div>
+          <div class="tl-company">Social Handlers</div>
+          <ul class="tl-bullets">
+            <li>Planned, set up, and managed paid campaigns across multiple channels, coordinating delivery against client KPIs.</li>
+            <li>Prepared assets, drafted campaign forecasts, and translated client briefs into structured campaign plans.</li>
+          </ul>
+          <div class="tl-clients"><strong>Key clients:</strong> Microsoft (EMEA), Lenovo Greece, Teleperformance, Edenred, Unisystems</div>
+        </div>
+      </div>
+
+      <!-- Digital & Social Media Specialist -->
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-body">
+          <div class="tl-header">
+            <div class="tl-role">Digital & Social Media Specialist</div>
+            <div class="tl-dates">2016 — 2018</div>
+          </div>
+          <div class="tl-company">Reputation Unique <span class="tl-company-note">(formerly Run Communication)</span></div>
+          <ul class="tl-bullets">
+            <li>Ran engagement and traffic campaigns for PR clients alongside the Director.</li>
+            <li>Managed client and company social media presences, company website, and healthview.gr.</li>
+            <li>Contributed to PR activities and events on-site.</li>
+          </ul>
+          <div class="tl-clients"><strong>Key clients:</strong> Turkish Embassy Athens, ELPEN, healthview.gr, Greek Respiratory Society <em>(Ermis Awards Silver)</em></div>
+        </div>
+      </div>
+
+      <!-- Account Executive -->
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-body">
+          <div class="tl-header">
+            <div class="tl-role">Account Executive — PR</div>
+            <div class="tl-dates">2014 — 2016</div>
+          </div>
+          <div class="tl-company">Run Communication <span class="tl-company-note">(later Reputation Unique)</span></div>
+          <ul class="tl-bullets">
+            <li>Organized and executed PR events and activities in collaboration with the Director.</li>
+            <li>Managed journalist and third-party provider relationships across health, telco, and lifestyle verticals.</li>
+          </ul>
+          <div class="tl-clients"><strong>Key clients:</strong> Turkish Embassy Athens, Alcatel-Lucent, Vodafone, Cosmote, Wind</div>
+        </div>
+      </div>
+
+      <!-- Intern -->
+      <div class="timeline-item">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <div class="tl-header">
+            <div class="tl-role">Intern — PR</div>
+            <div class="tl-dates">2014</div>
+          </div>
+          <div class="tl-company">Run Communication</div>
+          <ul class="tl-bullets">
+            <li>Handled daily PR tasks — press releases, publicity reports, media kits — and participated in client events.</li>
+          </ul>
+          <div class="tl-clients"><strong>Clients:</strong> ELPEN, Vianex, Bristol Myers Squibb, GSK, Bayer, Amway, Rafarm</div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div style="margin-top: 1.5rem; padding: 1.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 16px;">
+        <div class="skills-block-label" style="margin-bottom:.9rem;">Education & Certifications</div>
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5;"><span style="font-weight:700;color:var(--text);">Digital Marketing Master Diploma</span> — Leader School</div>
+          <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5;"><span style="font-weight:700;color:var(--text);">BA — Public Relations & Communication</span> — Ionian University</div>
+          <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5;"><span style="font-weight:700;color:var(--text);">Fundamentals & Marketing Strategy</span> — LinkedIn Certified</div>
+          <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5;"><span style="font-weight:700;color:var(--text);">Search & Display</span> — Google Certified</div>
+          <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5;"><span style="font-weight:700;color:var(--text);">Certificate of Proficiency in English</span> — University of Michigan</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+</div>
+
+<!-- What I can do for you -->
+<div class="section-header">
+  <div class="section-title-group">
+    <div class="section-label">◆ What I Can Do For You</div>
+    <div class="section-title">Where I add value</div>
+  </div>
+  <div class="section-desc">Whether you need someone to run the campaigns, build the tools, or both.</div>
+</div>
+
+<section class="value-section">
+
+  <!-- Numbers bar -->
+  <div class="value-numbers">
+    <div class="value-number-item">
+      <div class="value-number-val">€200k+</div>
+      <div class="value-number-lbl">Managed ad spend</div>
+    </div>
+    <div class="value-number-item">
+      <div class="value-number-val">50+</div>
+      <div class="value-number-lbl">Campaigns executed</div>
+    </div>
+    <div class="value-number-item">
+      <div class="value-number-val">10+</div>
+      <div class="value-number-lbl">Years in digital marketing</div>
+    </div>
+  </div>
+
+  <!-- Value cards -->
+  <div class="value-cards">
+
+    <div class="value-card">
+      <span class="value-card-icon">📈</span>
+      <div class="value-card-title">Run your paid media</div>
+      <div class="value-card-desc">Full-funnel campaign strategy and execution across Google, Meta, LinkedIn and TikTok — from brief to budget to results you can actually read.</div>
+    </div>
+
+    <div class="value-card">
+      <span class="value-card-icon">🛠️</span>
+      <div class="value-card-title">Build what you need</div>
+      <div class="value-card-desc">Websites, landing pages, internal tools, AI-powered automations. Not a developer, but I can scope, build and ship things that work — faster than most teams can write a brief.</div>
+    </div>
+
+    <div class="value-card">
+      <span class="value-card-icon">⚡</span>
+      <div class="value-card-title">Both, end to end</div>
+      <div class="value-card-desc">The rare overlap: someone who understands the data well enough to run the campaigns and technical enough to fix the pipeline when it breaks.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="section-divider">
+  <div class="divider-line"></div>
 </div>
 
 <!-- Apps Section Header -->
@@ -1216,9 +1842,10 @@ footer {
 
 <!-- Footer -->
 <footer>
-  <p class="footer-desc">Konstantinos is a digital marketing strategist and AI expert helping brands cut through the noise, scale intelligently, and turn data into growth.</p>
-  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">Connect on LinkedIn →</a>
-  <p class="footer-copy">© 2026 Konstantinos</p>
+  <p class="footer-desc">Performance marketer with 10+ years running campaigns for global brands — and enough technical range to build the tools most marketers can only ask for.</p>
+  <a class="btn-cta" href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">🔗 Connect with me on LinkedIn</a>
+  <span class="footer-linkedin-url">linkedin.com/in/konstantinos-doukakis</span>
+  <p class="footer-copy">© 2025 Konstantinos</p>
 </footer>
 
 <script>
