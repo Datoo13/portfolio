@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP Awards 2026 — Design Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #e8e8e8; font-family: 'Roboto', sans-serif; padding: 40px 20px; }
+
+.page-label {
+  text-align: center; margin-bottom: 40px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #888;
+}
+.page-label strong { color: #222; font-weight: 700; font-size: 15px; display: block; margin-bottom: 4px; letter-spacing: 0.1em; }
+
+.mockup-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mockup-wrap {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+}
+.mockup-tag {
+  padding: 10px 16px;
+  background: #1a1a1a;
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #aaa;
+  font-family: 'Roboto', sans-serif;
+  display: flex; align-items: center; gap: 8px;
+}
+.mockup-tag span { color: white; font-weight: 700; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+
+/* ════════════════════════════════
+   VARIATION A — Clean Gold Split
+   ════════════════════════════════ */
+.va { font-family: 'Roboto', sans-serif; background: #fff; }
+
+.va-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.va-nav img { height: 36px; object-fit: contain; }
+.va-nav-links { display: flex; gap: 20px; }
+.va-nav-links a {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #555; text-decoration: none;
+}
+.va-nav-cta {
+  background: #C5973A; color: white !important;
+  padding: 7px 16px; font-weight: 700 !important;
+}
+
+.va-hero {
+  position: relative; overflow: hidden;
+  height: 220px;
+}
+.va-hero img.bg {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.35);
+}
+.va-hero-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  padding: 0 40px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+.va-hero-text h1 {
+  font-size: 32px; font-weight: 900; color: white;
+  letter-spacing: -0.01em; line-height: 1.1;
+}
+.va-hero-text h1 span { color: #C5973A; }
+.va-hero-text p { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 8px; letter-spacing: 0.04em; }
+.va-hero-btn {
+  margin-top: 16px; display: inline-block;
+  background: #C5973A; color: white;
+  padding: 9px 22px; font-size: 11px;
+  font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none;
+}
+
+.va-stats {
+  display: flex;
+  border-top: 3px solid #C5973A;
+}
+.va-stat {
+  flex: 1; padding: 16px; text-align: center;
+  border-right: 1px solid #f0f0f0;
+}
+.va-stat:last-child { border-right: none; }
+.va-stat-num { font-size: 22px; font-weight: 900; color: #C5973A; }
+.va-stat-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-top: 2px; }
+
+.va-cats {
+  padding: 24px 28px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.va-cat {
+  border: 1px solid #eee; padding: 16px 14px;
+  border-top: 3px solid #C5973A;
+}
+.va-cat-num { font-size: 9px; color: #C5973A; font-weight: 700; letter-spacing: 0.1em; }
+.va-cat-title { font-size: 13px; font-weight: 700; color: #111; margin-top: 4px; line-height: 1.2; }
+.va-cat-desc { font-size: 10px; color: #888; margin-top: 6px; line-height: 1.5; }
+
+/* ════════════════════════════════
+   VARIATION B — Dark Editorial
+   ════════════════════════════════ */
+.vb { font-family: 'Roboto Condensed', sans-serif; background: #0D0D0F; color: white; }
+
+.vb-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.vb-nav img { height: 36px; object-fit: contain; filter: brightness(0) invert(1); }
+.vb-nav-links { display: flex; gap: 20px; }
+.vb-nav-links a {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none;
+}
+.vb-nav-cta {
+  border: 1px solid #C5973A; color: #C5973A !important;
+  padding: 6px 14px;
+}
+
+.vb-hero {
+  position: relative; overflow: hidden; height: 200px;
+}
+.vb-hero img.bg {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.15) saturate(0.3);
+  mix-blend-mode: luminosity;
+}
+.vb-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, #0D0D0F 30%, transparent);
+}
+.vb-year {
+  position: absolute; right: 20px; bottom: 10px; z-index: 2;
+  font-size: 80px; font-weight: 900; line-height: 1;
+  color: rgba(197,151,58,0.12); letter-spacing: -0.04em;
+}
+.vb-hero-content {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 32px;
+}
+.vb-eyebrow {
+  font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: #C5973A; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.vb-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: #C5973A; }
+.vb-hero-content h1 {
+  font-size: 34px; font-weight: 900; color: white;
+  line-height: 1; letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.vb-hero-content h1 em { color: #C5973A; font-style: normal; }
+.vb-hero-content p { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 8px; }
+.vb-btn {
+  margin-top: 14px; display: inline-block;
+  background: #C5973A; color: #0D0D0F;
+  padding: 8px 20px; font-size: 10px;
+  font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  text-decoration: none;
+}
+
+.vb-sections {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.vb-sec {
+  padding: 18px 20px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.vb-sec:last-child { border-right: none; }
+.vb-sec-num { font-size: 28px; font-weight: 900; color: rgba(197,151,58,0.2); }
+.vb-sec-title { font-size: 12px; font-weight: 700; color: white; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+.vb-sec-sub { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; line-height: 1.5; font-family: 'Roboto', sans-serif; }
+
+.vb-footer-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 28px;
+  background: rgba(197,151,58,0.08);
+  border-top: 1px solid rgba(197,151,58,0.2);
+}
+.vb-footer-bar p { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'Roboto', sans-serif; }
+.vb-footer-bar strong { color: #C5973A; }
+
+/* ════════════════════════════════
+   VARIATION C — Minimal Helvetica
+   ════════════════════════════════ */
+.vc {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #FAFAFA; color: #111;
+}
+
+.vc-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px; background: white;
+  border-bottom: 1px solid #E8E8E8;
+}
+.vc-nav img { height: 32px; object-fit: contain; }
+.vc-nav-links { display: flex; gap: 18px; align-items: center; }
+.vc-nav-links a { font-size: 11px; color: #777; text-decoration: none; letter-spacing: 0.02em; }
+.vc-cta-btn {
+  background: #111; color: white !important;
+  padding: 7px 16px; font-size: 10px;
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none;
+}
+
+.vc-hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 200px;
+}
+.vc-hero-left {
+  padding: 36px 32px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: white;
+}
+.vc-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #C5973A;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+.vc-tag::after { content: ''; flex: 1; height: 1px; background: #C5973A; max-width: 30px; }
+.vc-hero-left h1 {
+  font-size: 28px; font-weight: 300; line-height: 1.15; color: #111;
+}
+.vc-hero-left h1 b { font-weight: 900; display: block; }
+.vc-hero-left p { font-size: 11px; color: #888; margin-top: 12px; line-height: 1.6; }
+.vc-hero-left a {
+  display: inline-block; margin-top: 18px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #C5973A; text-decoration: none;
+  border-bottom: 1px solid #C5973A; padding-bottom: 2px;
+}
+.vc-hero-right {
+  position: relative; overflow: hidden;
+}
+.vc-hero-right img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.8) saturate(0.7);
+}
+.vc-year-overlay {
+  position: absolute; bottom: 12px; right: 16px;
+  font-size: 48px; font-weight: 900; color: rgba(255,255,255,0.9);
+  letter-spacing: -0.03em; line-height: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.vc-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: #E8E8E8;
+  margin-top: 1px;
+}
+.vc-cell {
+  background: white; padding: 20px 22px;
+}
+.vc-cell-num { font-size: 10px; color: #C5973A; font-weight: 700; letter-spacing: 0.1em; }
+.vc-cell-title { font-size: 13px; font-weight: 700; color: #111; margin-top: 4px; }
+.vc-cell-text { font-size: 10px; color: #999; margin-top: 4px; line-height: 1.5; }
+
+.vc-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; background: white;
+  border-top: 1px solid #E8E8E8;
+  gap: 16px;
+}
+.vc-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.vc-pill {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border: 1px solid #E8E8E8; color: #888;
+}
+.vc-bottom-cta {
+  background: #C5973A; color: white;
+  padding: 8px 20px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; white-space: nowrap;
+}
+
+/* ════════════════════════════════
+   VARIATION D — Bold Contrast
+   ════════════════════════════════ */
+.vd {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: white;
+}
+
+.vd-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 28px; background: #C5973A;
+}
+.vd-nav img { height: 34px; object-fit: contain; filter: brightness(0) invert(1); }
+.vd-nav-links { display: flex; gap: 16px; }
+.vd-nav-links a {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75); text-decoration: none;
+}
+.vd-nav-links a.active { color: white; border-bottom: 1px solid white; padding-bottom: 1px; }
+
+.vd-hero {
+  position: relative; overflow: hidden; height: 210px;
+}
+.vd-hero img.bg {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.4);
+}
+.vd-hero-content {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end;
+  padding: 0 32px 28px;
+}
+.vd-hero-inner { display: flex; align-items: flex-end; justify-content: space-between; width: 100%; }
+.vd-title { font-size: 36px; font-weight: 900; color: white; line-height: 1; letter-spacing: -0.02em; }
+.vd-title span {
+  display: block; font-size: 12px; font-weight: 400;
+  letter-spacing: 0.15em; color: rgba(255,255,255,0.6);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.vd-hero-side { text-align: right; }
+.vd-side-num { font-size: 64px; font-weight: 900; color: #C5973A; line-height: 1; letter-spacing: -0.04em; }
+.vd-side-sub { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.vd-hero-cta {
+  display: block; margin-top: 8px;
+  background: #C5973A; color: white;
+  padding: 8px 18px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; text-align: center;
+}
+
+.vd-stripe {
+  height: 4px;
+  background: linear-gradient(90deg, #C5973A 0%, #E8B84B 40%, #C5973A 100%);
+}
+
+.vd-sections {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  border-bottom: 1px solid #F0F0F0;
+}
+.vd-sec {
+  padding: 20px 24px;
+  border-right: 1px solid #F0F0F0; position: relative;
+}
+.vd-sec:last-child { border-right: none; }
+.vd-sec::before {
+  content: attr(data-n);
+  position: absolute; top: 14px; right: 18px;
+  font-size: 28px; font-weight: 900; color: #F5F0E8;
+}
+.vd-sec-label { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #C5973A; }
+.vd-sec-title { font-size: 13px; font-weight: 900; color: #111; margin-top: 5px; line-height: 1.2; }
+.vd-sec-text { font-size: 10px; color: #999; margin-top: 6px; line-height: 1.5; }
+
+.vd-about {
+  display: grid; grid-template-columns: 1fr 2fr;
+}
+.vd-about-left {
+  background: #111; padding: 24px;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  gap: 6px;
+}
+.vd-about-left img { height: 32px; object-fit: contain; filter: brightness(0) invert(1); }
+.vd-about-left p { font-size: 10px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-top: 8px; }
+.vd-about-right { padding: 24px 28px; background: #FAFAFA; }
+.vd-about-right p { font-size: 11px; color: #555; line-height: 1.7; }
+.vd-about-right strong { color: #111; }
+.vd-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+.vd-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; background: white; border: 1px solid #E0E0E0; color: #666; }
+</style>
+</head>
+<body>
+
+<div class="page-label">
+  <strong>TCP Awards 2026 — Design Mockups</strong>
+  4 variations · Light mode · Helvetica & Roboto
+</div>
+
+<div class="mockup-row">
+
+  <!-- VARIATION A -->
+  <div class="mockup-wrap">
+    <div class="mockup-tag"><div class="dot"></div> <span>A</span> — Clean Gold Split · Roboto</div>
+    <div class="va">
+      <nav class="va-nav">
+        <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04.png" alt="TCP Awards">
+        <div class="va-nav-links">
+          <a href="#">Αρχική</a>
+          <a href="#">Υποψηφιότητα</a>
+          <a href="#">Ψηφοφορία</a>
+          <a href="#">Χορηγοί</a>
+          <a href="#" class="va-nav-cta">2025 ↗</a>
+        </div>
+      </nav>
+      <div class="va-hero">
+        <img class="bg" src="https://shpages.com/wp-content/uploads/2025/06/site-cover-01-01-1536x360.png" alt="">
+        <div class="va-hero-overlay">
+          <div class="va-hero-text">
+            <h1>TCP <span>Awards</span><br>2026</h1>
+            <p>Τιμώντας τους κορυφαίους συνεργάτες τεχνολογίας στην Ελλάδα</p>
+            <a href="#" class="va-hero-btn">Δήλωση Υποψηφιότητας</a>
+          </div>
+        </div>
+      </div>
+      <div class="va-stats">
+        <div class="va-stat"><div class="va-stat-num">3</div><div class="va-stat-lbl">Ενότητες</div></div>
+        <div class="va-stat"><div class="va-stat-num">500+</div><div class="va-stat-lbl">Εταιρείες</div></div>
+        <div class="va-stat"><div class="va-stat-num">3rd</div><div class="va-stat-lbl">Χρονιά</div></div>
+        <div class="va-stat"><div class="va-stat-num">2026</div><div class="va-stat-lbl">Σεζόν</div></div>
+      </div>
+      <div class="va-cats">
+        <div class="va-cat">
+          <div class="va-cat-num">01 / ΕΝΟΤΗΤΑ</div>
+          <div class="va-cat-title">Μεταπωλητές & Συνεργάτες</div>
+          <div class="va-cat-desc">VARs, SIs, MSPs, ISVs</div>
+        </div>
+        <div class="va-cat">
+          <div class="va-cat-num">02 / ΕΝΟΤΗΤΑ</div>
+          <div class="va-cat-title">Διανομείς</div>
+          <div class="va-cat-desc">Κορυφαίοι Distributors</div>
+        </div>
+        <div class="va-cat">
+          <div class="va-cat-num">03 / ΕΝΟΤΗΤΑ</div>
+          <div class="va-cat-title">Κατασκευαστές</div>
+          <div class="va-cat-desc">Vendors & Manufacturers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIATION B -->
+  <div class="mockup-wrap">
+    <div class="mockup-tag"><div class="dot"></div> <span>B</span> — Dark Editorial · Roboto Condensed</div>
+    <div class="vb">
+      <nav class="vb-nav">
+        <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04.png" alt="TCP Awards">
+        <div class="vb-nav-links">
+          <a href="#">Αρχική</a>
+          <a href="#">Υποψηφιότητα</a>
+          <a href="#">Ψηφοφορία</a>
+          <a href="#">Χορηγοί</a>
+          <a href="#" class="vb-nav-cta">Awards 2025</a>
+        </div>
+      </nav>
+      <div class="vb-hero">
+        <img class="bg" src="https://shpages.com/wp-content/uploads/2025/06/site-cover-01-01-1536x360.png" alt="">
+        <div class="vb-year">2026</div>
+        <div class="vb-hero-content">
+          <div class="vb-eyebrow">Tech Channel Partner</div>
+          <h1>TCP<br><em>AWARDS</em></h1>
+          <p>Οι κορυφαίοι της τεχνολογίας — όπως τους αναδεικνύει η αγορά</p>
+          <a href="#" class="vb-btn">Δήλωση Υποψηφιότητας →</a>
+        </div>
+      </div>
+      <div class="vb-sections">
+        <div class="vb-sec">
+          <div class="vb-sec-num">01</div>
+          <div class="vb-sec-title">Μεταπωλητές</div>
+          <div class="vb-sec-sub">VARs · MSPs · ISVs · SIs</div>
+        </div>
+        <div class="vb-sec">
+          <div class="vb-sec-num">02</div>
+          <div class="vb-sec-title">Διανομείς</div>
+          <div class="vb-sec-sub">Distribution Channel</div>
+        </div>
+        <div class="vb-sec">
+          <div class="vb-sec-num">03</div>
+          <div class="vb-sec-title">Κατασκευαστές</div>
+          <div class="vb-sec-sub">Vendors & Manufacturers</div>
+        </div>
+      </div>
+      <div class="vb-footer-bar">
+        <p>Ανακαλύψτε τους νικητές των <strong>TCP Awards 2024 · 2025</strong> — η αγορά αποφασίζει</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIATION C -->
+  <div class="mockup-wrap">
+    <div class="mockup-tag"><div class="dot"></div> <span>C</span> — Minimal Split · Helvetica</div>
+    <div class="vc">
+      <nav class="vc-nav">
+        <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04.png" alt="TCP Awards">
+        <div class="vc-nav-links">
+          <a href="#">Αρχική</a>
+          <a href="#">Υποψηφιότητα</a>
+          <a href="#">Ψηφοφορία</a>
+          <a href="#">Χορηγοί</a>
+          <a href="#" class="vc-cta-btn">Awards 2025</a>
+        </div>
+      </nav>
+      <div class="vc-hero">
+        <div class="vc-hero-left">
+          <div class="vc-tag">Tech Channel Partner</div>
+          <h1>TCP<br><b>Awards 2026</b></h1>
+          <p>Τιμώντας τους κορυφαίους συνεργάτες τεχνολογίας — αναγνωρισμένοι από την ίδια την αγορά.</p>
+          <a href="#">Δήλωση Υποψηφιότητας →</a>
+        </div>
+        <div class="vc-hero-right">
+          <img src="https://shpages.com/wp-content/uploads/2025/06/site-cover-01-01-1536x360.png" alt="">
+          <div class="vc-year-overlay">2026</div>
+        </div>
+      </div>
+      <div class="vc-grid">
+        <div class="vc-cell">
+          <div class="vc-cell-num">01</div>
+          <div class="vc-cell-title">Μεταπωλητές</div>
+          <div class="vc-cell-text">VARs · MSPs · ISVs · SIs</div>
+        </div>
+        <div class="vc-cell">
+          <div class="vc-cell-num">02</div>
+          <div class="vc-cell-title">Διανομείς</div>
+          <div class="vc-cell-text">Distribution Channel</div>
+        </div>
+        <div class="vc-cell">
+          <div class="vc-cell-num">03</div>
+          <div class="vc-cell-title">Κατασκευαστές</div>
+          <div class="vc-cell-text">Vendors & Manufacturers</div>
+        </div>
+      </div>
+      <div class="vc-bottom">
+        <div class="vc-pills">
+          <span class="vc-pill">VARs</span>
+          <span class="vc-pill">MSPs</span>
+          <span class="vc-pill">ISVs</span>
+          <span class="vc-pill">SIs</span>
+          <span class="vc-pill">Distributors</span>
+        </div>
+        <a href="#" class="vc-bottom-cta">Ψηφοφορία</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIATION D -->
+  <div class="mockup-wrap">
+    <div class="mockup-tag"><div class="dot"></div> <span>D</span> — Bold Contrast · Helvetica</div>
+    <div class="vd">
+      <nav class="vd-nav">
+        <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04.png" alt="TCP Awards">
+        <div class="vd-nav-links">
+          <a href="#">Αρχική</a>
+          <a href="#">Υποψηφιότητα</a>
+          <a href="#">Ψηφοφορία</a>
+          <a href="#">Χορηγοί</a>
+          <a href="#" class="active">2025 Awards</a>
+        </div>
+      </nav>
+      <div class="vd-hero">
+        <img class="bg" src="https://shpages.com/wp-content/uploads/2025/06/site-cover-01-01-1536x360.png" alt="">
+        <div class="vd-hero-content">
+          <div class="vd-hero-inner">
+            <div class="vd-title">
+              <span>Tech Channel Partner</span>
+              TCP Awards
+            </div>
+            <div class="vd-hero-side">
+              <div class="vd-side-num">2026</div>
+              <div class="vd-side-sub">New Season</div>
+              <a href="#" class="vd-hero-cta">Δήλωση →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vd-stripe"></div>
+      <div class="vd-sections">
+        <div class="vd-sec" data-n="1">
+          <div class="vd-sec-label">Ενότητα 01</div>
+          <div class="vd-sec-title">Μεταπωλητές & Συνεργάτες</div>
+          <div class="vd-sec-text">VARs, MSPs, SIs, ISVs</div>
+        </div>
+        <div class="vd-sec" data-n="2">
+          <div class="vd-sec-label">Ενότητα 02</div>
+          <div class="vd-sec-title">Διανομείς</div>
+          <div class="vd-sec-text">Κορυφαίοι Distributors</div>
+        </div>
+        <div class="vd-sec" data-n="3">
+          <div class="vd-sec-label">Ενότητα 03</div>
+          <div class="vd-sec-title">Κατασκευαστές</div>
+          <div class="vd-sec-text">Vendors & Manufacturers</div>
+        </div>
+      </div>
+      <div class="vd-about">
+        <div class="vd-about-left">
+          <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04.png" alt="">
+          <p>Ο θεσμός που η αγορά αγκάλιασε από την πρώτη στιγμή.</p>
+        </div>
+        <div class="vd-about-right">
+          <p>Μεταπωλητές και διανομείς <strong>ψηφίζουν</strong> και αναδεικνύουν τους κορυφαίους της χρονιάς σε 3 βασικές ενότητες — έτσι όπως τους θεωρεί η ίδια η αγορά.</p>
+          <div class="vd-tags">
+            <span class="vd-tag">VARs</span>
+            <span class="vd-tag">MSPs</span>
+            <span class="vd-tag">ISVs</span>
+            <span class="vd-tag">SIs</span>
+            <span class="vd-tag">Distributors</span>
+            <span class="vd-tag">Manufacturers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
