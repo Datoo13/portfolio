@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recovery Dashboard</title>
+
+<style>
+:root {
+    --bg: #eef2f5;
+    --card: #ffffff;
+    --primary: #3498db;
+    --text: #2c3e50;
+    --soft: #6b7c93;
+    --accent: #e8f4fd;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 15px;
+}
+
+.dashboard {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--soft);
+}
+
+.item {
+    background: #f7f9fb;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.guided {
+    margin-top: 25px;
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.step {
+    background: var(--accent);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.actions button {
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.primary { background: var(--primary); color: white; }
+.secondary { background: #ddd; }
+
+.shopping {
+    margin-top: 20px;
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🛑 Recovery Dashboard</h1>
+    <select id="stateSelect"></select>
+</div>
+
+<div class="container">
+
+    <div class="dashboard">
+        <div class="card"><h3>🧠 Reminders</h3><div id="reminders"></div></div>
+        <div class="card"><h3>🍽 Meals</h3><div id="meals"></div></div>
+        <div class="card"><h3>⚡ Actions</h3><div id="actions"></div></div>
+        <div class="card"><h3>💡 Tips</h3><div id="tips"></div></div>
+    </div>
+
+    <div class="shopping" id="shoppingPanel" style="display:none;">
+        <h2>🛒 Before you order or buy anything</h2>
+        <div class="step" id="shoppingText"></div>
+    </div>
+
+    <div class="guided">
+        <h2>🧭 Guided Mode</h2>
+        <div class="step" id="guidedStep">Loading...</div>
+
+        <div class="actions">
+            <button class="primary" onclick="nextStep()">I did it</button>
+            <button class="secondary" onclick="resetSteps()">Reset</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let data = null;
+let currentState = "";
+let stepIndex = 0;
+let steps = [];
+
+/* ✅ FIX: absolute-safe path for Apache */
+const DATA_URL = "./data.json";
+
+/* ---------------- LOAD ---------------- */
+
+fetch(DATA_URL, { cache: "no-store" })
+.then(res => {
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+})
+.then(json => {
+    console.log("JSON LOADED:", json);
+    data = json;
+    init();
+})
+.catch(err => {
+    console.error("JSON LOAD FAILED:", err);
+    document.getElementById("stateSelect").innerHTML =
+        "<option>FAILED TO LOAD JSON</option>";
+    document.getElementById("guidedStep").innerText =
+        "❌ data.json not loading (check Apache path)";
+});
+
+/* ---------------- INIT (FIXED SAFE) ---------------- */
+
+function init() {
+    if (!data || !Array.isArray(data.states)) {
+        console.error("Invalid JSON structure", data);
+        return;
+    }
+
+    const select = document.getElementById("stateSelect");
+    select.innerHTML = "";
+
+    data.states.forEach((s) => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s.replaceAll("_", " ");
+        select.appendChild(opt);
+    });
+
+    currentState = data.states[0];
+    select.value = currentState;
+
+    select.addEventListener("change", () => {
+        currentState = select.value;
+        updateAll();
+    });
+
+    updateAll();
+}
+
+/* ---------------- CORE ---------------- */
+
+function filter(arr, state) {
+    return Array.isArray(arr)
+        ? arr.filter(x => x.tags?.includes(state))
+        : [];
+}
+
+function pick(arr, n=3) {
+    return [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
+}
+
+function render(id, items) {
+    const el = document.getElementById(id);
+    el.innerHTML = "";
+
+    items.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerText = i.text;
+        el.appendChild(div);
+    });
+}
+
+function updateDashboard() {
+    render("reminders", pick(filter(data.reminders, currentState)));
+    render("meals", pick(filter(data.meals, currentState)));
+    render("actions", pick(filter(data.actions, currentState)));
+    render("tips", pick(filter(data.tips, currentState)));
+}
+
+/* ---------------- SHOPPING ---------------- */
+
+function updateShopping() {
+    const panel = document.getElementById("shoppingPanel");
+    const text = document.getElementById("shoppingText");
+
+    const match = data.shopping_alternatives?.find(x => x.trigger === currentState);
+
+    if (match) {
+        panel.style.display = "block";
+        text.innerText = match.options[
+            Math.floor(Math.random() * match.options.length)
+        ];
+    } else {
+        panel.style.display = "none";
+    }
+}
+
+/* ---------------- GUIDED ---------------- */
+
+function initGuided() {
+    stepIndex = 0;
+
+    if (data.guided_steps?.[currentState]) {
+        steps = data.guided_steps[currentState].map(t => ({ text: t }));
+    } else {
+        steps = [{ text: "Pause. Don’t act immediately." }];
+    }
+
+    showStep();
+}
+
+function showStep() {
+    document.getElementById("guidedStep").innerText =
+        steps[stepIndex]?.text || "✔ Done for now.";
+}
+
+function nextStep() {
+    if (stepIndex < steps.length - 1) {
+        stepIndex++;
+        showStep();
+    } else {
+        document.getElementById("guidedStep").innerText =
+            "✔ Cycle interrupted.";
+    }
+}
+
+function resetSteps() {
+    initGuided();
+}
+
+/* ---------------- MASTER ---------------- */
+
+function updateAll() {
+    updateDashboard();
+    updateShopping();
+    initGuided();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+{
+  "states": [
+    "impulse_order",
+    "binge_shutdown",
+    "emotional_overwhelm",
+    "bored_loop",
+    "reward_impulse",
+    "true_hunger",
+    "bullying_active",
+    "bullying_after_effect",
+    "already_eating_loss_control"
+  ],
+
+  "reminders": [
+    { "text": "Pause. This is an impulse to escape a feeling.", "tags": ["impulse_order"] },
+    { "text": "This is the 'I don’t care anymore' moment. It will pass.", "tags": ["binge_shutdown"] },
+    { "text": "You are overwhelmed, not hungry.", "tags": ["emotional_overwhelm"] },
+    { "text": "This is boredom seeking stimulation.", "tags": ["bored_loop"] },
+    { "text": "You are trying to reward a feeling—not feed hunger.", "tags": ["reward_impulse"] },
+    { "text": "If you are physically hungry, eating is the correct action.", "tags": ["true_hunger"] },
+    { "text": "You are in a stressful social situation right now. Focus on safety first.", "tags": ["bullying_active"] },
+    { "text": "What happened hurt you. Food won’t resolve it, only delay it.", "tags": ["bullying_after_effect"] },
+    { "text": "Stopping now is still stopping. You are not trapped.", "tags": ["already_eating_loss_control"] }
+  ],
+
+  "actions": [
+    { "text": "Delay ordering food for 10 minutes. Do nothing else.", "tags": ["impulse_order"] },
+    { "text": "Do not continue automatically. Put the food down for 60 seconds.", "tags": ["binge_shutdown", "already_eating_loss_control"] },
+    { "text": "Sit still and breathe slowly for 2 minutes before deciding anything.", "tags": ["emotional_overwhelm"] },
+    { "text": "Change environment immediately (stand up, leave room).", "tags": ["bored_loop"] },
+    { "text": "If you still want it after 10 minutes, reassess—not react.", "tags": ["reward_impulse"] },
+    { "text": "Eat a real, simple meal now (not snack looping).", "tags": ["true_hunger"] },
+    { "text": "If being bullied: prioritize getting away or ending exposure.", "tags": ["bullying_active"] },
+    { "text": "Write down what happened instead of reacting with food.", "tags": ["bullying_after_effect"] }
+  ],
+
+  "meals": [
+    { "text": "Greek yogurt + cereal", "tags": ["true_hunger", "impulse_order"] },
+    { "text": "Ham + cheese + bread (simple plate, not grazing)", "tags": ["true_hunger"] },
+    { "text": "Air fryer nuggets + bread", "tags": ["true_hunger"] },
+    { "text": "Wrap with ham/cheese + fruit", "tags": ["true_hunger"] },
+    { "text": "Protein bar + yogurt", "tags": ["bored_loop", "impulse_order"] }
+  ],
+
+  "tips": [
+    { "text": "Your binges are shutdown responses, not food decisions.", "tags": ["binge_shutdown"] },
+    { "text": "The 'I don’t care anymore' feeling is temporary emotional collapse.", "tags": ["binge_shutdown"] },
+    { "text": "Bullying creates threat response—your brain seeks escape behaviors.", "tags": ["bullying_active"] },
+    { "text": "After bullying, your mind replays events—food becomes distraction, not solution.", "tags": ["bullying_after_effect"] },
+    { "text": "Impulse eating feels urgent but peaks and fades quickly.", "tags": ["impulse_order"] },
+    { "text": "Eating regularly reduces emotional intensity, but does not solve triggers alone.", "tags": ["true_hunger"] },
+    { "text": "You are not stuck in the binge—you are inside a moment of overwhelm.", "tags": ["binge_shutdown"] }
+  ],
+
+  "shopping_alternatives": [
+    {
+      "trigger": "impulse_order",
+      "options": [
+        "Wait 10 minutes before ordering anything",
+        "If you still want food, choose ONE item only",
+        "Avoid sweet + salty combos",
+        "Write your current feeling before ordering"
+      ]
+    },
+    {
+      "trigger": "reward_impulse",
+      "options": [
+        "Do a non-food reward first (walk, shower, music)",
+        "If ordering, choose single-portion food only",
+        "Avoid upsizing orders",
+        "Pause 5 minutes before checkout"
+      ]
+    }
+  ],
+
+  "guided_steps": {
+    "impulse_order": [
+      "Stop. Do not decide yet.",
+      "Wait 5 minutes without food apps.",
+      "Ask: hunger or emotion?",
+      "Delay again if unsure.",
+      "This urge will peak and fall."
+    ],
+
+    "binge_shutdown": [
+      "Pause.",
+      "Stop eating or ordering.",
+      "Breathe slowly 3 times.",
+      "This state will pass.",
+      "You are in a stress response."
+    ],
+
+    "emotional_overwhelm": [
+      "Sit still 60 seconds.",
+      "Name the emotion.",
+      "Do not act yet.",
+      "Re-check in 2 minutes.",
+      "You are overloaded, not broken."
+    ],
+
+    "bored_loop": [
+      "Change environment.",
+      "Move for 1 minute.",
+      "Break automatic behavior.",
+      "Reassess after reset.",
+      "Boredom is not an emergency."
+    ],
+
+    "bullying_active": [
+      "Focus on safety first.",
+      "Leave if possible.",
+      "Avoid food decisions now.",
+      "Reduce exposure."
+    ]
+  },
+
+  "micro_variants": {
+    "binge_shutdown": [
+      "This is temporary shutdown.",
+      "This will pass.",
+      "This is emotional overload."
+    ],
+    "impulse_order": [
+      "This is an impulse wave.",
+      "You don’t need to act now.",
+      "It will weaken if you wait."
+    ]
+  }
+}

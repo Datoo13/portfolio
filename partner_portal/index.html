@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="partners.js?v=<?php echo time(); ?>"></script>
+    <title>BizTech Partner Directory</title>
+
+    <style>
+        html {
+            font-family: "Roboto", sans-serif;
+            font-size: 10px;
+        }
+        body {
+            margin:0;
+            padding:0;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: #666;
+            background: #eee;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Header */
+        .header{
+            background:#DD3333;
+            padding:2rem 1rem;
+            text-align:left;
+        }
+        .header h1{
+            color:#ffffff;
+            font-size:2.4rem;
+            margin:0;
+            font-weight:700;
+        }
+
+        /* Filter Toolbar */
+        .filters{
+            padding:1rem;
+            background:#fff;
+            border-bottom:0.2rem solid #e0e0e0;
+            display:flex;
+            flex-wrap:wrap;
+            gap:1rem;
+        }
+        .filters select,
+        .filters input{
+            padding:0.8rem 1rem;
+            font-size:1.4rem;
+            border:1px solid rgba(0,0,0,0.25);
+            border-radius:0.3rem;
+            background:#fff;
+            color:#0b0f23;
+            outline:none;
+        }
+        .filters select:focus,
+        .filters input:focus{
+            border-color:#DD3333;
+        }
+
+        /* Description Box */
+        #needDescription{
+            display:none;
+            background:#ffe6e6;
+            padding:1rem;
+            margin:1.5rem 1rem;
+            border-left:0.5rem solid #DD3333;
+            border-radius:0.4rem;
+            font-size:1.4rem;
+            color:#0b0f23;
+        }
+
+        /* Result Count Pill */
+        #resultCount {
+            display: none; /* Shown via JS */
+            padding: 0.8rem 1.6rem;
+            margin: 1.5rem 1rem 0 1rem;
+            background: #fff;
+            border-radius: 5rem;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            width: fit-content;
+        }
+        #resultCount span {
+            color: #DD3333;
+            font-weight: 700;
+        }
+
+        /* Grid */
+        .partner-grid{
+            padding:2rem 1rem;
+            display:grid;
+            gap:2rem;
+            grid-template-columns:repeat(auto-fill,minmax(24rem,1fr));
+        }
+
+        /* Card */
+        .partner-card{
+            position:relative;
+            background:#ffffff;
+            border-radius:0.3rem;
+            padding:1.5rem;
+            transition:0.2s;
+            display:flex;
+            flex-direction:column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            text-align:center;
+            box-sizing: border-box;
+            border: 2px solid transparent;
+        }
+        .partner-card.premium-card {
+            border: 2px solid #FFD700;
+            background: #ffffff;
+        }
+        .partner-card:hover{
+            transform:translateY(-0.5rem);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Premium Badge */
+        .partner-badge{
+            position:absolute;
+            top:0.8rem;
+            right:0.8rem;
+            background:#fff;
+            color:#000;
+            font-size:1.6rem;
+            border-radius:50%;
+            width:2.8rem;
+            height:2.8rem;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2;
+            border: 1px solid #FFD700;
+        }
+
+        /* Logo & Placeholder */
+        .partner-logo-wrapper{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:1.5rem;
+            width: 100%;
+            height: 180px; 
+            background: #ffffff;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .partner-logo{
+            max-width: 90%;
+            max-height: 80%;
+            height: auto;
+            object-fit: contain;
+        }
+        .no-logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ddd;
+            text-transform: uppercase;
+        }
+
+        /* Text */
+        .partner-name{
+            font-weight:700;
+            font-size:1.7rem;
+            margin-bottom:0.5rem;
+            color:#0b0f23;
+        }
+        .partner-category{
+            font-size:1.1rem;
+            color:#888;
+            margin-bottom:1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contact Area */
+        .partner-contact{
+            margin-top:auto; 
+            width: 100%;
+        }
+        .partner-contact a{
+            display:block;
+            font-size:1.3rem;
+            color:#0b0f23;
+            text-decoration:none;
+            margin-bottom:0.4rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .partner-contact a:hover{
+            text-decoration:underline;
+            color: #DD3333;
+        }
+
+        /* Custom Button */
+        .partner-btn {
+            display: block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.4rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
+            transition: 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .partner-btn:hover {
+            opacity: 0.85;
+            filter: brightness(1.1);
+        }
+
+        @media screen and (max-width: 768px){
+            .filters{ flex-direction:column; gap:0.8rem; }
+        }
+
+        .footer-notice{
+            margin:2rem 1rem;
+            padding:1.5rem;
+            background:#ffffff;
+            border-left:0.4rem solid #DD3333;
+            font-size:1.3rem;
+            color:#444;
+            border-radius:0.3rem;
+        }
+        .footer-notice a{ color:#DD3333; text-decoration:none; font-weight:700; }
+        .footer-notice a:hover{ text-decoration:underline; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Βρείτε Συνεργάτες με βάση τις ανάγκες σας</h1>
+</div>
+
+<div class="filters">
+    <select id="needFilter">
+        <option value="">Όλες οι Ανάγκες</option>
+        <option value="Digital Transformation">Ψηφιακός Μετασχηματισμός</option>
+        <option value="Modern Workplace">Modern Workplace</option>
+        <option value="Hardware">Hardware</option>
+        <option value="Software">Software</option>
+        <option value="Security">Security</option>
+        <option value="Cloud">Cloud</option>
+        <option value="Networking">Networking</option>
+        <option value="Data Center">Data Center</option>
+        <option value="AI">AI</option>
+        <option value="ESG Compliance">ESG Compliance</option>
+        <option value="Smart Building">Έξυπνα Κτίρια</option>
+        <option value="ERP">ERP</option>
+        <option value="UC/Video Conference">UC / Τηλεδιασκέψεις</option>
+        <option value="System Integration">Ολοκλήρωση Συστημάτων</option>
+        <option value="Printing & MPS">Εκτύπωση & MPS</option>
+        <option value="Managed Services">Διαχειριζόμενες Υπηρεσίες</option>
+        <option value="Public Sector">Δημόσιος Τομέας</option>
+    </select>
+
+    <select id="categoryFilter">
+        <option value="">Όλες οι Κατηγορίες</option>
+        <option value="Vendor">Vendors</option>
+        <option value="Distributor">Distributors</option>
+        <option value="Reseller">Resellers</option>
+    </select>
+
+    <input type="text" id="searchInput" placeholder="Αναζήτηση ονόματος...">
+</div>
+
+<div id="needDescription"></div>
+<div id="resultCount"></div>
+<div class="partner-grid" id="partnerGrid"></div>
+
+<script>
+function renderPartners(){
+    const grid = document.getElementById("partnerGrid");
+    const countBox = document.getElementById("resultCount");
+    const descriptionBox = document.getElementById("needDescription");
+    
+    grid.innerHTML = "";
+
+    const selectedNeed = document.getElementById("needFilter").value;
+    const selectedCategory = document.getElementById("categoryFilter").value;
+    const searchText = document.getElementById("searchInput").value.toLowerCase();
+
+    if(selectedNeed && typeof needDescriptions !== 'undefined' && needDescriptions[selectedNeed]){
+        descriptionBox.style.display = "block";
+        descriptionBox.textContent = needDescriptions[selectedNeed];
+    } else {
+        descriptionBox.style.display = "none";
+    }
+
+    const sortedPartners = [...partners].sort((a, b) => {
+        if(a.premium && !b.premium) return -1;
+        if(!a.premium && b.premium) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    const filtered = sortedPartners.filter(p => {
+        const matchNeed = !selectedNeed || p.needs.includes(selectedNeed);
+        const matchCategory = !selectedCategory || p.category === selectedCategory;
+        const matchSearch = p.name.toLowerCase().includes(searchText);
+        return matchNeed && matchCategory && matchSearch;
+    });
+		
+    if (filtered.length === 0) {
+        countBox.style.display = "none";
+        grid.innerHTML = "<p style='grid-column: 1/-1; padding: 3rem; text-align: center; font-size: 1.6rem;'>🔍 Δεν βρέθηκαν αποτελέσματα για τα κριτήρια που επιλέξατε.</p>";
+        return;
+    }
+
+    // Results Counter Styling
+    countBox.style.display = "inline-flex";
+    const resultText = filtered.length === 1 
+        ? `<span>1</span> Partner βρέθηκε` 
+        : `Βρέθηκαν <span>${filtered.length}</span> Partners`;
+    countBox.innerHTML = `🤝 ${resultText}`;
+		
+    filtered.forEach(p => {
+        const card = document.createElement("div");
+        card.className = p.premium ? "partner-card premium-card" : "partner-card";
+
+        const logoContent = p.logo 
+            ? `<img src="${p.logo}" class="partner-logo" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\'no-logo\'>${p.name.charAt(0)}</div>'">`
+            : `<div class="no-logo">${p.name.charAt(0)}</div>`;
+
+        const buttonHtml = (p.button && p.button.text)
+            ? `<a href="${p.button.link}" target="_blank" class="partner-btn" style="background-color: ${p.button.color || '#DD3333'}">${p.button.text}</a>`
+            : "";
+
+        card.innerHTML = `
+            ${p.premium ? `<div class="partner-badge" title="Premium Partner">⭐</div>` : ""}
+            <div class="partner-logo-wrapper">
+                ${logoContent}
+            </div>
+            <div class="partner-name">${p.name}</div>
+            <div class="partner-category">${p.category}</div>
+            <div class="partner-contact">
+                <a href="${p.website}" target="_blank">${p.website.replace(/^https?:\/\//, '')}</a>
+                <a href="mailto:${p.email}">${p.email}</a>
+            </div>
+            ${buttonHtml}
+        `;
+        grid.appendChild(card);
+    });
+}
+
+document.getElementById("needFilter").addEventListener("change", renderPartners);
+document.getElementById("categoryFilter").addEventListener("change", renderPartners);
+document.getElementById("searchInput").addEventListener("input", renderPartners);
+
+window.addEventListener('load', renderPartners);
+</script>
+
+<div class="footer-notice">
+Αν θέλετε να ενημερώσετε την καταχώρησή σας, επικοινωνήστε στο 
+<a href="mailto:sales@socialhandlers.com">sales@socialhandlers.com</a>.
+</div>
+
+</body>
+</html>
