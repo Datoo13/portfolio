@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lenovo Greece — 4 Years No.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E2001A;
+    --black: #0A0A0A;
+    --charcoal: #1A1A1A;
+    --gray: #2E2E2E;
+    --mid: #5A5A5A;
+    --silver: #A0A0A0;
+    --off-white: #F5F4F0;
+    --white: #FFFFFF;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  /* Lenovo wordmark SVG inline */
+  .lenovo-svg { height: 22px; fill: var(--white); }
+
+  .nav-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--silver);
+    border-left: 1px solid var(--gray);
+    padding-left: 14px;
+    margin-left: 4px;
+  }
+
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver);
+  }
+  .nav-links a { color: inherit; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── SECTION LABELS ── */
+  .sec-label {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 28px;
+  }
+  .sec-label::before {
+    content: '';
+    display: block; width: 28px; height: 1px; background: var(--red);
+  }
+
+  /* ────────────────────────────────── */
+  /* 01  HERO                           */
+  /* ────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-left {
+    padding: 80px 48px 80px 72px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 18vw, 220px);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.12);
+    position: absolute;
+    top: 60px; left: -10px;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 24px; position: relative; z-index: 1;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 6vw, 82px);
+    line-height: 1;
+    position: relative; z-index: 1;
+    margin-bottom: 12px;
+  }
+
+  .hero-title span { color: var(--red); }
+
+  .hero-subtitle {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.2vw, 28px);
+    color: var(--silver);
+    margin-bottom: 52px;
+    position: relative; z-index: 1;
+  }
+
+  .kpi-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; position: relative; z-index: 1;
+  }
+
+  .kpi-card {
+    background: var(--charcoal);
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: border-color .3s, background .3s;
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--red);
+    transition: width .4s ease;
+  }
+  .kpi-card:hover::after { width: 100%; }
+  .kpi-card:hover { background: #1e1e1e; }
+
+  .kpi-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px; line-height: 1;
+    color: var(--white);
+  }
+  .kpi-val span { color: var(--red); font-size: 32px; }
+  .kpi-label { font-size: 11px; letter-spacing: 0.1em; color: var(--silver); margin-top: 6px; text-transform: uppercase; }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+  }
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.1);
+    opacity: 0.55;
+    mix-blend-mode: luminosity;
+  }
+  .hero-right-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 40%),
+                linear-gradient(to top, var(--black) 0%, transparent 40%);
+  }
+  .hero-right-badge {
+    position: absolute; bottom: 48px; right: 48px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 1px solid var(--red);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background: rgba(10,10,10,0.8);
+  }
+  .badge-no { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--red); line-height: 1; }
+  .badge-txt { font-size: 9px; letter-spacing: 0.15em; color: var(--silver); text-transform: uppercase; }
+
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 72px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid);
+  }
+  .scroll-line {
+    width: 40px; height: 1px; background: var(--gray); overflow: hidden; position: relative;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%; background: var(--red);
+    animation: scanline 2s ease infinite;
+  }
+  @keyframes scanline { 0%{left:-100%} 100%{left:100%} }
+
+  /* ────────────────────────────────── */
+  /* 02  TIMELINE                       */
+  /* ────────────────────────────────── */
+  #timeline {
+    padding: 120px 72px;
+    background: var(--charcoal);
+    position: relative; overflow: hidden;
+  }
+
+  #timeline::before {
+    content: 'TIMELINE';
+    position: absolute; top: 40px; right: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 140px; color: rgba(255,255,255,0.02);
+    pointer-events: none;
+  }
+
+  .timeline-header {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 48px;
+    margin-bottom: 80px; align-items: end;
+  }
+  .timeline-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 72px); line-height: 0.95;
+  }
+  .timeline-header h2 span { color: var(--red); }
+  .timeline-intro { font-size: 15px; line-height: 1.7; color: var(--silver); max-width: 520px; }
+
+  .timeline-track {
+    position: relative;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute; top: 30px; left: 0; right: 0;
+    height: 1px; background: rgba(255,255,255,0.08);
+  }
+
+  .tl-item {
+    padding: 0 24px 0 0;
+    position: relative;
+    cursor: default;
+  }
+
+  .tl-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gray); border: 2px solid var(--red);
+    margin-bottom: 28px; position: relative; z-index: 1;
+    transition: transform .3s, background .3s;
+  }
+  .tl-item:hover .tl-dot { transform: scale(1.4); background: var(--red); }
+
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; color: var(--white); line-height: 1;
+    margin-bottom: 12px;
+  }
+  .tl-fiscal {
+    font-size: 10px; letter-spacing: 0.15em; color: var(--red);
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .tl-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; color: var(--red); margin-bottom: 8px;
+  }
+  .tl-desc { font-size: 13px; line-height: 1.6; color: var(--silver); }
+
+  .tl-source {
+    margin-top: 48px;
+    font-size: 11px; color: var(--mid);
+    border-top: 1px solid var(--gray); padding-top: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ────────────────────────────────── */
+  /* 03  ENTERPRISE                     */
+  /* ────────────────────────────────── */
+  #enterprise {
+    padding: 120px 72px;
+    background: var(--black);
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: center;
+  }
+
+  .ent-left h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 68px); line-height: 0.95;
+    margin-bottom: 24px;
+  }
+  .ent-left h2 span { color: var(--red); }
+
+  .ent-desc { font-size: 15px; line-height: 1.7; color: var(--silver); margin-bottom: 40px; }
+
+  .ent-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--white); text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2); padding: 14px 24px;
+    transition: border-color .3s, background .3s;
+  }
+  .ent-cta:hover { border-color: var(--red); background: rgba(226,0,26,0.08); }
+  .ent-cta-arrow { font-size: 18px; }
+
+  /* Bar chart */
+  .bar-chart { position: relative; }
+
+  .chart-title {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--silver); margin-bottom: 36px;
+  }
+
+  .bar-row {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 18px;
+  }
+  .bar-brand {
+    width: 60px; font-size: 12px; color: var(--silver);
+    text-align: right; flex-shrink: 0;
+  }
+  .bar-wrap {
+    flex: 1; height: 36px; background: rgba(255,255,255,0.04);
+    position: relative; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    position: relative;
+    animation: growBar .8s ease forwards;
+    transform-origin: left;
+  }
+  .bar-fill.lenovo { background: var(--red); }
+  .bar-fill.dell   { background: #4A4A4A; }
+  .bar-fill.hp     { background: #363636; }
+  .bar-fill.apple  { background: #2A2A2A; }
+  .bar-fill.asus   { background: #1E1E1E; }
+
+  @keyframes growBar {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  .bar-pct {
+    position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px;
+    color: var(--white);
+  }
+
+  .chart-quarter {
+    font-size: 10px; color: var(--mid); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-top: 24px;
+    padding-top: 16px; border-top: 1px solid var(--gray);
+  }
+
+  /* ────────────────────────────────── */
+  /* 04  INTERVIEWS                     */
+  /* ────────────────────────────────── */
+  #interviews {
+    padding: 120px 72px;
+    background: var(--charcoal);
+  }
+
+  .interviews-header {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 48px;
+    margin-bottom: 72px; align-items: end;
+  }
+  .interviews-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 68px); line-height: 0.95;
+  }
+  .interviews-header h2 span { color: var(--red); }
+  .interviews-intro { font-size: 15px; line-height: 1.7; color: var(--silver); }
+
+  .interview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  .interview-card {
+    background: var(--black);
+    padding: 48px;
+    border: 1px solid rgba(255,255,255,0.04);
+    position: relative; overflow: hidden;
+  }
+  .interview-card::before {
+    content: '"';
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px; line-height: 1;
+    color: rgba(226,0,26,0.06);
+    position: absolute; top: -20px; right: 20px;
+    pointer-events: none;
+  }
+
+  .interview-role {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 32px;
+  }
+
+  .interview-portrait {
+    width: 72px; height: 72px; border-radius: 50%; overflow: hidden;
+    border: 2px solid var(--gray); margin-bottom: 20px;
+    background: var(--gray);
+  }
+  .interview-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); }
+
+  .interview-name {
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+    margin-bottom: 4px;
+  }
+  .interview-title-role {
+    font-size: 12px; color: var(--silver); margin-bottom: 32px;
+  }
+
+  .qa { margin-bottom: 24px; }
+  .q {
+    font-size: 12px; letter-spacing: 0.08em; color: var(--red);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .a { font-size: 14px; line-height: 1.7; color: var(--silver); }
+
+  .interview-theme {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .theme-strategy { background: var(--red); }
+  .theme-market { background: linear-gradient(to right, var(--red), #FF4D62); }
+
+  /* ────────────────────────────────── */
+  /* 05  PARTNERSHIPS                   */
+  /* ────────────────────────────────── */
+  #partnerships {
+    padding: 120px 72px;
+    background: var(--black);
+    position: relative; overflow: hidden;
+  }
+
+  #partnerships::after {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(226,0,26,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .partnerships-header {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    margin-bottom: 80px; align-items: end;
+  }
+  .partnerships-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 68px); line-height: 0.95;
+  }
+  .partnerships-header h2 span { color: var(--red); }
+  .partnerships-intro { font-size: 15px; line-height: 1.7; color: var(--silver); }
+
+  .partners-grid {
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 2px;
+  }
+
+  .partner-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: auto;
+    min-height: 320px;
+    background: var(--charcoal);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: border-color .3s;
+    cursor: default;
+  }
+  .partner-card:hover { border-color: rgba(226,0,26,0.3); }
+
+  .partner-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%) brightness(0.4);
+    transition: filter .5s, transform .5s;
+  }
+  .partner-card:hover img { filter: grayscale(60%) brightness(0.55); transform: scale(1.03); }
+
+  .partner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 32px;
+  }
+
+  .partner-category {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 8px;
+  }
+  .partner-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; line-height: 1; margin-bottom: 10px;
+  }
+  .partner-desc { font-size: 12px; line-height: 1.6; color: var(--silver); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    padding: 48px 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-copy { font-size: 12px; color: var(--mid); }
+  .footer-mark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: 0.3em; color: var(--mid);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp .8s ease forwards; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .3s; }
+  .delay-4 { animation-delay: .4s; }
+
+  /* ── SECTION NUMBER ACCENT ── */
+  .sec-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--mid);
+    margin-left: auto;
+    align-self: flex-start;
+  }
+  .sec-header-row {
+    display: flex; align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <!-- Lenovo SVG wordmark -->
+        <img style="width:125px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Lenovo_Global_Corporate_Logo.png/3840px-Lenovo_Global_Corporate_Logo.png" alt="Lenovo logo">
+    <span class="nav-tag">Greece Market Report</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero">Overview</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#enterprise">Enterprise</a></li>
+    <li><a href="#interviews">Leadership</a></li>
+    <li><a href="#partnerships">Partnerships</a></li>
+  </ul>
+</nav>
+
+
+<!-- ════════════════════════════════════ -->
+<!-- 01 HERO                              -->
+<!-- ════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-number">4</div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow fade-up">Lenovo Greece — Annual Report 2025/26</div>
+    <h1 class="hero-title fade-up delay-1">
+      4 Consecutive<br><span>Years No.1</span><br>in Greece
+    </h1>
+    <p class="hero-subtitle fade-up delay-2">Consistent. Dominant. Trusted.</p>
+
+    <div class="kpi-grid fade-up delay-3">
+      <div class="kpi-card">
+        <div class="kpi-val">45<span>%+</span></div>
+        <div class="kpi-label">Enterprise Market Share</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">4</div>
+        <div class="kpi-label">Consecutive Years No.1</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">No<span>.1</span></div>
+        <div class="kpi-label">IDC Ranking FY25/26</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">+12<span>pp</span></div>
+        <div class="kpi-label">Gap vs Nearest Competitor</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80" alt="placeholder">
+    <div class="hero-right-overlay"></div>
+    <div class="hero-right-badge">
+      <div class="badge-no">No.1</div>
+      <div class="badge-txt">IDC<br>Certified</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════ -->
+<!-- 02 TIMELINE                          -->
+<!-- ════════════════════════════════════ -->
+<section id="timeline">
+  <div class="timeline-header">
+    <div>
+      <div class="sec-label">02 — Timeline</div>
+      <h2>2022<br><span>→ FY25/26</span></h2>
+    </div>
+    <div>
+      <p class="timeline-intro">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. A four-year record of uninterrupted market leadership.
+      </p>
+    </div>
+  </div>
+
+  <div class="timeline-track">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2022</div>
+      <div class="tl-fiscal">FY 2021/22</div>
+      <div class="tl-stat">34.2%</div>
+      <div class="tl-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023</div>
+      <div class="tl-fiscal">FY 2022/23</div>
+      <div class="tl-stat">38.7%</div>
+      <div class="tl-desc">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed consequuntur.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024</div>
+      <div class="tl-fiscal">FY 2023/24</div>
+      <div class="tl-stat">41.5%</div>
+      <div class="tl-desc">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2025</div>
+      <div class="tl-fiscal">FY 2024/25</div>
+      <div class="tl-stat">45.9%</div>
+      <div class="tl-desc">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.</div>
+    </div>
+  </div>
+
+  <p class="tl-source">Source: IDC Quarterly Personal Computing Device Tracker — Data for illustrative purposes only</p>
+</section>
+
+
+<!-- ════════════════════════════════════ -->
+<!-- 03 ENTERPRISE                        -->
+<!-- ════════════════════════════════════ -->
+<section id="enterprise">
+  <div class="ent-left">
+    <div class="sec-label">03 — Enterprise Performance</div>
+    <h2>Enterprise<br><span>Market</span><br>Dominance</h2>
+    <p class="ent-desc">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Enterprise REL Q4 FY25/26 data confirms unprecedented market position across all verticals.
+    </p>
+    <a href="#" class="ent-cta">Read Full Report <span class="ent-cta-arrow">→</span></a>
+  </div>
+
+  <div class="bar-chart">
+    <div class="chart-title">Enterprise Market Share — Q4 FY25/26</div>
+
+    <div class="bar-row">
+      <div class="bar-brand">Lenovo</div>
+      <div class="bar-wrap">
+        <div class="bar-fill lenovo" style="width:45.9%">
+          <span class="bar-pct">45.9%</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-brand">Dell</div>
+      <div class="bar-wrap">
+        <div class="bar-fill dell" style="width:33.1%">
+          <span class="bar-pct">33.1%</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-brand">HP</div>
+      <div class="bar-wrap">
+        <div class="bar-fill hp" style="width:19%">
+          <span class="bar-pct">19.0%</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-brand">Apple</div>
+      <div class="bar-wrap">
+        <div class="bar-fill apple" style="width:1.6%">
+          <span class="bar-pct" style="right:auto;left:12px;color:var(--silver)">1.6%</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-brand">ASUS</div>
+      <div class="bar-wrap">
+        <div class="bar-fill asus" style="width:0.5%">
+          <span class="bar-pct" style="right:auto;left:12px;color:var(--silver)">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-quarter">Enterprise REL · Q4 FY25/26 · Source: IDC</div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════ -->
+<!-- 04 INTERVIEWS                        -->
+<!-- ════════════════════════════════════ -->
+<section id="interviews">
+  <div class="interviews-header">
+    <div>
+      <div class="sec-label">04 — Leadership</div>
+      <h2>Voices of<br><span>Leadership</span></h2>
+    </div>
+    <p class="interviews-intro">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Two perspectives from the leadership team on strategy, market dynamics, and the road ahead.
+    </p>
+  </div>
+
+  <div class="interview-grid">
+    <!-- Person 1 -->
+    <div class="interview-card">
+      <div class="interview-role">Strategy & Market Development</div>
+      <div class="interview-portrait">
+        <img src="https://lenovonews.gr/wp-content/uploads/2020/05/interview-makryniotis3.jpg" alt="Portrait placeholder">
+      </div>
+      <div class="interview-name">Παναγιώτης Μακρυνιώτης</div>
+      <div class="interview-title-role">General Manager, Lenovo Greece</div>
+
+      <div class="qa">
+        <div class="q">Q — Lorem ipsum dolor sit amet?</div>
+        <div class="a">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris.</div>
+      </div>
+      <div class="qa">
+        <div class="q">Q — Consectetur adipiscing elit sed?</div>
+        <div class="a">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.</div>
+      </div>
+
+      <div class="interview-theme theme-strategy"></div>
+    </div>
+
+    <!-- Person 2 -->
+    <div class="interview-card">
+      <div class="interview-role">Channel & Partner Relations</div>
+      <div class="interview-portrait">
+        <img src="https://files.elle.gr/Content/ImagesDatabase/p/cu355x532/0,15,355,297/crop/both/9e/9e2a427991204e6497a5e362b60c5087.jpg?quality=80&404=default&v=4" alt="Portrait placeholder">
+      </div>
+      <div class="interview-name">Βικτώρια Λουπάκου</div>
+      <div class="interview-title-role">Channel Director, Lenovo Greece</div>
+
+      <div class="qa">
+        <div class="q">Q — Sed ut perspiciatis unde omnis?</div>
+        <div class="a">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione sequi nesciunt.</div>
+      </div>
+      <div class="qa">
+        <div class="q">Q — Neque porro quisquam est qui?</div>
+        <div class="a">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.</div>
+      </div>
+
+      <div class="interview-theme theme-market"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════ -->
+<!-- 05 PARTNERSHIPS                      -->
+<!-- ════════════════════════════════════ -->
+<section id="partnerships">
+  <div class="partnerships-header">
+    <div>
+      <div class="sec-label">05 — Global Partnerships</div>
+      <h2>Global<br><span>Prestige</span><br>Partnerships</h2>
+    </div>
+    <p class="partnerships-intro">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Strategic global alliances that position Lenovo at the intersection of technology, performance, and culture. From the racetrack to the pitch — Lenovo powers what's next.
+    </p>
+  </div>
+
+  <div class="partners-grid">
+    <!-- F1 — large card -->
+    <div class="partner-card">
+      <img src="https://images.unsplash.com/photo-1504707748692-419802cf939d?w=900&q=80" alt="Formula 1 partnership placeholder">
+      <div class="partner-overlay">
+        <div class="partner-category">Motorsport Technology</div>
+        <div class="partner-name">Formula 1</div>
+        <div class="partner-desc">Lorem ipsum dolor sit amet consectetur. Officiating data-driven performance at the pinnacle of motorsport.</div>
+      </div>
+    </div>
+
+    <!-- Ducati -->
+    <div class="partner-card">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Ducati Lenovo Team placeholder">
+      <div class="partner-overlay">
+        <div class="partner-category">MotoGP Partner</div>
+        <div class="partner-name">Ducati Lenovo Team</div>
+        <div class="partner-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</div>
+      </div>
+    </div>
+
+    <!-- FIFA -->
+    <div class="partner-card">
+      <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80" alt="FIFA partnership placeholder">
+      <div class="partner-overlay">
+        <div class="partner-category">Global Football</div>
+        <div class="partner-name">FIFA Official Partner</div>
+        <div class="partner-desc">Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <img style="width:125px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Lenovo_Global_Corporate_Logo.png/3840px-Lenovo_Global_Corporate_Logo.png" alt="Lenovo logo">
+    <div class="footer-copy" style="margin-top:10px">© 2026 Lenovo. Design Mockup — For Internal Review Only.</div>
+  </div>
+  <div class="footer-mark">Greece Market · Annual Performance Report · FY 2025/26</div>
+</footer>
+
+</body>
+</html>
