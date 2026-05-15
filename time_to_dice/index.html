@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUTADUNGEON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Load order matters: constants and data first, then logic, then UI, then main -->
+  <script src="js/constants.js"></script>
+  <script src="js/data/enemies.js"></script>
+  <script src="js/data/mutations.js"></script>
+  <script src="js/data/passives.js"></script>
+  <script src="js/dungeon.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

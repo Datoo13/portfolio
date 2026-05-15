@@ -1058,10 +1058,175 @@ footer {
   color: var(--accent);
 }
 
-@media (max-width: 840px) {
-  .value-cards { grid-template-columns: 1fr; }
-  .value-numbers { grid-template-columns: repeat(3, 1fr); }
+/* ── Featured Game ── */
+.featured-game-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
 }
+
+.featured-game {
+  position: relative;
+  background: linear-gradient(135deg, #1a0533 0%, #0f0a1e 60%, #1a0c2e 100%);
+  border: 1px solid rgba(124,58,237,.35);
+  border-radius: 24px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 320px;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.featured-game:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(124,58,237,.25);
+}
+
+.featured-game::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(124,58,237,.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.featured-game::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #2563EB);
+  z-index: 2;
+}
+
+.featured-game-info {
+  position: relative;
+  z-index: 1;
+  padding: 2.2rem 2rem 2rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.featured-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: Tahoma, sans-serif;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #a855f7;
+  background: rgba(168,85,247,.1);
+  border: 1px solid rgba(168,85,247,.25);
+  padding: .28rem .8rem;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.featured-label::before { content: '★'; font-size: .5rem; }
+
+.featured-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: #ffffff;
+  line-height: 1.05;
+}
+
+.featured-title span { color: #a855f7; }
+
+.featured-subtitle {
+  font-size: .85rem;
+  color: rgba(255,255,255,.5);
+  font-style: italic;
+  margin-top: -.6rem;
+}
+
+.featured-desc {
+  font-size: .85rem;
+  color: rgba(255,255,255,.65);
+  line-height: 1.7;
+}
+
+.featured-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.featured-tag {
+  font-family: Tahoma, sans-serif;
+  font-size: .6rem;
+  padding: .25rem .65rem;
+  border-radius: 6px;
+  background: rgba(124,58,237,.15);
+  color: #c4b5fd;
+  border: 1px solid rgba(124,58,237,.25);
+}
+
+.featured-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1.6rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  align-self: flex-start;
+  box-shadow: 0 4px 20px rgba(124,58,237,.4);
+  transition: opacity .2s, transform .15s;
+}
+
+.featured-game:hover .featured-cta { opacity: .88; transform: translateX(3px); }
+
+.featured-screenshots {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 16px 16px 16px 8px;
+}
+
+.featured-screenshots img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(124,58,237,.2);
+  display: block;
+  transition: transform .2s, border-color .2s;
+}
+
+.featured-screenshots img:first-child {
+  grid-column: 1 / -1;
+}
+
+.featured-game:hover .featured-screenshots img {
+  border-color: rgba(168,85,247,.4);
+}
+
+@media (max-width: 760px) {
+  .featured-game { grid-template-columns: 1fr; }
+  .featured-screenshots { display: none; }
+  .featured-game-wrap { padding: 0 1.2rem 2rem; }
+}
+
+
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
@@ -1724,6 +1889,38 @@ footer {
 
 <!-- Games Section -->
 <section class="games-section">
+
+  <!-- Featured Game -->
+  <div class="featured-game-wrap">
+    <a class="featured-game" href="https://datoo13.github.io/portfolio/time_to_dice/index.html" target="_blank" rel="noopener">
+      <div class="featured-game-info">
+        <div>
+          <div class="featured-label">Featured Game</div>
+        </div>
+        <div>
+          <div class="featured-title">MUTA<span>DUNGEON</span></div>
+          <div class="featured-subtitle"><br>An endless roguelike of dice &amp; mutation</div>
+        </div>
+        <div class="featured-desc">
+          A fully realized browser roguelike — complete with procedural combat, a mutation system, dungeon exploration, and strategic resource decisions. Built entirely in vanilla HTML, CSS and JavaScript. No engine, no framework, no shortcuts. This is what happens when game design thinking meets front-end craft.
+        </div>
+        <div class="featured-tags">
+          <span class="featured-tag">Vanilla JS</span>
+          <span class="featured-tag">Procedural Design</span>
+          <span class="featured-tag">Game Systems</span>
+          <span class="featured-tag">Roguelike</span>
+          <span class="featured-tag">No Engine</span>
+          <span class="featured-tag">HTML / CSS</span>
+        </div>
+        <div class="featured-cta">Play now →</div>
+      </div>
+      <div class="featured-screenshots">
+        <img style="height:200px;"src="time_to_dice/game_preview_1.jpg" alt="MutaDungeon gameplay screenshot 1"/>
+        <img style="height:200px;" src="time_to_dice/game_preview_2.jpg" alt="MutaDungeon gameplay screenshot 2"/>
+        <img style="height:200px;"src="time_to_dice/game_preview_3.jpg" alt="MutaDungeon gameplay screenshot 3"/>
+      </div>
+    </a>
+  </div>
 
   <!-- Filter bar -->
   <div class="filter-wrap">
