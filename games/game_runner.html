@@ -116,7 +116,7 @@ function loop(ts){
   const dt=Math.min((ts-lastFrameT)/1000,0.05);lastFrameT=ts;
   const speedMult=1+Math.floor(score/300)*0.2;
   const speedPPS=BASE_SPEED_PPS*speedMult;
-  bgOffset+=speedPPS*dt*0.4;
+  bgOffset-=speedPPS*dt*0.4;
 
   // spawn obstacles
   const minGap=Math.max(1000,2000-score*1.5);

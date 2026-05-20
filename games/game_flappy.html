@@ -147,10 +147,23 @@ function loop(t){
   if(bird.y+bird.r>H){endGame();return;}
 
   // bird draw
-  const angle=Math.min(Math.max(bird.vy/10,-30),60)*Math.PI/180;
-  ctx.save();ctx.translate(bird.x,bird.y);ctx.rotate(angle);
-  ctx.font=`${bird.r*2.2}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('🐦',0,0);
+
+  const angle = Math.min(Math.max(bird.vy / 10, -30), 60) * Math.PI / 180;
+
+  ctx.save();
+  ctx.translate(bird.x, bird.y);
+
+// flip horizontally so it faces the other way
+  ctx.scale(-1, 1);
+
+// optional: slight rotation for motion feel
+  ctx.rotate(angle);
+
+  ctx.font = `${bird.r * 2.2}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🐦', 0, 0);
+
   ctx.restore();
 
   requestAnimationFrame(loop);
