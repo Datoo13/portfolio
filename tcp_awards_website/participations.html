@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Δήλωση Υποψηφιότητας — TCP Awards 2026</title>
+  <link rel="icon" href="https://shpages.com/wp-content/uploads/2024/07/favicon_3.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="light-hero">
+
+  <div id="header-placeholder"></div>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-hero-eyebrow" id="ph-eyebrow">Tech Channel Partner Awards 2026</div>
+      <h1>
+        <span class="hline" id="ph-h1">Δήλωση</span>
+        <span class="hline hline-gold" id="ph-h2">υποψηφιότητας</span>
+      </h1>
+      <p id="ph-p">Δηλώστε υποψηφιότητα για τις κατηγορίες της επιλογής σας και αναδειχθείτε στους καλύτερους του καναλιού.</p>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('tcp:ready', () => {
+      setTimeout(() => document.getElementById('ph-eyebrow')?.classList.add('visible'), 100);
+      setTimeout(() => document.getElementById('ph-h1')?.classList.add('visible'), 250);
+      setTimeout(() => document.getElementById('ph-h2')?.classList.add('visible'), 400);
+      setTimeout(() => document.getElementById('ph-p')?.classList.add('visible'), 500);
+    });
+  </script>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="grid-2" style="align-items:start; gap:64px;">
+
+        <!-- Left: Info -->
+        <div>
+          <!-- Notice: candidacies closed -->
+          <div class="notice-banner">
+            <span class="notice-icon">📋</span>
+            <div class="notice-text">
+              <strong>Δηλώσεις υποψηφιότητας TCP Awards 2026.</strong>
+              <span>Η προθεσμία υποβολής θα ανακοινωθεί σύντομα. <a href="index.html" style="color:var(--gold);">Επιστροφή στην αρχική →</a></span>
+            </div>
+          </div>
+
+          <span class="section-label">Τα βραβεία</span>
+          <span class="gold-rule gold-rule--left"></span>
+          <h2 style="margin-bottom:20px;">Πάρτε μέρος στα βραβεία<br/><em style="font-style:italic;color:var(--gold)">Tech Channel Partner Awards</em></h2>
+          <p style="font-size:16px; line-height:1.8; margin-bottom:16px;">
+            Τα Tech Channel Partner Awards είναι τα μοναδικά βραβεία, στα οποία η ίδια η αγορά ψηφίζει τους καλύτερους της χρονιάς που πέρασε, και αυτό συνεχίζεται φυσικά και φέτος!
+          </p>
+          <p style="font-size:16px; line-height:1.8; margin-bottom:16px;">
+            <strong>Διανομείς, κατασκευαστές, και φυσικά μεταπωλητές/συνεργάτες</strong>, θα έχουν την ευκαιρία να ψηφίσουν αυτούς που ξεχώρισαν κατά τη χρονιά που πέρασε, με βάση <strong>την δική τους, προσωπική εμπειρία και άποψη</strong>.
+          </p>
+          <p style="font-size:16px; line-height:1.8; margin-bottom:16px;">
+            Πάρτε μέρος στα βραβεία, δηλώστε υποψηφιότητα για τις κατηγορίες της επιλογής σας, για την εταιρία σας, και <strong>αναδειχθείτε στους καλύτερους του καναλιού!</strong>
+          </p>
+
+          <div style="background:var(--gold-pale); border:1px solid var(--gold-light); border-radius:var(--radius-lg); padding:24px; margin-top:32px;">
+            <div style="font-size:11px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:8px;">Deadline υποψηφιοτήτων</div>
+            <div style="font-family:var(--font-display); font-size:32px; font-weight:700; color:var(--near-black);">Ανακοινώνεται σύντομα</div>
+          </div>
+        </div>
+
+        <!-- Right: MailerLite Form -->
+        <div>
+          <div id="participations-form-placeholder"></div>
+
+          <div style="margin-top:20px; text-align:center; padding:20px; background:var(--cream); border-radius:var(--radius-lg);">
+            <p style="font-size:14px; color:var(--mid-gray); margin-bottom:12px;">Θέλετε να κλείσετε και θέση στην εκδήλωση;</p>
+            <a href="invitations.html" class="btn btn-outline btn-sm">Λάβετε προσκλήσεις →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CATEGORY LIST (full)
+       ============================================================ -->
+  <section class="section section--cream" id="categories">
+    <div class="container">
+      <span class="section-label">Όλες οι κατηγορίες</span>
+      <span class="gold-rule gold-rule--left"></span>
+      <h2 style="margin-bottom:40px;">Κατηγορίες βράβευσης</h2>
+
+      <div class="categories-tabs">
+        <button class="tab-btn active" data-tab="p-resellers">Resellers</button>
+        <button class="tab-btn" data-tab="p-vendors">Vendors</button>
+        <button class="tab-btn" data-tab="p-distributors">Distributors</button>
+      </div>
+
+      <div class="tab-panel active" id="p-resellers">
+        <div class="category-grid">
+          <div class="category-card"><div class="category-code">R1</div><h4>Public Sector VAR Award</h4><p>Συνεργάτες που εστιάζουν στον δημόσιο τομέα — εκπαίδευση, υγεία, τοπική αυτοδιοίκηση, κυβέρνηση.</p></div>
+          <div class="category-card"><div class="category-code">R2</div><h4>Managed Services Provider (MSP) Award</h4><p>Εταιρείες που παρέχουν υπηρεσίες MSP σε τελικούς πελάτες.</p></div>
+          <div class="category-card"><div class="category-code">R3</div><h4>Cloud Services Provider Award</h4><p>Εταιρείες του καναλιού που παρέχουν cloud-based υπηρεσίες.</p></div>
+          <div class="category-card"><div class="category-code">R4</div><h4>Security Reseller Award</h4><p>VARs/πάροχοι υπηρεσιών ασφαλείας με αριστεία στην κυβερνοασφάλεια.</p></div>
+          <div class="category-card"><div class="category-code">R5</div><h4>ESG Award</h4><p>Πρωτοβουλίες περιβάλλοντος, κοινωνίας και διακυβέρνησης.</p></div>
+          <div class="category-card"><div class="category-code">R6</div><h4>Printing & MPS</h4><p>Υπηρεσίες εκτύπωσης και διαχείρισης εκτυπώσεων.</p></div>
+          <div class="category-card"><div class="category-code">R7</div><h4>System Integration</h4><p>Επιτεύγματα στην ολοκλήρωση συστήματος.</p></div>
+          <div class="category-card"><div class="category-code">R8</div><h4>AI Partner</h4><p>Σχεδιασμός και υλοποίηση έργων AI.</p></div>
+          <div class="category-card"><div class="category-code">R9</div><h4>Software Partner</h4><p>Αριστεία στον τομέα του business software.</p></div>
+          <div class="category-card"><div class="category-code">R10</div><h4>Defense Partner</h4><p>Σημαντικά έργα στην αμυντική και στρατιωτική αγορά.</p></div>
+          <div class="category-card" style="border-color:var(--gold-light); background:var(--gold-pale);"><div class="category-code">R11</div><h4>Partner of the Year Award</h4><p>Ο κορυφαίος συνεργάτης της χρονιάς.</p></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="p-vendors">
+        <div class="category-grid">
+          <div class="category-card"><div class="category-code">V1</div><h4>Infrastructure Vendor Award</h4><p>Προμηθευτές υποδομής — servers, storage, κ.ά.</p></div>
+          <div class="category-card"><div class="category-code">V2</div><h4>Devices Vendor Award</h4><p>Desktops, laptops και tablets.</p></div>
+          <div class="category-card"><div class="category-code">V3</div><h4>Networking Vendor Award</h4><p>Προϊόντα και υπηρεσίες δικτύωσης.</p></div>
+          <div class="category-card"><div class="category-code">V4</div><h4>Software Vendor Award</h4><p>Ανάπτυξη software — ERP, CRM, virtualization κ.ά.</p></div>
+          <div class="category-card"><div class="category-code">V5</div><h4>Security Vendor Award</h4><p>Συστήματα κυβερνοασφάλειας.</p></div>
+          <div class="category-card"><div class="category-code">V6</div><h4>Printing Vendor Award</h4><p>Κατασκευαστές εκτυπωτών και εκτυπωτικών συστημάτων.</p></div>
+          <div class="category-card"><div class="category-code">V7</div><h4>UC/Video Conference Vendor Award</h4><p>Λύσεις video conference και ενοποιημένης επικοινωνίας.</p></div>
+          <div class="category-card"><div class="category-code">V8</div><h4>AI Vendor Award</h4><p>Ο κατασκευαστής AI που αναγνωρίζει το κανάλι.</p></div>
+          <div class="category-card"><div class="category-code">V9</div><h4>Specialist Vendor Award</h4><p>Εξειδικευμένα προϊόντα ή υπηρεσίες, συμπεριλαμβανομένων audio/video.</p></div>
+          <div class="category-card"><div class="category-code">V10</div><h4>Cloud Services Vendor Award</h4><p>Cloud υπηρεσίες οποιουδήποτε τύπου.</p></div>
+          <div class="category-card"><div class="category-code">V11</div><h4>ESG Award</h4><p>Ενσωμάτωση ESG στη λειτουργία εταιρείας τεχνολογίας.</p></div>
+          <div class="category-card"><div class="category-code">V12</div><h4>Best Partner Program Award</h4><p>Το κορυφαίο πρόγραμμα συνεργατών κατά τους συνεργάτες.</p></div>
+          <div class="category-card"><div class="category-code">V13</div><h4>Data Center Vendor Award</h4><p>Υπηρεσίες και υποδομές DataCenter.</p></div>
+          <div class="category-card"><div class="category-code">V14</div><h4>Smart Building Vendor Award</h4><p>Λύσεις έξυπνων κτιρίων.</p></div>
+          <div class="category-card" style="border-color:var(--gold-light); background:var(--gold-pale);"><div class="category-code">V15</div><h4>Vendor of the Year Award</h4><p>Ο κορυφαίος κατασκευαστής της χρονιάς.</p></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="p-distributors">
+        <div class="category-grid">
+          <div class="category-card"><div class="category-code">D1</div><h4>Broad Line Distributor Award</h4><p>Διανομείς ευρέος φάσματος.</p></div>
+          <div class="category-card"><div class="category-code">D2</div><h4>Value Added Distributor Award</h4><p>Διανομείς προστιθέμενης αξίας.</p></div>
+          <div class="category-card"><div class="category-code">D3</div><h4>Cloud Distributor Award</h4><p>Διανομείς cloud υπηρεσιών.</p></div>
+          <div class="category-card"><div class="category-code">D4</div><h4>Security Distributor Award</h4><p>Διανομείς λύσεων κυβερνοασφάλειας.</p></div>
+          <div class="category-card" style="border-color:var(--gold-light); background:var(--gold-pale);"><div class="category-code">D5</div><h4>Distributor of the Year Award</h4><p>Ο κορυφαίος διανομέας της χρονιάς.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="sponsors-placeholder"></div>
+  <div id="footer-placeholder"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>

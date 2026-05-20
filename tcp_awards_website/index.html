@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Channel Partner Awards 2025</title>
+  <meta name="description" content="Τα μοναδικά βραβεία του καναλιού τεχνολογίας στην Ελλάδα, όπου η αγορά ψηφίζει τους καλύτερους της χρονιάς." />
+  <link rel="icon" href="https://shpages.com/wp-content/uploads/2024/07/favicon_3.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+
+    /* ═══════════════════════════════════════
+       HOME-PAGE ONLY STYLES
+    ═══════════════════════════════════════ */
+
+    /* ── HERO — centered, minimal luxury (Option 3) ── */
+    .home-hero {
+      background: var(--off-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 32px 0;
+    }
+
+    /* Subtle radial warm glow behind everything */
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -10%; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-pretitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .hero-pretitle.visible { opacity: 1; transform: translateY(0); }
+    .hero-pretitle::before,
+    .hero-pretitle::after {
+      content: '';
+      display: block;
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .hero-pretitle::after {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .home-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 10vw, 140px);
+      font-weight: 800;
+      line-height: 0.9;
+      color: var(--near-black);
+      margin-bottom: 0;
+      overflow: hidden;
+    }
+    .home-hero-title .hline {
+      display: block;
+      transform: translateY(110%);
+      transition: transform 0.8s var(--ease-out);
+    }
+    .home-hero-title .hline.visible { transform: translateY(0); }
+    .home-hero-title .hline-gold { color: var(--gold); }
+
+    .hero-year-tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(14px, 1.8vw, 22px);
+      font-weight: 400;
+      color: var(--mid-gray);
+      letter-spacing: 0.15em;
+      margin: 16px 0 28px;
+      opacity: 0;
+      transition: opacity 0.7s var(--ease-out) 0.5s;
+    }
+    .hero-year-tag.visible { opacity: 1; }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--dark-gray);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s var(--ease-out) 0.6s, transform 0.7s var(--ease-out) 0.6s;
+    }
+    .hero-desc.visible { opacity: 1; transform: translateY(0); }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s var(--ease-out) 0.75s, transform 0.7s var(--ease-out) 0.75s;
+    }
+    .hero-btns.visible { opacity: 1; transform: translateY(0); }
+
+    .hero-deadline-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: var(--cream);
+      border: 1px solid var(--gold-light);
+      border-radius: 40px;
+      font-size: 12px;
+      color: var(--dark-gray);
+      opacity: 0;
+      transition: opacity 0.7s var(--ease-out) 0.9s;
+    }
+    .hero-deadline-pill.visible { opacity: 1; }
+    .hero-deadline-pill strong {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold-dark);
+    }
+
+    /* Award statue photo — full width, bottom aligned */
+    .hero-statue-wrap {
+      position: relative;
+      width: 100%;
+      margin: 36px auto 0;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.9s var(--ease-out) 1s, transform 0.9s var(--ease-out) 1s;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      overflow: hidden;
+    }
+    .hero-statue-wrap.visible { opacity: 1; transform: translateY(0); }
+
+    .hero-statue-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: center bottom;
+      display: block;
+      box-shadow: 0 -8px 48px rgba(201,168,76,0.10);
+    }
+
+    /* Looping shine sweep over the image */
+    .hero-statue-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(255,255,255,0.18) 50%,
+        transparent 65%,
+        transparent 100%
+      );
+      transform: translateX(-100%);
+      animation: statue-shine 4s ease-in-out infinite;
+      animation-delay: 1.5s;
+      pointer-events: none;
+    }
+
+    @keyframes statue-shine {
+      0%   { transform: translateX(-100%); }
+      50%  { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar { background: var(--near-black); }
+    .stats-bar-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-left: 1px solid rgba(255,255,255,0.06);
+    }
+    .stats-bar-item {
+      padding: 36px 24px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .stats-bar-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .stats-bar-item:hover::after { transform: scaleX(1); }
+    .stats-bar-item:hover { background: rgba(201,168,76,0.05); }
+    .stats-num {
+      font-family: var(--font-display);
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stats-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+    }
+
+    /* ── ABOUT ── */
+    .about-home { background: var(--white); padding: var(--section-pad) 0; }
+    .about-home-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-photo-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      box-shadow: var(--shadow-lg);
+    }
+    .about-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+    .about-photo-wrap:hover img { transform: scale(1.04); }
+    .about-photo-badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--gold);
+      color: white;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 40px;
+    }
+    .about-text h2 { font-size: clamp(30px, 3.5vw, 50px); margin-bottom: 24px; line-height: 1.1; }
+    .about-text p { font-size: 15px; line-height: 1.85; color: var(--dark-gray); margin-bottom: 16px; }
+    .about-text p strong { color: var(--near-black); }
+
+    /* ── PHOTO STRIP ── */
+    .photo-strip {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 3px;
+      height: 440px;
+      overflow: hidden;
+    }
+    .photo-strip-item {
+      overflow: hidden;
+      position: relative;
+    }
+    .photo-strip-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+    .photo-strip-item:hover img { transform: scale(1.05); }
+    .photo-strip-item::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(26,23,20,0);
+      transition: background 0.3s;
+    }
+    .photo-strip-item:hover::after { background: rgba(26,23,20,0.1); }
+
+    /* ── HOW IT WORKS (dark) ── */
+    .how-section {
+      background: var(--near-black);
+      padding: var(--section-pad) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .how-section::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .how-section::after {
+      content: '';
+      position: absolute;
+      bottom: -150px; left: -150px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(225,31,38,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .how-text h2 { font-size: clamp(30px, 3.5vw, 50px); color: var(--white); margin-bottom: 20px; line-height: 1.1; }
+    .how-text h2 em { font-style: italic; color: var(--gold-light); }
+    .how-text p { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
+    .how-text p strong { color: rgba(255,255,255,0.88); }
+    .deadline-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: var(--radius-lg);
+      padding: 18px 28px;
+      margin: 24px 0 32px;
+    }
+    .deadline-box .dl-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 4px; }
+    .deadline-box .dl-date { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--gold-light); }
+
+    .how-steps { display: flex; flex-direction: column; }
+    .how-step {
+      display: flex;
+      gap: 24px;
+      padding: 26px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      align-items: flex-start;
+      transition: transform 0.25s var(--ease);
+    }
+    .how-step:last-child { border-bottom: none; }
+    .how-step:hover { transform: translateX(8px); }
+    .how-step-num {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 800;
+      color: rgba(201,168,76,0.2);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 46px;
+      transition: color 0.3s;
+    }
+    .how-step:hover .how-step-num { color: var(--gold); }
+    .how-step h4 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+    .how-step p { font-size: 13px; color: rgba(255,255,255,0.45); margin: 0; line-height: 1.6; }
+
+    /* ── SHOWCASE ── */
+    .showcase-section { background: var(--cream); padding: var(--section-pad) 0; }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .showcase-text h2 { font-size: clamp(30px, 3.5vw, 50px); margin-bottom: 20px; line-height: 1.1; }
+    .showcase-text p { font-size: 15px; line-height: 1.85; color: var(--dark-gray); margin-bottom: 14px; }
+    .showcase-photo-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 4/3;
+    }
+    .showcase-photo-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+    .showcase-photo-wrap:hover img { transform: scale(1.04); }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+    }
+    .cta-banner-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-461.jpg');
+      background-size: cover;
+      background-position: center top;
+      transition: transform 0.6s var(--ease);
+    }
+    .cta-banner:hover .cta-banner-bg { transform: scale(1.025); }
+    .cta-banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(100deg, rgba(26,23,20,0.90) 0%, rgba(26,23,20,0.70) 55%, rgba(26,23,20,0.38) 100%);
+    }
+    .cta-banner-content { position: relative; z-index: 2; padding: var(--section-pad) 0; }
+    .cta-banner h2 { font-size: clamp(30px, 4vw, 54px); color: var(--white); margin-bottom: 14px; max-width: 600px; }
+    .cta-banner p { font-size: 16px; color: rgba(255,255,255,0.68); max-width: 480px; margin-bottom: 32px; }
+    .cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── CONTACT ── */
+    .contact-home { background: var(--white); padding: var(--section-pad) 0; }
+    .contact-card-center {
+      max-width: 520px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--cream);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-lg);
+      padding: 48px 56px;
+      box-shadow: var(--shadow-md);
+    }
+    .contact-card-center .cn { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--near-black); margin-bottom: 24px; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(26,23,20,0.7); z-index: 2000;
+      align-items: center; justify-content: center;
+      padding: 24px; backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 48px; max-width: 720px; width: 100%;
+      max-height: 80vh; overflow-y: auto;
+      position: relative; box-shadow: var(--shadow-lg);
+    }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--mid-gray); transition: color 0.2s; }
+    .modal-close:hover { color: var(--near-black); }
+    .modal-box h3 { margin-bottom: 20px; font-size: 28px; }
+    .modal-box p { font-size: 14px; line-height: 1.75; color: var(--dark-gray); margin-bottom: 14px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .about-home-grid, .how-grid, .showcase-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-statue-img { height: 280px; }
+    }
+    @media (max-width: 768px) {
+      .home-hero { padding: 100px 20px 0; }
+      .stats-bar-inner { grid-template-columns: 1fr 1fr; }
+      .photo-strip { grid-template-columns: 1fr 1fr; height: 280px; }
+      .photo-strip-item:last-child { display: none; }
+      .contact-card-center { padding: 36px 24px; }
+      .hero-statue-img { height: 220px; }
+    }
+    @media (max-width: 480px) {
+      .home-hero-title { font-size: 56px; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .hero-statue-img { height: 180px; }
+    }
+
+  </style>
+</head>
+<body class="light-hero">
+
+  <div id="header-placeholder"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HERO — centered, minimal luxury
+  ═══════════════════════════════════════════ -->
+  <section class="home-hero">
+
+    <div class="hero-pretitle" id="hp-pretitle">Tech Channel Partner</div>
+
+    <h1 class="home-hero-title">
+      <span class="hline" id="hl-1">Awards</span>
+      <span class="hline hline-gold" id="hl-2">2026</span>
+    </h1>
+
+    <span class="hero-year-tag" id="hp-year">Τελετή Απονομής Βραβείων</span>
+
+    <p class="hero-desc" id="hp-desc">
+      Τα μοναδικά βραβεία στα οποία <strong>η ίδια η αγορά</strong> ψηφίζει
+      τους καλύτερους του καναλιού τεχνολογίας στην Ελλάδα.
+      36 κατηγορίες. 3 ενότητες. 1 βραδιά.
+    </p>
+
+    <div class="hero-btns" id="hp-btns">
+      <!-- ============================================================
+           ΨΗΦΙΣΤΕ ΤΩΡΑ BUTTON — currently hidden, will be activated
+           when voting opens. DO NOT DELETE THIS COMMENT OR THE CODE.
+      ============================================================
+      <a href="dovote.html" class="btn btn-red btn-lg btn-arrow">Ψηφίστε τώρα</a>
+      ============================================================ -->
+      <a href="participations.html" class="btn btn-gold btn-lg btn-arrow">Δήλωση υποψηφιότητας</a>
+      <a href="invitations.html" class="btn btn-outline btn-lg">Book a seat</a>
+    </div>
+
+    <!-- ============================================================
+         DEADLINE PILL — currently hidden, will be shown when deadline
+         is announced. DO NOT DELETE THIS COMMENT OR THE CODE.
+    ============================================================
+    <div class="hero-deadline-pill" id="hp-deadline">
+      <span>Deadline ψηφοφορίας</span>
+      <strong>Ανακοινώνεται σύντομα</strong>
+    </div>
+    ============================================================ -->
+
+    <!-- Award statue photo — the star of the hero -->
+    <div class="hero-statue-wrap" id="hp-statue">
+      <img
+        class="hero-statue-img"
+        src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-034.jpg"
+        alt="TCP Awards 2026 — τρόπαια"
+        loading="eager"
+      />
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       STATS BAR
+  ═══════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="container" style="padding:0; max-width:none;">
+      <div class="stats-bar-inner">
+        <div class="stats-bar-item reveal"><div class="stats-num">36</div><div class="stats-lbl">Κατηγορίες</div></div>
+        <div class="stats-bar-item reveal reveal-delay-1"><div class="stats-num">3</div><div class="stats-lbl">Ενότητες</div></div>
+        <div class="stats-bar-item reveal reveal-delay-2"><div class="stats-num">3η</div><div class="stats-lbl">Χρονιά διοργάνωσης</div></div>
+        <div class="stats-bar-item reveal reveal-delay-3"><div class="stats-num"><img src="https://shpages.com/wp-content/uploads/2026/05/award.png" alt="Award" style="height:44px;width:auto;display:inline-block;vertical-align:middle;" /></div><div class="stats-lbl">Η αγορά ψηφίζει</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════════════ -->
+  <section class="about-home" id="about">
+    <div class="container">
+      <div class="about-home-grid">
+
+        <div class="about-photo-wrap reveal">
+          <img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-425.jpg" alt="TCP Awards τρόπαια" loading="lazy" />
+          <div class="about-photo-badge">TCP Awards 2025</div>
+        </div>
+
+        <div class="about-text">
+          <span class="section-label">Για τα βραβεία</span>
+          <span class="gold-rule gold-rule--left"></span>
+          <h2 class="reveal">Tech Channel Partner<br/><em style="font-style:italic;color:var(--gold)">Awards 2026</em></h2>
+          <p class="reveal reveal-delay-1">
+            Το <strong>Tech Channel Partner</strong>, το περιοδικό του καναλιού που τόσο αγαπήσατε
+            και υποστηρίξατε όλα αυτά τα χρόνια, έχει τη χαρά να ανακοινώσει τα βραβεία
+            <strong>Tech Channel Partner Awards 2026</strong>.
+          </p>
+          <p class="reveal reveal-delay-2">
+            Για τρίτη συνεχόμενη χρονιά, μετά την μοναδική επιτυχία και αποδοχή των βραβείων
+            που είχαμε όλοι τη χαρά να απολαύσουμε, ήρθε πλέον η ώρα για τις απονομές και τη
+            συνέχιση του <strong>θεσμού που η αγορά αγκάλιασε από την πρώτη στιγμή</strong>.
+          </p>
+          <p class="reveal reveal-delay-3">
+            Τα βραβεία Tech Channel Partner Awards σχεδιάστηκαν ώστε να τιμηθούν οι κορυφαίοι
+            συνεργάτες τεχνολογίας στην Ελλάδα, έτσι όπως τους θεωρεί και αναγνωρίζει
+            <strong>η ίδια η αγορά</strong>!
+          </p>
+          <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;" class="reveal reveal-delay-4">
+            <a href="#categories" class="btn btn-gold">Δείτε τις κατηγορίες</a>
+            <button id="terms-trigger" class="btn btn-outline">Όροι συμμετοχής</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       PHOTO STRIP
+  ═══════════════════════════════════════════ -->
+  <div class="photo-strip reveal">
+    <div class="photo-strip-item">
+      <img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-008.jpg" alt="TCP Awards χώρος" loading="lazy" />
+    </div>
+    <div class="photo-strip-item">
+      <img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-034.jpg" alt="TCP Awards τρόπαια" loading="lazy" />
+    </div>
+    <div class="photo-strip-item">
+      <img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-004.jpg" alt="TCP Awards βραβείο" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       HOW IT WORKS — dark
+  ═══════════════════════════════════════════ -->
+  <section class="how-section">
+    <div class="container">
+      <div class="how-grid">
+
+        <div class="how-text">
+          <span class="section-label" style="color:var(--gold-light);">Πώς λειτουργεί</span>
+          <span class="gold-rule gold-rule--left"></span>
+          <h2 class="reveal">Βραβεία για το κανάλι,<br/><em>από το ίδιο το κανάλι</em></h2>
+          <p class="reveal reveal-delay-1">
+            Τα Tech Channel Partner Awards είναι τα μοναδικά βραβεία, στα οποία η ίδια η αγορά
+            ψηφίζει τους καλύτερους της χρονιάς που πέρασε, και αυτό συνεχίζεται φυσικά και φέτος!
+          </p>
+          <p class="reveal reveal-delay-2">
+            <strong>Διανομείς, κατασκευαστές, και φυσικά μεταπωλητές/συνεργάτες</strong>, θα έχουν
+            την ευκαιρία να ψηφίσουν αυτούς που ξεχώρισαν κατά τη χρονιά που πέρασε, με βάση
+            <strong>την δική τους, προσωπική εμπειρία και άποψη</strong>.
+          </p>
+          <!-- ============================================================
+               DEADLINE BOX — currently hidden, will be shown when deadline
+               is announced. DO NOT DELETE THIS COMMENT OR THE CODE.
+          ============================================================
+          <div class="deadline-box reveal reveal-delay-3">
+            <div>
+              <div class="dl-label">Deadline ψηφοφορίας</div>
+              <div class="dl-date">Ανακοινώνεται σύντομα</div>
+            </div>
+          </div>
+          ============================================================ -->
+          <div class="reveal reveal-delay-4">
+            <!-- ============================================================
+                 ΨΗΦΙΣΤΕ ΤΩΡΑ BUTTON — currently hidden, will be activated
+                 when voting opens. DO NOT DELETE THIS COMMENT OR THE CODE.
+            ============================================================
+            <a href="dovote.html" class="btn btn-red btn-lg btn-arrow">Ψηφίστε τώρα</a>
+            ============================================================ -->
+          </div>
+        </div>
+
+        <div class="how-steps reveal reveal-delay-1">
+          <div class="how-step">
+            <div class="how-step-num">01</div>
+            <div><h4>Δηλώστε υποψηφιότητα</h4><p>Δηλώστε υποψηφιότητα για τις κατηγορίες που αντιπροσωπεύουν την εταιρεία σας.</p></div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">02</div>
+            <div><h4>Η αγορά ψηφίζει</h4><p>Μεταπωλητές, κατασκευαστές και διανομείς ψηφίζουν βάσει προσωπικής εμπειρίας.</p></div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">03</div>
+            <div><h4>Τελετή απονομής</h4><p>Οι νικητές αναδεικνύονται σε εντυπωσιακή βραδιά απονομής βραβείων.</p></div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">04</div>
+            <div><h4>Αναγνώριση & κύρος</h4><p>Τα βραβεία TCP αποτελούν σήμα αξιοπιστίας που αναγνωρίζεται από όλη την αγορά.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       AWARD SHOWCASE
+  ═══════════════════════════════════════════ -->
+  <section class="showcase-section">
+    <div class="container">
+      <div class="showcase-grid">
+
+        <div>
+          <span class="section-label">Ο θεσμός</span>
+          <span class="gold-rule gold-rule--left"></span>
+          <h2 class="reveal">Ένας μοναδικός<br/><em style="font-style:italic;color:var(--gold)">θεσμός</em> για το κανάλι</h2>
+          <p class="reveal reveal-delay-1">
+            Αυτός είναι ακριβώς ο λόγος που θεωρούμε ότι
+            <strong>ο θεσμός που δημιουργήσαμε δεν μοιάζει και δεν μπορεί να συγκριθεί με κανέναν άλλον</strong>.
+          </p>
+          <p class="reveal reveal-delay-2">
+            Πρόκειται για <strong>βραβεία για το κανάλι, από το ίδιο το κανάλι</strong>, τα οποία
+            αναδεικνύουν τους κορυφαίους της χρονιάς μέσα από 36 κατηγορίες.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:32px;" class="reveal reveal-delay-3">
+            <a href="participations.html" class="btn btn-gold btn-lg">Δηλώστε υποψηφιότητα</a>
+            <a href="invitations.html" class="btn btn-outline btn-lg">Book a seat</a>
+          </div>
+        </div>
+
+        <div class="showcase-photo-wrap reveal reveal-delay-2">
+          <img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-461.jpg" alt="TCP Awards νικητές" loading="lazy" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CATEGORIES
+  ═══════════════════════════════════════════ -->
+  <section class="section section--white" id="categories">
+    <div class="container">
+      <span class="section-label">Κατηγορίες</span>
+      <span class="gold-rule gold-rule--left"></span>
+      <h2 style="margin-bottom:12px;" class="reveal">Κατηγορίες βράβευσης</h2>
+      <p style="margin-bottom:40px; font-size:16px; color:var(--mid-gray);" class="reveal reveal-delay-1">36 κατηγορίες σε 3 βασικές ενότητες, συν Editor's Choice.</p>
+
+      <div class="categories-tabs reveal reveal-delay-2">
+        <button class="tab-btn active" data-tab="tab-resellers">Resellers</button>
+        <button class="tab-btn" data-tab="tab-vendors">Vendors</button>
+        <button class="tab-btn" data-tab="tab-distributors">Distributors</button>
+        <button class="tab-btn" data-tab="tab-editors">Editor's Choice</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-resellers"><div class="category-grid">
+        <div class="category-card"><div class="category-code">R1</div><h4>Public Sector VAR Award</h4><p>Για συνεργάτες που εστιάζουν στον δημόσιο τομέα — εκπαίδευση, υγεία, τοπική αυτοδιοίκηση, κυβέρνηση.</p></div>
+        <div class="category-card"><div class="category-code">R2</div><h4>Managed Services Provider (MSP) Award</h4><p>Για εταιρείες που παρέχουν υπηρεσίες MSP σε τελικούς πελάτες.</p></div>
+        <div class="category-card"><div class="category-code">R3</div><h4>Cloud Services Provider Award</h4><p>Για εταιρείες του καναλιού που παρέχουν cloud-based υπηρεσίες.</p></div>
+        <div class="category-card"><div class="category-code">R4</div><h4>Security Reseller Award</h4><p>Αναγνώριση για VARs/παρόχους υπηρεσιών ασφαλείας που επιδεικνύουν αριστεία στην κυβερνοασφάλεια.</p></div>
+        <div class="category-card"><div class="category-code">R5</div><h4>ESG Award</h4><p>Για πρωτοβουλίες περιβάλλοντος, κοινωνίας και διακυβέρνησης από μεταπωλητές.</p></div>
+        <div class="category-card"><div class="category-code">R6</div><h4>Printing & MPS</h4><p>Για επιχειρήσεις που προσφέρουν υπηρεσίες εκτύπωσης και διαχείρισης εκτυπώσεων.</p></div>
+        <div class="category-card"><div class="category-code">R7</div><h4>System Integration</h4><p>Για επιτεύγματα στην ολοκλήρωση συστήματος με καινοτομία και πολυπλοκότητα.</p></div>
+        <div class="category-card"><div class="category-code">R8</div><h4>AI Partner</h4><p>Για συνεργάτες που σχεδιάζουν και υλοποιούν έργα AI.</p></div>
+        <div class="category-card"><div class="category-code">R9</div><h4>Software Partner</h4><p>Αναδεικνύει τον συνεργάτη που ξεχωρίζει στον τομέα του business software.</p></div>
+        <div class="category-card"><div class="category-code">R10</div><h4>Defense Partner</h4><p>Για συνεργάτες με σημαντικά έργα στην αμυντική και στρατιωτική αγορά.</p></div>
+        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">R11</div><h4>Partner of the Year Award</h4><p>Ο κορυφαίος συνεργάτης της χρονιάς, ανεξάρτητα κατηγορίας και αγοράς.</p></div>
+      </div></div>
+
+      <div class="tab-panel" id="tab-vendors"><div class="category-grid">
+        <div class="category-card"><div class="category-code">V1</div><h4>Infrastructure Vendor Award</h4><p>Για προμηθευτές προϊόντων ή υπηρεσιών που σχετίζονται με την υποδομή.</p></div>
+        <div class="category-card"><div class="category-code">V2</div><h4>Devices Vendor Award</h4><p>Ο προμηθευτής που ξεχώρισε στο κανάλι σε desktops, laptops και tablets.</p></div>
+        <div class="category-card"><div class="category-code">V3</div><h4>Networking Vendor Award</h4><p>Για κατασκευαστές προϊόντων και υπηρεσιών που σχετίζονται με τη δικτύωση.</p></div>
+        <div class="category-card"><div class="category-code">V4</div><h4>Software Vendor Award</h4><p>Για προμηθευτές που αναπτύσσουν software σε οποιαδήποτε κατηγορία.</p></div>
+        <div class="category-card"><div class="category-code">V5</div><h4>Security Vendor Award</h4><p>Για προμηθευτές συστημάτων κυβερνοασφάλειας που ενισχύουν τους συνεργάτες τους.</p></div>
+        <div class="category-card"><div class="category-code">V6</div><h4>Printing Vendor Award</h4><p>Αναγνώριση του κορυφαίου κατασκευαστή εκτυπωτών και εκτυπωτικών συστημάτων.</p></div>
+        <div class="category-card"><div class="category-code">V7</div><h4>UC/Video Conference Vendor Award</h4><p>Ο κατασκευαστής που ξεχωρίζει στις λύσεις video conference και ενοποιημένης επικοινωνίας.</p></div>
+        <div class="category-card"><div class="category-code">V8</div><h4>AI Vendor Award</h4><p>Ο κατασκευαστής AI που αναγνωρίζει το κανάλι ως τον πλέον ώριμο.</p></div>
+        <div class="category-card"><div class="category-code">V9</div><h4>Specialist Vendor Award</h4><p>Για προμηθευτές εξειδικευμένων προϊόντων ή υπηρεσιών, συμπεριλαμβανομένων audio/video.</p></div>
+        <div class="category-card"><div class="category-code">V10</div><h4>Cloud Services Vendor Award</h4><p>Για κατασκευαστές/προμηθευτές cloud υπηρεσιών οποιουδήποτε τύπου.</p></div>
+        <div class="category-card"><div class="category-code">V11</div><h4>ESG Award</h4><p>Για εταιρείες τεχνολογίας που έχουν ενσωματώσει το ESG στη λειτουργία τους.</p></div>
+        <div class="category-card"><div class="category-code">V12</div><h4>Best Partner Program Award</h4><p>Το κορυφαίο πρόγραμμα συνεργατών, όπως το αξιολογούν οι ίδιοι οι συνεργάτες.</p></div>
+        <div class="category-card"><div class="category-code">V13</div><h4>Data Center Vendor Award</h4><p>Για κατασκευαστές που προσφέρουν υπηρεσίες και υποδομές DataCenter.</p></div>
+        <div class="category-card"><div class="category-code">V14</div><h4>Smart Building Vendor Award</h4><p>Ο κατασκευαστής που ξεχώρισε φέτος στην αγορά έξυπνων κτιρίων.</p></div>
+        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">V15</div><h4>Vendor of the Year Award</h4><p>Ο κορυφαίος κατασκευαστής της χρονιάς, ανεξαρτήτως κατηγορίας.</p></div>
+      </div></div>
+
+      <div class="tab-panel" id="tab-distributors"><div class="category-grid">
+        <div class="category-card"><div class="category-code">D1</div><h4>Broad Line Distributor Award</h4><p>Για διανομείς ευρέος φάσματος προϊόντων τεχνολογίας.</p></div>
+        <div class="category-card"><div class="category-code">D2</div><h4>Value Added Distributor Award</h4><p>Για διανομείς που προσφέρουν υπηρεσίες προστιθέμενης αξίας στο κανάλι.</p></div>
+        <div class="category-card"><div class="category-code">D3</div><h4>Cloud Distributor Award</h4><p>Για διανομείς που εστιάζουν σε cloud υπηρεσίες και λύσεις.</p></div>
+        <div class="category-card"><div class="category-code">D4</div><h4>Security Distributor Award</h4><p>Για διανομείς που εξειδικεύονται σε λύσεις και προϊόντα κυβερνοασφάλειας.</p></div>
+        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">D5</div><h4>Distributor of the Year Award</h4><p>Ο κορυφαίος διανομέας της χρονιάς, ανεξαρτήτως ειδίκευσης.</p></div>
+      </div></div>
+
+      <div class="tab-panel" id="tab-editors"><div class="category-grid">
+        <div class="category-card" style="border-color:var(--red);background:var(--red-pale);"><div class="category-code" style="color:var(--red);">EC1</div><h4>Channel Manager of the Year</h4><p>Επιλογή της σύνταξης του Tech Channel Partner για τον κορυφαίο Channel Manager της χρονιάς.</p></div>
+        <div class="category-card" style="border-color:var(--red);background:var(--red-pale);"><div class="category-code" style="color:var(--red);">EC2</div><h4>Editor's Choice — Στελέχη που ξεχώρισαν</h4><p>Αναγνώριση στελεχών που ξεχωρίζουν για την προσφορά και τη συνεισφορά τους στο κανάλι.</p></div>
+      </div>
+      <div class="notice-banner" style="margin-top:32px;">
+        <span class="notice-icon">✏️</span>
+        <div class="notice-text">
+          <strong>Επιλογή σύνταξης</strong>
+          <span>Οι κατηγορίες Editor's Choice επιλέγονται αποκλειστικά από τους αναλυτές και δημοσιογράφους του Tech Channel Partner.</span>
+        </div>
+      </div></div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CTA BANNER
+  ═══════════════════════════════════════════ -->
+  <div class="cta-banner">
+    <div class="cta-banner-bg"></div>
+    <div class="cta-banner-overlay"></div>
+    <div class="container cta-banner-content">
+      <span class="section-label reveal" style="color:var(--gold-light);">Λάβετε μέρος</span>
+      <h2 class="reveal reveal-delay-1">Έτοιμοι να διεκδικήσετε<br/>το βραβείο σας;</h2>
+      <p class="reveal reveal-delay-2">Δηλώστε υποψηφιότητα, κλείστε θέση για την εντυπωσιακή τελετή απονομής.</p>
+      <div class="cta-btns reveal reveal-delay-3">
+        <a href="participations.html" class="btn btn-gold btn-lg">Δήλωση υποψηφιότητας</a>
+        <!-- ============================================================
+             ΨΗΦΟΦΟΡΙΑ BUTTON — currently hidden, will be activated
+             when voting opens. DO NOT DELETE THIS COMMENT OR THE CODE.
+        ============================================================
+        <a href="dovote.html" class="btn btn-outline-white btn-lg">Ψηφοφορία</a>
+        ============================================================ -->
+        <a href="invitations.html" class="btn btn-outline-white btn-lg">Book a seat</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CONTACT
+  ═══════════════════════════════════════════ -->
+  <section class="contact-home" id="contact">
+    <div class="container" style="text-align:center;">
+      <span class="section-label">Επικοινωνία</span>
+      <span class="gold-rule"></span>
+      <h2 style="margin-bottom:40px;" class="reveal">Επιβεβαίωση συμμετοχών &amp;<br/>περισσότερες πληροφορίες</h2>
+      <div class="contact-card-center reveal reveal-delay-1">
+        <div class="cn">Νίκος Μπάστας</div>
+        <div style="display:flex; flex-direction:column; gap:14px; align-items:center;">
+          <a href="mailto:awards@socialhandlers.com" class="contact-link"><span>✉</span> awards@socialhandlers.com</a>
+          <a href="tel:+306937400050" class="contact-link"><span>📱</span> 693 740 0050</a>
+          <a href="tel:+302106980061" class="contact-link"><span>📞</span> 210 698 0061</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="sponsors-placeholder"></div>
+  <div id="footer-placeholder"></div>
+
+  <!-- Terms Modal -->
+  <div class="modal-overlay" id="terms-modal">
+    <div class="modal-box">
+      <button class="modal-close" id="terms-modal-close">✕</button>
+      <h3>Όροι συμμετοχής</h3>
+      <p>Δικαίωμα συμμετοχής έχουν όλες οι εταιρείες που ασχολούνται με τη μεταπώληση, την κατασκευή ή τη διανομή προϊόντων τεχνολογίας. Ανάλογα με τη βασική τους δραστηριότητα, θα μπορούν να συμμετάσχουν στις αντίστοιχες κατηγορίες μεταπωλητών/συνεργατών (Resellers), διανομέων (Distributors) και κατασκευαστών (Vendors).</p>
+      <p>Σημειώνεται ότι κάθε εταιρεία έχει δικαίωμα συμμετοχής σε όσες κατηγορίες επιθυμεί, αρκεί να δραστηριοποιείται στην εν λόγω κατηγορία.</p>
+      <p><strong>Resellers:</strong> Βραβεία που αφορούν σε μεταπωλητές ή αλλιώς το «κανάλι», οποιουδήποτε τύπου, όπως για παράδειγμα VARs, SIs, ISVs κ.α.</p>
+      <p><strong>Vendors:</strong> Βραβεία που αφορούν σε κατασκευαστές και επίσημους αντιπροσώπους διεθνών κατασκευαστών, σε οποιαδήποτε κατηγορία προϊόντων ή υπηρεσιών.</p>
+      <p><strong>Distributors:</strong> Βραβεία που αφορούν σε διανομείς τεχνολογικών προϊόντων και υπηρεσιών.</p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('tcp:ready', () => {
+      const seq = [
+        { id: 'hp-pretitle', delay: 150 },
+        { id: 'hl-1',        delay: 300 },
+        { id: 'hl-2',        delay: 460 },
+        { id: 'hp-year',     delay: 560 },
+        { id: 'hp-desc',     delay: 680 },
+        { id: 'hp-btns',     delay: 800 },
+        { id: 'hp-deadline', delay: 920 },
+        { id: 'hp-statue',   delay: 600 },
+      ];
+      seq.forEach(({ id, delay }) => {
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add('visible');
+        }, delay);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCP Awards 2025 — Βραβευθέντες & Φωτογραφίες</title>
+  <link rel="icon" href="https://shpages.com/wp-content/uploads/2024/07/favicon_3.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- GLightbox — free lightbox, no dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css" />
+  <style>
+
+    /* ── PAGE HERO ── */
+    .past-hero {
+      background: var(--off-white);
+      padding: 140px 0 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .past-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .past-hero-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .past-hero-eyebrow::before,
+    .past-hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .past-hero-eyebrow::after { background: linear-gradient(90deg, var(--gold), transparent); }
+    .past-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 800;
+      line-height: 0.95;
+      color: var(--near-black);
+      margin-bottom: 16px;
+    }
+    .past-hero h1 span { color: var(--gold); }
+    .past-hero p {
+      font-size: 16px;
+      color: var(--mid-gray);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .past-hero-logo {
+      max-width: 280px;
+      margin: 0 auto 40px;
+    }
+    .past-hero-logo img { width: 100%; }
+
+    /* ── WINNERS SECTION ── */
+    .winners-section {
+      background: var(--white);
+      padding: var(--section-pad) 0;
+    }
+
+    .winners-group {
+      margin-bottom: 72px;
+    }
+    .winners-group:last-child { margin-bottom: 0; }
+
+    .winners-group-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 800;
+      color: var(--near-black);
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .winners-group-title::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Winners table */
+    .winners-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+    .winners-table tr {
+      border-bottom: 1px solid var(--light-gray);
+      transition: background 0.15s;
+    }
+    .winners-table tr:last-child { border-bottom: none; }
+    .winners-table tr:hover { background: var(--gold-pale); }
+    .winners-table td {
+      padding: 14px 16px;
+      color: var(--dark-gray);
+      line-height: 1.4;
+    }
+    .winners-table td:first-child {
+      color: var(--near-black);
+      font-weight: 500;
+      width: 55%;
+    }
+    .winners-table td:last-child {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-dark);
+    }
+
+    /* ── PHOTO GALLERY ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/2;
+      background: var(--light-gray);
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease);
+      display: block;
+    }
+
+    .gallery-item:hover img { transform: scale(1.06); }
+
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26,23,20,0);
+      transition: background 0.3s;
+    }
+    .gallery-item:hover::after { background: rgba(26,23,20,0.15); }
+
+    /* Atmosphere gallery — wider grid */
+    .gallery-grid--atmosphere {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    /* ── SPONSORS (from original page) ── */
+    .past-sponsors {
+      background: var(--white);
+      padding: 64px 0;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .past-sponsors-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      text-align: center;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .past-sponsors-title::before,
+    .past-sponsors-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .gallery-grid--atmosphere { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid--atmosphere { grid-template-columns: repeat(3, 1fr); }
+      .winners-table { font-size: 13px; }
+      .winners-table td { padding: 10px 12px; }
+      .past-hero-videos { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid,
+      .gallery-grid--atmosphere { grid-template-columns: repeat(2, 1fr); }
+    }
+
+  </style>
+</head>
+<body class="light-hero">
+
+  <div id="header-placeholder"></div>
+
+  <!-- HERO -->
+  <div class="past-hero">
+    <div class="container">
+      <div class="past-hero-eyebrow">Past Awards</div>
+      <h1>TCP <span>Awards</span><br/>2025</h1>
+      <p>Βραβευθέντες και φωτογραφίες από την τελετή απονομής βραβείων Tech Channel Partner Awards 2025.</p>
+      <div class="past-hero-logo">
+        <img src="https://shpages.com/wp-content/uploads/2025/06/tcp_awards25_elements-04-1024x520.png" alt="TCP Awards 2025" />
+      </div>
+
+      <!-- Videos -->
+      <div style="display:flex; flex-direction:column; gap:24px; max-width:860px; margin:0 auto 8px;">
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg);">
+          <iframe
+            src="https://www.youtube.com/embed/iaQAyZzL2F4"
+            title="TCP Awards 2025 Video 1"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          ></iframe>
+        </div>
+        <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg);">
+          <iframe
+            src="https://www.youtube.com/embed/qsPASKXgFJc"
+            title="TCP Awards 2025 Video 2"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+            style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          ></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WINNERS + GALLERIES -->
+  <section class="winners-section">
+    <div class="container">
+
+      <!-- ── RESELLERS ── -->
+      <div class="winners-group">
+        <h2 class="winners-group-title">Resellers</h2>
+        <table class="winners-table">
+          <tr><td>Public Sector VAR</td><td>Byte Computers</td></tr>
+          <tr><td>Managed Services Provider (MSP)</td><td>Active</td></tr>
+          <tr><td>Cloud Services Provider</td><td>InTTrust</td></tr>
+          <tr><td>Security Reseller Silver</td><td>Dataways</td></tr>
+          <tr><td>Security Reseller Gold</td><td>InTTrust</td></tr>
+          <tr><td>ESG</td><td>EuroSupplies</td></tr>
+          <tr><td>Printing &amp; MPS Bronze</td><td>EuroSupplies</td></tr>
+          <tr><td>Printing &amp; MPS Silver</td><td>Digimark</td></tr>
+          <tr><td>Printing &amp; MPS Gold</td><td>Active</td></tr>
+          <tr><td>System Integration</td><td>Byte Computers</td></tr>
+          <tr><td>AI Partner</td><td>Performance Technologies</td></tr>
+          <tr><td>Software Partner</td><td>Digimark</td></tr>
+          <tr><td>Defense Partner</td><td>Space Hellas</td></tr>
+          <tr><td>Partner of the Year</td><td>Msystems</td></tr>
+        </table>
+
+        <div class="gallery-grid">
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1640.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1640.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1654.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1654.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1665.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1665.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1677.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1677.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1684.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1684.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1700.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1700.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1707.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1707.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1718.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1718.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1729.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1729.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1735.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1735.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1748.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1748.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1759.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1759.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1772.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1772.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1790.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1790.jpg" alt="" loading="lazy" /></a>
+        </div>
+      </div>
+
+      <!-- ── DISTRIBUTORS ── -->
+      <div class="winners-group">
+        <h2 class="winners-group-title">Distributors</h2>
+        <table class="winners-table">
+          <tr><td>Cloud Distributor Silver</td><td>interworks.cloud</td></tr>
+          <tr><td>Cloud Distributor Gold</td><td>Info Quest Technologies</td></tr>
+          <tr><td>Infrastructure Distributor Bronze</td><td>ALEF</td></tr>
+          <tr><td>Infrastructure Distributor Silver</td><td>Info Quest Technologies</td></tr>
+          <tr><td>Infrastructure Distributor Gold</td><td>Oktabit</td></tr>
+          <tr><td>Security Distributor Silver</td><td>Digital SIMA</td></tr>
+          <tr><td>Security Distributor Gold</td><td>Info Quest Technologies</td></tr>
+          <tr><td>Networking &amp; Communications Distributor</td><td>Oktabit</td></tr>
+          <tr><td>Specialist Distributor Silver</td><td>CPI</td></tr>
+          <tr><td>Specialist Distributor Gold</td><td>Professional Services</td></tr>
+          <tr><td>ESG Silver</td><td>Oktabit</td></tr>
+          <tr><td>ESG Gold</td><td>Info Quest Technologies</td></tr>
+          <tr><td>Distributor of the Year Silver</td><td>Oktabit</td></tr>
+          <tr><td>Distributor of the Year Gold</td><td>Info Quest Technologies</td></tr>
+        </table>
+
+        <div class="gallery-grid">
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1795.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1795.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1807.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1807.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1820.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1820.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1828.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1828.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1837.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1837.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1849.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1849.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1859.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1859.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1869.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1869.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1874.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1874.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1887.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1887.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1898.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1898.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1904.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1904.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1926.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1926.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1934.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1934.jpg" alt="" loading="lazy" /></a>
+        </div>
+      </div>
+
+      <!-- ── VENDORS ── -->
+      <div class="winners-group">
+        <h2 class="winners-group-title">Vendors</h2>
+        <table class="winners-table">
+          <tr><td>Infrastructure Vendor Bronze</td><td>NetApp</td></tr>
+          <tr><td>Infrastructure Vendor Silver</td><td>HPE</td></tr>
+          <tr><td>Infrastructure Vendor Gold</td><td>Dell Technologies</td></tr>
+          <tr><td>Devices Vendor Silver</td><td>Lenovo</td></tr>
+          <tr><td>Devices Vendor Gold</td><td>HP</td></tr>
+          <tr><td>Networking Vendor Silver</td><td>HPE</td></tr>
+          <tr><td>Networking Vendor Gold</td><td>Cisco</td></tr>
+          <tr><td>Software Vendor</td><td>EnterSoftone Impact</td></tr>
+          <tr><td>Security Vendor Bronze</td><td>Acronis</td></tr>
+          <tr><td>Security Vendor Silver</td><td>Bitdefender</td></tr>
+          <tr><td>Security Vendor Gold</td><td>WatchGuard</td></tr>
+          <tr><td>Printing Vendor Silver</td><td>Epson</td></tr>
+          <tr><td>Printing Vendor Gold</td><td>HP</td></tr>
+          <tr><td>UC/Video Conference Vendor Silver</td><td>HP Poly</td></tr>
+          <tr><td>UC/Video Conference Vendor Gold</td><td>Logitech</td></tr>
+          <tr><td>AI Vendor Silver</td><td>Lenovo</td></tr>
+          <tr><td>AI Vendor Gold</td><td>Dell Technologies</td></tr>
+          <tr><td>Specialist Vendor Bronze</td><td>EIZO</td></tr>
+          <tr><td>Specialist Vendor Silver</td><td>Dahua</td></tr>
+          <tr><td>Specialist Vendor Gold</td><td>LG Electronics</td></tr>
+          <tr><td>Cloud Services Vendor Silver</td><td>Lenovo</td></tr>
+          <tr><td>Cloud Services Vendor Gold</td><td>HPE</td></tr>
+          <tr><td>ESG</td><td>HP</td></tr>
+          <tr><td>Best Partner Program Silver</td><td>HP</td></tr>
+          <tr><td>Best Partner Program Gold</td><td>Epson</td></tr>
+          <tr><td>Data Center Vendor Silver</td><td>Schneider Electric</td></tr>
+          <tr><td>Data Center Vendor Gold</td><td>Digital Realty</td></tr>
+          <tr><td>Smart Building Vendor</td><td>Akubela</td></tr>
+          <tr><td>Vendor of the Year Silver</td><td>HPE</td></tr>
+          <tr><td>Vendor of the Year Gold</td><td>Lenovo</td></tr>
+        </table>
+
+        <div class="gallery-grid">
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1942.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1942.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1965.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1965.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1974.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1974.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1986.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1986.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1996.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1996.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2016.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2016.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2030.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2030.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2040.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2040.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2053.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2053.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2061.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2061.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2074.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2074.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2085.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2085.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2103.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2103.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2110.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2110.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2116.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2116.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2124.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2124.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2126.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2126.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2135.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2135.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2138.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2138.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2144.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2144.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2151.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2151.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2154.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2154.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2158.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2158.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2164.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2164.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2173.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2173.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2180.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2180.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2182.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2182.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2187.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2187.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2193.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2193.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2198.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2198.jpg" alt="" loading="lazy" /></a>
+        </div>
+      </div>
+
+      <!-- ── EDITOR'S CHOICE ── -->
+      <div class="winners-group">
+        <h2 class="winners-group-title">Editor's Choice</h2>
+        <table class="winners-table">
+          <tr><td>Channel Chief Award</td><td>Αλέξανδρος Κινινής</td></tr>
+          <tr><td>Channel Marketing Award</td><td>Βικτώρια Λουπάκου</td></tr>
+          <tr><td>Life Achievement Award</td><td>Χριστόδουλος Παπαφώτης</td></tr>
+        </table>
+
+        <div class="gallery-grid">
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2201.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2201.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2207.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2207.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2210.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2210.jpg" alt="" loading="lazy" /></a>
+        </div>
+      </div>
+
+      <!-- ── ATMOSPHERE — @Μουσείο Οίνου Μάρκου ── -->
+      <div class="winners-group">
+        <h2 class="winners-group-title">@Μουσείο Οίνου Μάρκου</h2>
+
+        <div class="gallery-grid gallery-grid--atmosphere">
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1546.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1546.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1574.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1574.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_1579.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_1579.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2234.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2234.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/DSC_2243.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/DSC_2243.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-004.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-004.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-008.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-008.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-034.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-034.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-044.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-044.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-046.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-046.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-047.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-047.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-050.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-050.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-055.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-055.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-056.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-056.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-061.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-061.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-062.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-062.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-063.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-063.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-064.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-064.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-071.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-071.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-072.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-072.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-074.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-074.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-096.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-096.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-097.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-097.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-098.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-098.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-101.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-101.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-103.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-103.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-105.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-105.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-109.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-109.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-113.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-113.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-114.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-114.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-116.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-116.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-150.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-150.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-155.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-155.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-173.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-173.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-186.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-186.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-192.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-192.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-194.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-194.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-226.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-226.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-227.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-227.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-229.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-229.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-230.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-230.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-231.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-231.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-241.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-241.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-266.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-266.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-267.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-267.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-270.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-270.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-272.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-272.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-273.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-273.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-291.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-291.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-292.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-292.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-293.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-293.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-299.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-299.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-315.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-315.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-320.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-320.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-336.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-336.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-339.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-339.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-360.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-360.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-367.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-367.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-370.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-370.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-374.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-374.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-375.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-375.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-411.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-411.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-412.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-412.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-414.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-414.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-416.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-416.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-417.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-417.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-418.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-418.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-425.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-425.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-428.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-428.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-443.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-443.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-461.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-461.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-464.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-464.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-466.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-466.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-467.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-467.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-468.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-468.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-470.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-470.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-471.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-471.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-472.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-472.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-474.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-474.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-476.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-476.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-477.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-477.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-478.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-478.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-479.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-479.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-480.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-480.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-481.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-481.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-482.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-482.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-483.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-483.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-484.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-484.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-485.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-485.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-487.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-487.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-488.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-488.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-489.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-489.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-490.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-490.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-492.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-492.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-493.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-493.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-494.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-494.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-495.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-495.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-496.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-496.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-497.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-497.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-498.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-498.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-499.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-499.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-500.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-500.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-501.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-501.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-502.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-502.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-523.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-523.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-525.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-525.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-526.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-526.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-528.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-528.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-531.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-531.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-536.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-536.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-539.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-539.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-542.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-542.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-567.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-567.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-568.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-568.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-575.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-575.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-578.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-578.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-579.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-579.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-580.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-580.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-581.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-581.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-585.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-585.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-589.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-589.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-591.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-591.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-592.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-592.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-597.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-597.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-600.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-600.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-602.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-602.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-611.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-611.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-612.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-612.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-617.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-617.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-620.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-620.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-623.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-623.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-624.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-624.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-629.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-629.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-630.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-630.jpg" alt="" loading="lazy" /></a>
+          <a class="gallery-item glightbox" href="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-634.jpg"><img src="https://shpages.com/wp-content/uploads/2025/10/TECH-CHANNEL-AWARDS-634.jpg" alt="" loading="lazy" /></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SPONSORS — 2025 hardcoded, independent of shared component -->
+  <section class="sponsors-section">
+    <div class="container">
+
+      <div class="sponsors-tier gold">
+        <div class="sponsors-tier-label gold-tier">⭐ Gold Sponsors</div>
+        <div class="sponsors-logos sponsors-logos--4">
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/07/DT_Logo_Stk_Blue_4c-1024x586.jpg" alt="DT" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/eizo.png" alt="Eizo" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/hp.png" alt="HP" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/08/QG-IQT-1024x200.png" alt="QGroup" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2023/10/2560px-Lenovo_Global_Corporate_Logo-1024x341.png" alt="Lenovo" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/LG_Electronics_Logo_HeritageRed_Grey_CMYK.png" alt="LG" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/07/OktabitLogo-1024x166.png" alt="Oktabit" /></div>
+        </div>
+      </div>
+
+      <div class="sponsors-tier">
+        <div class="sponsors-tier-label">Silver Sponsors</div>
+        <div class="sponsors-logos sponsors-logos--4">
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/10/AORUS_logo_HA_BK-1-1024x398.png" alt="Aorus" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/08/Bitdefender_Masterbrand_Logo_Positive-1-1024x576.png" alt="Bitdefender" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/09/Cisco_Logo_no_TM_Sky_Blue-RGB.png" alt="Cisco" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/09/CPI-1MB-1024x329.jpg" alt="CPI" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/10/entersoft-1.png" alt="Entersoft" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/EPSILONNET_logo.png" alt="Epsilon Net" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/10/2000-GBT-CS6-01.png" alt="GBT" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/Basic-Logo-jpeg-1.jpg" alt="Basic" /></div>
+        </div>
+      </div>
+
+      <div class="sponsors-tier">
+        <div class="sponsors-tier-label">Sponsors</div>
+        <div class="sponsors-logos sponsors-logos--4">
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/Active_logo_30years-1024x271.png" alt="Active" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/ALEF_Logo2018_RGB-1024x216.png" alt="ALEF" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/asbis_logo_blue.png" alt="ASBIS" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2023/05/Byte_Logo_600x550.png" alt="Byte" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/07/dahua.png" alt="Dahua" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/07/dataways.png" alt="Dataways" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/digimark.png" alt="Digimark" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/09/epson_Web.jpg" alt="Epson" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/09/eurosupplies-logo_1000x233-8.png" alt="Eurosupplies" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2025/09/HPE-logo-full-clr-pos-rgb-1024x293.png" alt="HPE" /></div>
+        </div>
+      </div>
+
+      <div class="sponsors-tier">
+        <div class="sponsors-tier-label">Χορηγοί Επικοινωνίας</div>
+        <div class="sponsors-logos sponsors-logos--comm">
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/05/biztech_logo_2022.png" alt="Biztech" /></div>
+          <div class="sponsor-logo" style="--logo-scale:1"><img src="https://shpages.com/wp-content/uploads/2024/05/Screenshot-2024-05-08-124127.png" alt="Media Partner" /></div>
+        </div>
+      </div>
+
+      <div class="organizer-block">
+        <div class="sponsors-tier-label" style="justify-content:center; margin-bottom:20px;">Διοργανωτής</div>
+        <div class="organizer-logo">
+          <img src="https://shpages.com/wp-content/uploads/2020/02/1.png" alt="Social Handlers" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+  <script>
+    document.addEventListener('tcp:ready', () => {
+      GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!-- ============================================================
+     PARTICIPATIONS FORM — MailerLite (ID: 6038838, code: e8k2l2)
+     Styled to match TCP Awards design system.
+     On success redirects to: https://shpages.com/tcp_awards_ty/
+     ============================================================ -->
+<style>
+  .ml-form-embedSubmitLoad{display:inline-block;width:20px;height:20px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  .ml-form-embedSubmitLoad:after{content:" ";display:block;width:11px;height:11px;margin:1px;border-radius:50%;border:4px solid #fff;border-color:#fff #fff #fff transparent;animation:ml-form-embedSubmitLoad 1.2s linear infinite}
+  @keyframes ml-form-embedSubmitLoad{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+  /* ── TCP Awards overrides ── */
+  #mlb2-6038838.ml-form-embedContainer { display:block; width:100%!important; box-sizing:border-box; }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedWrapper {
+    background: var(--white);
+    border: 1px solid var(--light-gray);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    width: 100%!important;
+    max-width: 100%!important;
+    display: block!important;
+    box-sizing: border-box;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody,
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody {
+    padding: 40px 48px;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer h4 {
+    font-family: var(--font-display)!important;
+    font-size: 24px!important;
+    font-weight: 700!important;
+    color: var(--near-black)!important;
+    margin-bottom: 8px!important;
+    text-align: left!important;
+    text-transform: none!important;
+    letter-spacing: normal!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-block-form .ml-field-group label {
+    font-family: var(--font-body)!important;
+    font-size: 11px!important;
+    font-weight: 600!important;
+    letter-spacing: 0.08em!important;
+    text-transform: uppercase!important;
+    color: var(--dark-gray)!important;
+    margin-bottom: 6px!important;
+    line-height: 1.4!important;
+    display: block!important;
+    width: 100%;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow input[type=text],
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow input[type=email] {
+    font-family: var(--font-body)!important;
+    font-size: 15px!important;
+    color: var(--near-black)!important;
+    background: var(--white)!important;
+    border: 1.5px solid var(--light-gray)!important;
+    border-radius: var(--radius)!important;
+    padding: 12px 14px!important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.5!important;
+    width: 100%!important;
+    box-sizing: border-box!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow input:focus {
+    border-color: var(--gold)!important;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.12)!important;
+    outline: none!important;
+  }
+
+  /* Radio container */
+  #mlb2-6038838.ml-form-embedContainer .custom-checkbox-radio-list {
+    border: 1.5px solid var(--light-gray)!important;
+    border-radius: var(--radius-lg)!important;
+    padding: 6px 4px!important;
+    background: var(--cream);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio {
+    display: flex!important;
+    align-items: center!important;
+    gap: 12px!important;
+    padding: 10px 14px!important;
+    border-radius: var(--radius)!important;
+    transition: background 0.2s;
+    cursor: pointer;
+    position: relative;
+    min-height: auto!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio:hover {
+    background: rgba(201,168,76,0.08)!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio .custom-control-label {
+    font-family: var(--font-body)!important;
+    font-size: 14px!important;
+    font-weight: 500!important;
+    color: var(--dark-gray)!important;
+    line-height: 1.5!important;
+    cursor: pointer;
+    text-transform: none!important;
+    letter-spacing: normal!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio .custom-control-label::before {
+    border: 2px solid var(--light-gray)!important;
+    background: var(--white)!important;
+    top: 50%!important;
+    transform: translateY(-50%);
+    width: 18px!important;
+    height: 18px!important;
+    left: -1.5rem!important;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--gold)!important;
+    background-color: var(--gold)!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio .custom-control-label::after {
+    top: 50%!important;
+    transform: translateY(-50%);
+    left: -1.5rem!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow .custom-radio:has(.custom-control-input:checked) {
+    background: var(--gold-pale)!important;
+  }
+
+  /* Checkbox */
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow { float: none!important; }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow label {
+    padding-left: 28px!important;
+    display: flex!important;
+    align-items: flex-start!important;
+    gap: 10px!important;
+    min-height: auto!important;
+    font-weight: 400!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow .label-description {
+    font-family: var(--font-body)!important;
+    font-size: 13px!important;
+    color: var(--dark-gray)!important;
+    line-height: 1.55!important;
+    display: block!important;
+    margin-top: -2px;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow .label-description p {
+    font-family: var(--font-body)!important;
+    font-size: 13px!important;
+    color: var(--dark-gray)!important;
+    line-height: 1.55!important;
+    margin: 0!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow .label-description::before {
+    border: 2px solid var(--light-gray)!important;
+    background: var(--white)!important;
+    border-radius: 4px!important;
+    top: 0!important;
+    left: -28px!important;
+    width: 16px!important;
+    height: 16px!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow .label-description::after {
+    top: 0!important;
+    left: -28px!important;
+  }
+
+  /* Submit */
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedSubmit { float: none!important; }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedSubmit button.primary {
+    font-family: var(--font-body)!important;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    letter-spacing: 0.06em!important;
+    text-transform: uppercase!important;
+    color: #ffffff!important;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark))!important;
+    border: none!important;
+    border-radius: 40px!important;
+    padding: 14px 32px!important;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.25)!important;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    position: relative;
+    width: 100%!important;
+    box-sizing: border-box!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedSubmit button.primary:hover {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold))!important;
+    color: #ffffff!important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.4)!important;
+  }
+
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedSubmit button.primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -75%;
+    width: 50%; height: 100%;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+    transform: skewX(-15deg);
+    animation: btn-shine 3.5s ease-in-out infinite;
+  }
+
+  /* Success */
+  #mlb2-6038838.ml-form-embedContainer .ml-form-successBody { text-align: center; }
+  #mlb2-6038838.ml-form-embedContainer .ml-form-successBody h4 {
+    font-family: var(--font-display)!important;
+    font-size: 28px!important;
+    font-weight: 700!important;
+    color: var(--near-black)!important;
+    text-align: center!important;
+    text-transform: none!important;
+    letter-spacing: normal!important;
+  }
+  #mlb2-6038838.ml-form-embedContainer .ml-form-successBody p {
+    font-family: var(--font-body)!important;
+    font-size: 15px!important;
+    color: var(--dark-gray)!important;
+    text-align: center!important;
+    line-height: 1.7!important;
+    text-transform: none!important;
+    letter-spacing: normal!important;
+  }
+
+  /* Spacing */
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-fieldRow { margin-bottom: 18px!important; }
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-checkboxRow { margin-bottom: 24px!important; }
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedSubmit { margin-bottom: 0!important; }
+  #mlb2-6038838.ml-form-embedContainer .ml-form-embedBody .ml-form-embedContent { margin-bottom: 28px!important; }
+
+  @media (max-width: 768px) {
+    #mlb2-6038838.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody,
+    #mlb2-6038838.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding: 28px 24px!important; }
+  }
+</style>
+
+<div id="mlb2-6038838" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-6038838">
+  <div class="ml-form-align-center">
+    <div class="ml-form-embedWrapper embedForm">
+
+      <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
+        <div class="ml-form-embedContent">
+          <h4>Δηλώστε υποψηφιότητα στα βραβεία</h4>
+        </div>
+        <form class="ml-block-form" action="https://static.mailerlite.com/webforms/submit/e8k2l2" data-code="e8k2l2" method="post" target="_blank">
+          <div class="ml-form-formContent">
+
+            <div class="ml-form-fieldRow">
+              <div class="ml-field-group ml-field-company ml-validate-required">
+                <label>Εταιρεία</label>
+                <input aria-label="company" aria-required="true" type="text" class="form-control" name="fields[company]" placeholder="" autocomplete="organization" />
+              </div>
+            </div>
+
+            <div class="ml-form-fieldRow">
+              <div class="ml-field-group ml-field-firstlast_name ml-validate-required">
+                <label>Contact person</label>
+                <input aria-label="firstlast_name" aria-required="true" type="text" class="form-control" name="fields[firstlast_name]" placeholder="" autocomplete="name" />
+              </div>
+            </div>
+
+            <div class="ml-form-fieldRow">
+              <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                <label>Email</label>
+                <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="" autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="ml-form-fieldRow">
+              <div class="ml-field-group ml-field-phone ml-validate-required">
+                <label>Τηλέφωνο</label>
+                <input aria-label="phone" aria-required="true" type="text" class="form-control" name="fields[phone]" placeholder="" autocomplete="tel" />
+              </div>
+            </div>
+
+            <div class="ml-form-fieldRow ml-last-item">
+              <div class="ml-field-group ml-field-zip ml-validate-required">
+                <label>Υποψηφιότητες</label>
+                <div class="custom-checkbox-radio-list">
+                  <div class="custom-control custom-radio">
+                    <input aria-label="zip" aria-required="true" name="fields[zip]" class="custom-control-input" type="radio" value="Ενδιαφέρομαι για 1 έως 3 υποψηφιότητες" id="part-radio-0" />
+                    <label class="custom-control-label" for="part-radio-0">Ενδιαφέρομαι για 1 έως 3 υποψηφιότητες</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input aria-label="zip" aria-required="true" name="fields[zip]" class="custom-control-input" type="radio" value="Ενδιαφέρομαι για 4 και άνω υποψηφιότητες" id="part-radio-1" />
+                    <label class="custom-control-label" for="part-radio-1">Ενδιαφέρομαι για 4 και άνω υποψηφιότητες</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="ml-form-checkboxRow ml-validate-required">
+            <label class="checkbox">
+              <input type="checkbox" />
+              <div class="label-description">
+                <p>Επιτρέπω στον Διοργανωτή να επικοινωνήσει μαζί μου για την επιβεβαίωση των υποψηφιών.</p>
+              </div>
+            </label>
+          </div>
+
+          <input type="hidden" name="ml-submit" value="1" />
+          <div class="ml-form-embedSubmit">
+            <button type="submit" class="primary">Υποβολή εγγραφής</button>
+            <button disabled="disabled" style="display:none" type="button" class="loading">
+              <div class="ml-form-embedSubmitLoad"></div>
+              <span class="sr-only">Loading...</span>
+            </button>
+          </div>
+          <input type="hidden" name="anticsrf" value="true" />
+        </form>
+      </div>
+
+      <div class="ml-form-successBody row-success" style="display:none">
+        <div class="ml-form-successContent">
+          <h4>Σας ευχαριστούμε!</h4>
+          <p>Η εγγραφή σας έχει πραγματοποιηθεί.</p>
+          <p>Θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση των υποψηφιοτήτων σας.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<img src="https://track.mailerlite.com/webforms/o/6038838/e8k2l2?v1721808549" width="1" height="1" style="max-width:1px;max-height:1px;visibility:hidden;padding:0;margin:0;display:block" alt="" border="0" />
+<script>
+  function ml_webform_success_6038838() {
+    try { window.top.location.href = "https://shpages.com/tcp_awards_ty/"; }
+    catch(t) { window.location.href = "https://shpages.com/tcp_awards_ty/"; }
+  }
+</script>
+<script src="https://static.mailerlite.com/js/w/webforms.min.js?vd4de52e171e8eb9c47c0c20caf367ddf" type="text/javascript"></script>

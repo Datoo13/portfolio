@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ψηφοφορία — TCP Awards 2026</title>
+  <link rel="icon" href="https://shpages.com/wp-content/uploads/2024/07/favicon_3.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .vote-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 48px;
+    }
+    .vote-progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--mid-gray);
+      text-transform: uppercase;
+    }
+    .vote-progress-step .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      border: 2px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--mid-gray);
+      flex-shrink: 0;
+    }
+    .vote-progress-step.active .step-dot {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: white;
+    }
+    .vote-progress-step.active { color: var(--gold-dark); }
+    .vote-progress-line {
+      flex: 1;
+      height: 1px;
+      background: var(--light-gray);
+      margin: 0 12px;
+    }
+  </style>
+</head>
+<body class="light-hero">
+
+  <div id="header-placeholder"></div>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-hero-eyebrow" id="ph-eyebrow">Tech Channel Partner Awards 2026</div>
+      <h1>
+        <span class="hline" id="ph-h1">Ψηφίστε τους</span>
+        <span class="hline hline-gold" id="ph-h2">καλύτερους</span>
+      </h1>
+      <p id="ph-p">Η αγορά ψηφίζει τους κορυφαίους του καναλιού τεχνολογίας στην Ελλάδα.</p>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('tcp:ready', () => {
+      setTimeout(() => document.getElementById('ph-eyebrow')?.classList.add('visible'), 100);
+      setTimeout(() => document.getElementById('ph-h1')?.classList.add('visible'), 250);
+      setTimeout(() => document.getElementById('ph-h2')?.classList.add('visible'), 400);
+      setTimeout(() => document.getElementById('ph-p')?.classList.add('visible'), 500);
+    });
+  </script>
+
+  <!-- ============================================================
+       VOTING FORM
+       ============================================================ -->
+  <section class="section section--white">
+    <div class="container" style="max-width:760px;">
+
+      <!-- CLOSED NOTICE -->
+      <div class="notice-banner">
+        <span class="notice-icon">🔒</span>
+        <div class="notice-text">
+          <strong>Η ψηφοφορία δεν έχει ξεκινήσει ακόμα.</strong>
+          <span>Η έναρξη ψηφοφορίας θα ανακοινωθεί σύντομα. <a href="index.html" style="color:var(--gold);">Επιστροφή στην αρχική →</a></span>
+        </div>
+      </div>
+
+      <!-- Progress indicator -->
+      <div class="vote-progress">
+        <div class="vote-progress-step active">
+          <div class="step-dot">1</div>
+          Στοιχεία
+        </div>
+        <div class="vote-progress-line"></div>
+        <div class="vote-progress-step">
+          <div class="step-dot">2</div>
+          Κατηγορίες
+        </div>
+        <div class="vote-progress-line"></div>
+        <div class="vote-progress-step">
+          <div class="step-dot">3</div>
+          Υποβολή
+        </div>
+      </div>
+
+      <!-- Step 1: Personal info + business type -->
+      <div class="vote-step active" id="vote-step-1">
+        <div class="form-card">
+          <h3 style="font-size:22px; margin-bottom:6px;">Στοιχεία ψηφοφόρου</h3>
+          <p style="font-size:14px; color:var(--mid-gray); margin-bottom:32px;">Όλα τα στοιχεία παραμένουν εμπιστευτικά.</p>
+
+          <div class="form-group">
+            <label class="form-label">Η εταιρεία μου ανήκει στην κατηγορία *</label>
+            <div class="business-type-cards">
+              <div class="business-type-card">
+                <div class="business-type-icon">🤝</div>
+                <h4>Συνεργάτης / Μεταπωλητής</h4>
+                <p>VAR, MSP, System Integrator, ISV, Software House κ.ά.</p>
+              </div>
+              <div class="business-type-card">
+                <div class="business-type-icon">🏭</div>
+                <h4>Κατασκευαστής</h4>
+                <p>Vendor ή επίσημος αντιπρόσωπος διεθνούς κατασκευαστή.</p>
+              </div>
+              <div class="business-type-card">
+                <div class="business-type-icon">📦</div>
+                <h4>Διανομέας</h4>
+                <p>Broad line, VAD ή εξειδικευμένος διανομέας.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ονοματεπώνυμο *</label>
+              <input type="text" class="form-input" placeholder="Ονοματεπώνυμο" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Τηλέφωνο *</label>
+              <input type="tel" class="form-input" placeholder="+30 210 0000000" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Εταιρικό email *</label>
+              <input type="email" class="form-input" placeholder="email@company.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Εταιρεία *</label>
+              <input type="text" class="form-input" placeholder="Επωνυμία εταιρείας" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-checkbox">
+              <input type="checkbox" />
+              <span class="form-checkbox-label">
+                Αποδέχομαι τους <a href="#" style="color:var(--gold);">όρους συμμετοχής</a> στην ψηφοφορία.
+              </span>
+            </label>
+          </div>
+
+          <div class="form-submit">
+            <button type="button" class="btn btn-gold" style="width:100%; justify-content:center;">
+              Επόμενο — Επιλογή κατηγοριών →
+            </button>
+          </div>
+
+          <div class="form-placeholder-note">
+            📋 Placeholder φόρμα — το backend & conditional logic θα συνδεθεί σε επόμενο βήμα.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW VOTING WORKS
+       ============================================================ -->
+  <section class="section section--cream">
+    <div class="container text-center" style="max-width:760px;">
+      <span class="section-label">Πώς λειτουργεί η ψηφοφορία</span>
+      <span class="gold-rule"></span>
+      <h2 style="margin-bottom:40px;">Η αγορά αποφασίζει</h2>
+      <div class="grid-3" style="text-align:left;">
+        <div style="padding:24px; background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--light-gray);">
+          <div style="font-size:28px; margin-bottom:12px;">🗳️</div>
+          <h4 style="margin-bottom:8px; font-size:16px;">Ανεξάρτητη ψηφοφορία</h4>
+          <p style="font-size:13px; color:var(--mid-gray);">Κάθε εταιρεία ψηφίζει μία φορά, με βάση την προσωπική της εμπειρία.</p>
+        </div>
+        <div style="padding:24px; background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--light-gray);">
+          <div style="font-size:28px; margin-bottom:12px;">🎯</div>
+          <h4 style="margin-bottom:8px; font-size:16px;">Κατηγορίες ανά τύπο</h4>
+          <p style="font-size:13px; color:var(--mid-gray);">Ψηφίζετε μόνο στις κατηγορίες που αντιστοιχούν στον τύπο της εταιρείας σας.</p>
+        </div>
+        <div style="padding:24px; background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--light-gray);">
+          <div style="font-size:28px; margin-bottom:12px;">🔒</div>
+          <h4 style="margin-bottom:8px; font-size:16px;">Εμπιστευτικότητα</h4>
+          <p style="font-size:13px; color:var(--mid-gray);">Τα στοιχεία σας παραμένουν εμπιστευτικά και χρησιμοποιούνται μόνο για επαλήθευση.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="sponsors-placeholder"></div>
+  <div id="footer-placeholder"></div>
+
+  <!-- Όροι ψηφοφορίας — subtle, bottom of page -->
+  <div style="background:var(--off-white); text-align:center; padding:20px; border-top:1px solid var(--light-gray);">
+    <a href="https://shpages.com/tcp_awards_terms/" target="_blank" style="font-size:12px; color:var(--mid-gray); transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--mid-gray)'">Όροι ψηφοφορίας TCP Awards 2026</a>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
