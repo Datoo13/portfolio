@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biztech Wiki — Το Λεξιλόγιο της Τεχνολογίας</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;600;700;800&family=Roboto:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base: #ECECEC;
+    --accent: #E11F26;
+    --dark: #1a1a1a;
+    --mid: #5a5a5a;
+    --light: #ffffff;
+    --border: #d4d4d4;
+    --accent-dark: #b81920;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--base);
+    color: var(--dark);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--dark);
+    color: rgba(255,255,255,0.55);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 6px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar a { color: rgba(255,255,255,0.55); text-decoration: none; }
+  .topbar a:hover { color: var(--accent); }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--light);
+    border-bottom: 3px solid var(--accent);
+    padding: 0 40px;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 18px 0;
+  }
+  .logo-block { display: flex; flex-direction: column; line-height: 1; }
+  .logo-main {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--dark);
+    letter-spacing: -0.03em;
+  }
+  .logo-main span { color: var(--accent); }
+  .logo-sub {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--mid);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .header-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--base);
+  }
+  .header-search input {
+    border: none;
+    background: transparent;
+    padding: 8px 14px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+    color: var(--dark);
+    width: 260px;
+    outline: none;
+  }
+  .header-search input::placeholder { color: #aaa; }
+  .header-search button {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    font-family: 'Roboto', sans-serif;
+    transition: background 0.2s;
+  }
+  .header-search button:hover { background: var(--accent-dark); }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--dark);
+    padding: 0 40px;
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+  }
+  nav a {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 12px 18px;
+    display: block;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover, nav a.active { color: #fff; border-bottom-color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dark);
+    color: white;
+    padding: 70px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'WIKI';
+    position: absolute;
+    right: -20px;
+    top: -10px;
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 800;
+    font-size: 18rem;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 580px;
+    line-height: 1.7;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── ALPHA FILTER ── */
+  .alpha-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 32px;
+  }
+  .alpha-filter a {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--mid);
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    padding: 4px 9px;
+    text-decoration: none;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .alpha-filter a:hover, .alpha-filter a.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dark);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 20px;
+  }
+
+  /* ── TERM CARDS ── */
+  .terms-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .term-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .term-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(225,31,38,0.1);
+    transform: translateY(-2px);
+  }
+  .term-card-badge {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(225,31,38,0.07);
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    width: fit-content;
+  }
+  .term-card h2 {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    color: var(--dark);
+  }
+  .term-card p {
+    font-size: 0.88rem;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+  .term-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: #aaa;
+  }
+  .term-card-arrow {
+    margin-left: auto;
+    color: var(--accent);
+    font-size: 1.1rem;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .term-card:hover .term-card-arrow { opacity: 1; transform: translateX(3px); }
+
+  /* ── PLACEHOLDER CARDS ── */
+  .term-card.placeholder {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+  }
+  .term-card.placeholder h2 { color: #aaa; }
+  .coming-soon-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    background: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+  /* banner */
+  .banner-placeholder {
+    background: white;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #bbb;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .banner-placeholder.w300h250 { height: 250px; }
+  .banner-placeholder.w300h600 { height: 600px; }
+  .banner-icon { font-size: 1.8rem; opacity: 0.4; }
+
+  /* sidebar widget */
+  .sidebar-widget {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .widget-head {
+    background: var(--dark);
+    color: white;
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+  .widget-body { padding: 16px; }
+  .widget-tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+  .widget-tag {
+    font-size: 0.75rem;
+    background: var(--base);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 4px 10px;
+    color: var(--mid);
+    text-decoration: none;
+    transition: all 0.15s;
+    font-family: 'Roboto', sans-serif;
+  }
+  .widget-tag:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+  .widget-list { list-style: none; }
+  .widget-list li {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+  }
+  .widget-list li:last-child { border-bottom: none; }
+  .widget-list a {
+    font-size: 0.85rem;
+    color: var(--dark);
+    text-decoration: none;
+    line-height: 1.4;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .widget-list a::before {
+    content: '›';
+    color: var(--accent);
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: -1px;
+  }
+  .widget-list a:hover { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    padding: 32px 40px;
+    margin-top: 40px;
+    font-size: 0.8rem;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: 'Mukta Vaani', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: white;
+  }
+  .footer-logo span { color: var(--accent); }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .page-wrap { grid-template-columns: 1fr; padding: 32px 20px; }
+    .terms-grid { grid-template-columns: 1fr; }
+    .hero { padding: 44px 20px; }
+    .hero h1 { font-size: 2.2rem; }
+    header, nav { padding: 0 20px; }
+    .topbar { padding: 6px 20px; }
+    .header-inner { flex-wrap: wrap; gap: 16px; }
+    .header-search input { width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>Biztech Wiki — Το Λεξιλόγιο της Επιχειρηματικής Τεχνολογίας</span>
+  <span><a href="https://biztech.gr" target="_blank">← Επιστροφή στο Biztech.gr</a></span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-main">Biz<span>Tech</span> Wiki</div>
+      <div class="logo-sub">Εγκυκλοπαίδεια Τεχνολογίας &amp; Επιχειρήσεων</div>
+    </div>
+    <div class="header-search">
+      <input type="text" placeholder="Αναζήτηση όρου…">
+      <button>Αναζήτηση</button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="active">Αρχική</a>
+    <a href="#">Λογισμικό</a>
+    <a href="#">Hardware</a>
+    <a href="#">Cloud</a>
+    <a href="#">Πράσινη Τεχνολογία</a>
+    <a href="#">B2B &amp; ERP</a>
+    <a href="#">AI</a>
+    <a href="#">Ασφάλεια</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Biztech Wiki</div>
+    <h1>Το Λεξιλόγιο<br>της Επιχειρηματικής<br>Τεχνολογίας</h1>
+    <p>Εξηγούμε τους όρους, τα προϊόντα και τις τάσεις που εμφανίζονται στα άρθρα του Biztech.gr — σε απλά, κατανοητά ελληνικά για επαγγελματίες.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap">
+  <main>
+
+    <!-- Alpha Filter -->
+    <div class="alpha-filter">
+      <a href="#" class="active">Όλα</a>
+      <a href="#">Α</a><a href="#">Β</a><a href="#">Γ</a><a href="#">Δ</a>
+      <a href="#">Ε</a><a href="#">Ζ</a><a href="#">Η</a><a href="#">Θ</a>
+      <a href="#">Κ</a><a href="#">Λ</a><a href="#">Μ</a><a href="#">Ν</a>
+      <a href="#">Ξ</a><a href="#">Ο</a><a href="#">Π</a><a href="#">Ρ</a>
+      <a href="#">Σ</a><a href="#">Τ</a><a href="#">Υ</a><a href="#">Φ</a>
+      <a href="#">A–Z</a>
+    </div>
+
+    <!-- Featured Terms -->
+    <div class="section-heading">Προτεινόμενοι Όροι</div>
+    <div class="terms-grid">
+
+      <a href="flexicommerce-b2b.html" class="term-card">
+        <span class="term-card-badge">Λογισμικό / B2B</span>
+        <h2>FlexiCommerce B2B</h2>
+        <p>Ψηφιακή πλατφόρμα παραγγελιοληψίας για επιχειρήσεις χονδρικής, με πλήρη διασύνδεση με ERP συστήματα σε πραγματικό χρόνο.</p>
+        <div class="term-card-footer">
+          <span>Digital4U · EpsilonNet</span>
+          <span class="term-card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="ekpompes-anthhraka.html" class="term-card">
+        <span class="term-card-badge">Πράσινη Τεχνολογία</span>
+        <h2>Εκπομπές Άνθρακα</h2>
+        <p>Η ποσότητα CO₂ και άλλων αερίων του θερμοκηπίου που παράγει μια επιχείρηση ή βιομηχανία — και πώς η τεχνολογία βοηθά στη μείωσή τους.</p>
+        <div class="term-card-footer">
+          <span>ABB · EEM · IEA</span>
+          <span class="term-card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Placeholder cards -->
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>ERP (Enterprise Resource Planning)</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Σύστημα ολοκληρωμένης διαχείρισης επιχειρησιακών πόρων.</p>
+        <div class="term-card-footer"><span>Λογισμικό</span></div>
+      </div>
+
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>Carbon Footprint</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Το συνολικό ανθρακικό αποτύπωμα μιας επιχείρησης ή προϊόντος.</p>
+        <div class="term-card-footer"><span>Sustainability</span></div>
+      </div>
+
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>B2B Commerce</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Το ηλεκτρονικό εμπόριο μεταξύ επιχειρήσεων (business-to-business).</p>
+        <div class="term-card-footer"><span>E-Commerce</span></div>
+      </div>
+
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>Net Zero</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Η κατάσταση ισορροπίας μεταξύ εκπεμπόμενων και απορροφούμενων αερίων.</p>
+        <div class="term-card-footer"><span>Sustainability</span></div>
+      </div>
+
+    </div>
+
+    <!-- Recent additions -->
+    <div class="section-heading">Πρόσφατες Προσθήκες</div>
+    <div class="terms-grid">
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>SaaS</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut labore et dolore.</p>
+        <div class="term-card-footer"><span>Cloud</span></div>
+      </div>
+      <div class="term-card placeholder">
+        <span class="coming-soon-tag">Σύντομα</span>
+        <h2>Edge AI</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut labore et dolore.</p>
+        <div class="term-card-footer"><span>AI / Hardware</span></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Banner 300x250 -->
+    <div class="banner-placeholder w300h250">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×250</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+    <!-- Tags -->
+    <div class="sidebar-widget">
+      <div class="widget-head">Κατηγορίες</div>
+      <div class="widget-body">
+        <div class="widget-tag-cloud">
+          <a href="#" class="widget-tag">B2B</a>
+          <a href="#" class="widget-tag">ERP</a>
+          <a href="#" class="widget-tag">Cloud</a>
+          <a href="#" class="widget-tag">AI</a>
+          <a href="#" class="widget-tag">Sustainability</a>
+          <a href="#" class="widget-tag">Hardware</a>
+          <a href="#" class="widget-tag">SaaS</a>
+          <a href="#" class="widget-tag">Security</a>
+          <a href="#" class="widget-tag">Mobile</a>
+          <a href="#" class="widget-tag">IoT</a>
+          <a href="#" class="widget-tag">Net Zero</a>
+          <a href="#" class="widget-tag">Digital Transformation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related articles -->
+    <div class="sidebar-widget">
+      <div class="widget-head">Σχετικά Άρθρα Biztech</div>
+      <div class="widget-body">
+        <ul class="widget-list">
+          <li><a href="https://biztech.gr/flexicommerce-b2b-i-nea-platforma-parangeliolipsias-tis-digital4u/" target="_blank">FlexiCommerce B2B: Η νέα πλατφόρμα παραγγελιοληψίας της Digital4U</a></li>
+          <li><a href="https://biztech.gr/meiosi-ekpobon-anthraka-me-taftochroni-exoikonomisi-437-dis-etisios/" target="_blank">Μείωση εκπομπών άνθρακα με ταυτόχρονη εξοικονόμηση $437 δισ. ετησίως</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum δοκιμαστικό άρθρο τεχνολογίας B2B 2024</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum ψηφιακός μετασχηματισμός χονδρικής</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Banner 300x600 -->
+    <div class="banner-placeholder w300h600">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×600</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Biz<span>Tech</span> Wiki</div>
+    <div>Μέρος του <a href="https://biztech.gr" target="_blank">BizTech.gr</a> · Social Handlers · Αθήνα</div>
+    <div>&copy; 2024 Biztech Wiki. Με επιφύλαξη παντός δικαιώματος.</div>
+  </div>
+</footer>
+
+</body>
+</html>

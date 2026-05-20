@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εκπομπές Άνθρακα — Biztech Wiki</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;600;700;800&family=Roboto:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base: #ECECEC;
+    --accent: #E11F26;
+    --dark: #1a1a1a;
+    --mid: #5a5a5a;
+    --light: #ffffff;
+    --border: #d4d4d4;
+    --accent-dark: #b81920;
+    
+    
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--base); color: var(--dark); font-family: 'Roboto', sans-serif; font-weight: 300; line-height: 1.65; }
+
+  .topbar { background: var(--dark); color: rgba(255,255,255,0.55); font-size: 0.72rem; letter-spacing: 0.06em; padding: 6px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar a { color: rgba(255,255,255,0.55); text-decoration: none; }
+  .topbar a:hover { color: var(--accent); }
+
+  header { background: var(--light); border-bottom: 3px solid var(--accent); padding: 0 40px; }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 40px; padding: 18px 0; }
+  .logo-block { display: flex; flex-direction: column; line-height: 1; }
+  .logo-main { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 2rem; color: var(--dark); letter-spacing: -0.03em; text-decoration: none; }
+  .logo-main span { color: var(--accent); }
+  .logo-sub { font-family: 'Roboto', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; color: var(--mid); text-transform: uppercase; margin-top: 2px; }
+  .header-search { margin-left: auto; display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; background: var(--base); }
+  .header-search input { border: none; background: transparent; padding: 8px 14px; font-family: 'Roboto', sans-serif; font-size: 0.85rem; color: var(--dark); width: 260px; outline: none; }
+  .header-search input::placeholder { color: #aaa; }
+  .header-search button { background: var(--accent); border: none; color: white; padding: 8px 16px; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.04em; font-family: 'Roboto', sans-serif; transition: background 0.2s; }
+  .header-search button:hover { background: var(--accent-dark); }
+
+  nav { background: var(--dark); padding: 0 40px; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 0; }
+  nav a { font-family: 'Mukta Vaani', sans-serif; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px 18px; display: block; border-bottom: 3px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav a:hover, nav a.active { color: #fff; border-bottom-color: var(--accent); }
+
+  .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; }
+  .breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 10px 0; font-size: 0.78rem; color: var(--mid); display: flex; gap: 6px; align-items: center; }
+  .breadcrumb a { color: var(--mid); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { color: #bbb; }
+  .breadcrumb .current { color: var(--dark); font-weight: 500; }
+
+  
+  .term-hero { background: var(--dark); padding: 52px 40px 44px; border-bottom: 4px solid var(--accent); }
+  .term-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+  .term-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; align-items: center; }
+  .term-badge { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; }
+  .term-badge.cat { background: rgba(225,31,38,0.2); color: #ff7a7e; }
+  .term-badge.product { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
+  .term-hero h1 { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 3rem; color: white; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 18px; }
+  .term-hero h1 .also { font-weight: 300; color: rgba(255,255,255,0.4); font-size: 1.4rem; display: block; margin-top: 6px; letter-spacing: 0; }
+  .term-tagline { font-size: 1.08rem; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 600px; }
+
+  .term-infobox { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 20px; }
+  .infobox-title { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .infobox-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label { color: rgba(255,255,255,0.35); flex-shrink: 0; width: 110px; }
+  .infobox-value { color: rgba(255,255,255,0.8); font-weight: 400; }
+
+  /* STATS ROW */
+  .stats-bar { background: var(--dark); padding: 20px 40px; }
+  .stats-bar-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .stat-item { text-align: center; padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.2); }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.8rem; color: white; line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.75); letter-spacing: 0.04em; margin-top: 4px; }
+
+  .banner-leaderboard { background: var(--light); padding: 16px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
+  .banner-728x90 { background: #f5f5f5; border: 2px dashed #ccc; width: 728px; height: 90px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #bbb; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 3px; flex-shrink: 0; }
+
+  .page-wrap { max-width: 1200px; margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+
+  .section-heading { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; margin-top: 36px; }
+  .section-heading:first-child { margin-top: 0; }
+
+  .definition-block { background: white; border-radius: 4px; border: 1.5px solid var(--border); padding: 28px 32px; margin-bottom: 28px; }
+  .definition-block p { font-size: 1.02rem; line-height: 1.75; color: var(--dark); }
+  .definition-block p + p { margin-top: 14px; }
+  .definition-block strong { font-weight: 500; }
+
+  .highlight-box { background: rgba(225,31,38,0.05); border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0; padding: 18px 22px; margin: 24px 0; }
+  .highlight-box p { font-size: 0.95rem; color: var(--dark); line-height: 1.7; }
+  .highlight-box strong { color: var(--accent); }
+
+  /* Actions list */
+  .actions-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+  .action-item { background: white; border: 1.5px solid var(--border); border-radius: 4px; padding: 16px 20px; display: flex; gap: 16px; align-items: flex-start; }
+  .action-num { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--accent); line-height: 1; flex-shrink: 0; width: 28px; }
+  .action-item p { font-size: 0.88rem; color: var(--mid); line-height: 1.55; }
+  .action-item strong { display: block; font-size: 0.9rem; font-weight: 500; color: var(--dark); margin-bottom: 3px; }
+
+  .article-body { background: white; border-radius: 4px; border: 1.5px solid var(--border); padding: 28px 32px; }
+  .article-body p { font-size: 0.95rem; line-height: 1.75; color: #333; margin-bottom: 14px; }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body h3 { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--dark); margin: 24px 0 10px; }
+  .article-body blockquote { border-left: 3px solid var(--accent); padding: 12px 18px; margin: 16px 0; background: rgba(225,31,38,0.05); border-radius: 0 3px 3px 0; font-style: italic; font-size: 0.92rem; color: #444; }
+
+  .source-link { display: flex; align-items: center; gap: 14px; background: var(--dark); border-radius: 4px; padding: 16px 20px; text-decoration: none; margin-top: 28px; transition: background 0.2s; }
+  .source-link:hover { background: #2a2a2a; }
+  .source-link-icon { font-size: 1.5rem; color: var(--accent); flex-shrink: 0; }
+  .source-link-text { flex: 1; }
+  .source-link-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 3px; }
+  .source-link-title { font-family: 'Mukta Vaani', sans-serif; font-size: 0.95rem; font-weight: 600; color: white; line-height: 1.35; }
+  .source-link-arrow { color: var(--accent); font-size: 1.2rem; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .tag { font-size: 0.75rem; background: white; border: 1.5px solid var(--border); border-radius: 2px; padding: 5px 12px; color: var(--mid); text-decoration: none; transition: all 0.15s; }
+  .tag:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 24px; }
+  .banner-placeholder { background: white; border: 2px dashed #ccc; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #bbb; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .banner-placeholder.w300h250 { height: 250px; }
+  .banner-placeholder.w300h600 { height: 600px; }
+  .banner-icon { font-size: 1.8rem; opacity: 0.4; }
+  .sidebar-widget { background: white; border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .widget-head { background: var(--dark); color: white; font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; }
+  .widget-body { padding: 16px; }
+  .widget-tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+  .widget-tag { font-size: 0.75rem; background: var(--base); border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; color: var(--mid); text-decoration: none; transition: all 0.15s; }
+  .widget-tag:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  .widget-list { list-style: none; }
+  .widget-list li { border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .widget-list li:last-child { border-bottom: none; }
+  .widget-list a { font-size: 0.85rem; color: var(--dark); text-decoration: none; line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; }
+  .widget-list a::before { content: '›'; color: var(--accent); font-size: 1rem; flex-shrink: 0; margin-top: -1px; }
+  .widget-list a:hover { color: var(--accent); }
+  .related-term { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; }
+  .related-term:last-child { border-bottom: none; padding-bottom: 0; }
+  .related-term-icon { width: 36px; height: 36px; background: rgba(225,31,38,0.05); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .related-term-name { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--dark); display: block; }
+  .related-term-cat { font-size: 0.72rem; color: #aaa; letter-spacing: 0.04em; }
+  .related-term:hover .related-term-name { color: var(--accent); }
+
+  /* Key number card */
+  .key-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .key-num-card { background: white; border: 1.5px solid var(--border); border-radius: 4px; padding: 16px; text-align: center; }
+  .key-num-card .num { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--accent); line-height: 1; }
+  .key-num-card .num-unit { font-size: 0.75rem; color: var(--mid); margin-top: 4px; line-height: 1.4; }
+
+  footer { background: var(--dark); color: rgba(255,255,255,0.5); padding: 32px 40px; margin-top: 40px; font-size: 0.8rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .footer-logo { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.2rem; color: white; }
+  .footer-logo span { color: var(--accent); }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .term-hero-inner, .page-wrap { grid-template-columns: 1fr; }
+    .term-hero { padding: 36px 20px; }
+    .term-hero h1 { font-size: 2.2rem; }
+    .stats-bar-inner { grid-template-columns: repeat(2,1fr); gap: 16px; }
+    .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 12px; }
+    .key-numbers { grid-template-columns: 1fr 1fr; }
+    header, nav, .breadcrumb, .banner-leaderboard, .stats-bar { padding: 0 20px; }
+    .stats-bar { padding: 20px; }
+    .topbar { padding: 6px 20px; }
+    .page-wrap { padding: 32px 20px; }
+    .banner-728x90 { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Biztech Wiki — Το Λεξιλόγιο της Επιχειρηματικής Τεχνολογίας</span>
+  <span><a href="https://biztech.gr" target="_blank">← Biztech.gr</a></span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <a href="index.html" class="logo-main">Biz<span>Tech</span> Wiki</a>
+      <div class="logo-sub">Εγκυκλοπαίδεια Τεχνολογίας &amp; Επιχειρήσεων</div>
+    </div>
+    <div class="header-search">
+      <input type="text" placeholder="Αναζήτηση όρου…">
+      <button>Αναζήτηση</button>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html">Αρχική</a>
+    <a href="#">Λογισμικό</a>
+    <a href="#">Hardware</a>
+    <a href="#">Cloud</a>
+    <a href="#" class="active">Πράσινη Τεχνολογία</a>
+    <a href="#">B2B &amp; ERP</a>
+    <a href="#">AI</a>
+    <a href="#">Ασφάλεια</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Wiki</a>
+    <span class="sep">/</span>
+    <a href="#">Πράσινη Τεχνολογία</a>
+    <span class="sep">/</span>
+    <span class="current">Εκπομπές Άνθρακα</span>
+  </div>
+</div>
+
+<!-- TERM HERO -->
+<div class="term-hero">
+  <div class="term-hero-inner">
+    <div class="term-hero-left">
+      <div class="term-meta">
+        <span class="term-badge cat">Πράσινη Τεχνολογία</span>
+        <span class="term-badge product">Sustainability</span>
+        <span class="term-badge product">ESG</span>
+      </div>
+      <h1>Εκπομπές Άνθρακα
+        <span class="also">carbon emissions · CO₂ · αποτύπωμα άνθρακα</span>
+      </h1>
+      <p class="term-tagline">Η ποσότητα διοξειδίου του άνθρακα και άλλων αερίων θερμοκηπίου που παράγεται από βιομηχανικές δραστηριότητες — και πώς η τεχνολογία ενεργειακής αποδοτικότητας μπορεί να τη μειώσει ταυτόχρονα εξοικονομώντας δισεκατομμύρια.</p>
+    </div>
+    <div class="term-hero-right">
+      <div class="term-infobox">
+        <div class="infobox-title">Στοιχεία Όρου</div>
+        <div class="infobox-row">
+          <span class="infobox-label">Κατηγορία</span>
+          <span class="infobox-value">Sustainability / ESG</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Σχετικοί φορείς</span>
+          <span class="infobox-value">ABB, IEA, EEM</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Μονάδα μέτρησης</span>
+          <span class="infobox-value">Gigatόνοι CO₂ (GtCO₂)</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Στόχος IEA 2030</span>
+          <span class="infobox-value">−11% έως Net Zero 2050</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Οικ. Όφελος</span>
+          <span class="infobox-value">$437 δισ./έτος έως 2030</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Πλαίσιο</span>
+          <span class="infobox-value">COP28, Paris Agreement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-number">1,5 Gt</div>
+      <div class="stat-label">μείωση CO₂ ετησίως έως 2024</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">4 Gt</div>
+      <div class="stat-label">μείωση CO₂ ετησίως έως 2030</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">$437 δισ.</div>
+      <div class="stat-label">ετήσια εξοικονόμηση σε παγκόσμιο επίπεδο</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">60%</div>
+      <div class="stat-label">οχήματα εσωτερικής καύσης που αντιστοιχεί</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD BANNER -->
+<div class="banner-leaderboard">
+  <div class="banner-728x90">
+    <span style="font-size:1.4rem;opacity:0.3">▣</span>
+    <span>Banner 728×90 — Διαφημιστικό Πλαίσιο</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrap">
+  <main>
+
+    <div class="section-heading">Ορισμός</div>
+    <div class="definition-block">
+      <p>Οι <strong>εκπομπές άνθρακα</strong> (ή <em>carbon emissions</em>) αναφέρονται στην απελευθέρωση διοξειδίου του άνθρακα (CO₂) και άλλων αερίων του θερμοκηπίου στην ατμόσφαιρα ως αποτέλεσμα ανθρώπινων δραστηριοτήτων — κυρίως βιομηχανικών διεργασιών, καύσης ορυκτών καυσίμων και κατανάλωσης ενέργειας.</p>
+      <p>Στο επιχειρηματικό πλαίσιο, η μέτρηση και μείωση των εκπομπών άνθρακα αποτελεί πλέον κεντρικό στόχο των στρατηγικών <strong>ESG</strong> (Environmental, Social, Governance) και συνδέεται άμεσα με ρυθμιστικές υποχρεώσεις, κόστος ενέργειας και εταιρική φήμη.</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Βασικό εύρημα:</strong> Σύμφωνα με το Κίνημα Ενεργειακής Αποδοτικότητας (EEM), η εφαρμογή 10 δοκιμασμένων τεχνολογικών δράσεων θα μπορούσε να μειώσει τις εκπομπές CO₂ κατά 11% έως το 2030 — με ταυτόχρονη εξοικονόμηση $437 δισ. ετησίως σε παγκόσμιο επίπεδο.</p>
+    </div>
+
+    <!-- Key numbers -->
+    <div class="key-numbers">
+      <div class="key-num-card">
+        <div class="num">1/3</div>
+        <div class="num-unit">μείωση αερίων θερμοκηπίου αν διπλασιαστεί η ενεργειακή αποδοτικότητα έως 2030 (IEA)</div>
+      </div>
+      <div class="key-num-card">
+        <div class="num">400+</div>
+        <div class="num-unit">οργανισμοί στο Κίνημα Ενεργειακής Αποδοτικότητας (ABB, Alfa Laval, Microsoft κ.ά.)</div>
+      </div>
+      <div class="key-num-card">
+        <div class="num">$1,8 τρισ.</div>
+        <div class="num-unit">ετήσιες επενδύσεις που ζητά ο IEA για ενεργειακή αποδοτικότητα έως 2030</div>
+      </div>
+      <div class="key-num-card">
+        <div class="num">2050</div>
+        <div class="num-unit">στόχος Net Zero — μηδενικές καθαρές εκπομπές παγκοσμίως</div>
+      </div>
+    </div>
+
+    <div class="section-heading">10 Δράσεις για Μείωση Εκπομπών</div>
+    <div class="actions-list">
+      <div class="action-item">
+        <div class="action-num">01</div>
+        <div>
+          <strong>Ενεργειακοί Έλεγχοι (Energy Audits)</strong>
+          <p>Συστηματική αξιολόγηση της κατανάλωσης ενέργειας σε βιομηχανικές εγκαταστάσεις για τον εντοπισμό ευκαιριών εξοικονόμησης και βελτιστοποίησης.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">02</div>
+        <div>
+          <strong>Ηλεκτροκινητήρες Υψηλής Απόδοσης</strong>
+          <p>Αντικατάσταση παλαιών κινητήρων με σύγχρονα μοντέλα υψηλής ενεργειακής κλάσης που μειώνουν δραματικά την κατανάλωση ρεύματος.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">03</div>
+        <div>
+          <strong>Αναδιάρθρωση Βιομηχανικού Εξοπλισμού</strong>
+          <p>Επανασχεδιασμός διατάξεων παραγωγής και ψηφιακή παρακολούθηση για εξάλειψη σπατάλης ενέργειας στη διαδικασία κατεργασίας.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">04</div>
+        <div>
+          <strong>Ψηφιακή Παρακολούθηση &amp; Αυτοματισμός</strong>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Εφαρμογή IoT αισθητήρων και AI για βελτιστοποίηση κατανάλωσης σε πραγματικό χρόνο.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">05</div>
+        <div>
+          <strong>Lorem ipsum — Πλαίσιο Ανανεώσιμων Πηγών</strong>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading">Τεχνολογία &amp; Κλιματική Αλλαγή</div>
+    <div class="article-body">
+      <h3>Ο ρόλος της τεχνολογίας στη μείωση εκπομπών</h3>
+      <p>Η τεχνολογία αποτελεί κεντρικό εργαλείο στην αντιμετώπιση της κλιματικής κρίσης. Από τα έξυπνα δίκτυα ενέργειας (smart grids) ως τα συστήματα παρακολούθησης εκπομπών, η ψηφιοποίηση παρέχει τα μέσα για μέτρηση, ανάλυση και μείωση του ανθρακικού αποτυπώματος.</p>
+      <blockquote>«Δεδομένου ότι οι ανανεώσιμες πηγές ενέργειας μπορούν να αποτελούν μόνο ένα μέρος της λύσης, ο κρίσιμος ρόλος της ενεργειακής αποδοτικότητας στην επιτάχυνση της ενεργειακής μετάβασης είναι αναμφισβήτητος.» — Tarak Mehta, ABB</blockquote>
+      <h3>Επιχειρηματικά Οφέλη</h3>
+      <p>Πέρα από τις περιβαλλοντικές υποχρεώσεις, η μείωση εκπομπών άνθρακα προσφέρει άμεσα οικονομικά οφέλη: μείωση κόστους ενέργειας, προστασία από αστάθεια τιμών άνθρακα, βελτίωση εταιρικής φήμης και πρόσβαση σε πράσινη χρηματοδότηση.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+
+    <a href="https://biztech.gr/meiosi-ekpobon-anthraka-me-taftochroni-exoikonomisi-437-dis-etisios/" target="_blank" class="source-link">
+      <div class="source-link-icon">📰</div>
+      <div class="source-link-text">
+        <div class="source-link-label">Πηγή — Biztech.gr</div>
+        <div class="source-link-title">Μείωση εκπομπών άνθρακα με ταυτόχρονη εξοικονόμηση $437 δισ. ετησίως</div>
+      </div>
+      <div class="source-link-arrow">↗</div>
+    </a>
+
+    <div class="tag-row">
+      <a href="#" class="tag">CO₂</a>
+      <a href="#" class="tag">ABB</a>
+      <a href="#" class="tag">ESG</a>
+      <a href="#" class="tag">Net Zero</a>
+      <a href="#" class="tag">IEA</a>
+      <a href="#" class="tag">COP28</a>
+      <a href="#" class="tag">Ενεργειακή Αποδοτικότητα</a>
+      <a href="#" class="tag">Carbon Footprint</a>
+      <a href="#" class="tag">EEM</a>
+      <a href="#" class="tag">Sustainability</a>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="banner-placeholder w300h250">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×250</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-head">Σχετικοί Όροι</div>
+      <div class="widget-body">
+        <a href="flexicommerce-b2b.html" class="related-term">
+          <div class="related-term-icon">🛒</div>
+          <div>
+            <span class="related-term-name">FlexiCommerce B2B</span>
+            <span class="related-term-cat">Λογισμικό / B2B</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">🌍</div>
+          <div>
+            <span class="related-term-name">Net Zero</span>
+            <span class="related-term-cat">Sustainability — Σύντομα</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">⚡</div>
+          <div>
+            <span class="related-term-name">Ενεργειακή Αποδοτικότητα</span>
+            <span class="related-term-cat">Πράσινη Τεχνολογία — Σύντομα</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">📊</div>
+          <div>
+            <span class="related-term-name">ESG Reporting</span>
+            <span class="related-term-cat">Εταιρική Διακυβέρνηση — Σύντομα</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-head">Σχετικά Άρθρα</div>
+      <div class="widget-body">
+        <ul class="widget-list">
+          <li><a href="https://biztech.gr/meiosi-ekpobon-anthraka-me-taftochroni-exoikonomisi-437-dis-etisios/" target="_blank">Μείωση εκπομπών άνθρακα με ταυτόχρονη εξοικονόμηση $437 δισ. ετησίως</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum: Η τεχνολογία στην υπηρεσία της κλιματικής ουδετερότητας</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum: ESG στρατηγικές για ελληνικές επιχειρήσεις</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-head">Ετικέτες</div>
+      <div class="widget-body">
+        <div class="widget-tag-cloud">
+          <a href="#" class="widget-tag">CO₂</a>
+          <a href="#" class="widget-tag">ESG</a>
+          <a href="#" class="widget-tag">Net Zero</a>
+          <a href="#" class="widget-tag">IEA</a>
+          <a href="#" class="widget-tag">ABB</a>
+          <a href="#" class="widget-tag">COP28</a>
+          <a href="#" class="widget-tag">Green Tech</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-placeholder w300h600">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×600</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Biz<span>Tech</span> Wiki</div>
+    <div>Μέρος του <a href="https://biztech.gr" target="_blank">BizTech.gr</a> · Social Handlers · Αθήνα</div>
+    <div>&copy; 2024 Biztech Wiki. Με επιφύλαξη παντός δικαιώματος.</div>
+  </div>
+</footer>
+
+</body>
+</html>

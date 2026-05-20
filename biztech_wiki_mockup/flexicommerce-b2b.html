@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlexiCommerce B2B — Biztech Wiki</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;600;700;800&family=Roboto:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base: #ECECEC;
+    --accent: #E11F26;
+    --dark: #1a1a1a;
+    --mid: #5a5a5a;
+    --light: #ffffff;
+    --border: #d4d4d4;
+    --accent-dark: #b81920;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--base); color: var(--dark); font-family: 'Roboto', sans-serif; font-weight: 300; line-height: 1.65; }
+
+  .topbar { background: var(--dark); color: rgba(255,255,255,0.55); font-size: 0.72rem; letter-spacing: 0.06em; padding: 6px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar a { color: rgba(255,255,255,0.55); text-decoration: none; }
+  .topbar a:hover { color: var(--accent); }
+
+  header { background: var(--light); border-bottom: 3px solid var(--accent); padding: 0 40px; }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 40px; padding: 18px 0; }
+  .logo-block { display: flex; flex-direction: column; line-height: 1; }
+  .logo-main { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 2rem; color: var(--dark); letter-spacing: -0.03em; text-decoration: none; }
+  .logo-main span { color: var(--accent); }
+  .logo-sub { font-family: 'Roboto', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; color: var(--mid); text-transform: uppercase; margin-top: 2px; }
+  .header-search { margin-left: auto; display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; background: var(--base); }
+  .header-search input { border: none; background: transparent; padding: 8px 14px; font-family: 'Roboto', sans-serif; font-size: 0.85rem; color: var(--dark); width: 260px; outline: none; }
+  .header-search input::placeholder { color: #aaa; }
+  .header-search button { background: var(--accent); border: none; color: white; padding: 8px 16px; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.04em; font-family: 'Roboto', sans-serif; transition: background 0.2s; }
+  .header-search button:hover { background: var(--accent-dark); }
+
+  nav { background: var(--dark); padding: 0 40px; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 0; }
+  nav a { font-family: 'Mukta Vaani', sans-serif; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px 18px; display: block; border-bottom: 3px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav a:hover, nav a.active { color: #fff; border-bottom-color: var(--accent); }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; }
+  .breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 10px 0; font-size: 0.78rem; color: var(--mid); display: flex; gap: 6px; align-items: center; }
+  .breadcrumb a { color: var(--mid); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { color: #bbb; }
+  .breadcrumb .current { color: var(--dark); font-weight: 500; }
+
+  /* TERM HERO */
+  .term-hero { background: var(--dark); padding: 52px 40px 44px; border-bottom: 4px solid var(--accent); }
+  .term-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+  .term-hero-left {}
+  .term-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; align-items: center; }
+  .term-badge { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; }
+  .term-badge.cat { background: rgba(225,31,38,0.2); color: #ff7a7e; }
+  .term-badge.product { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+  .term-hero h1 { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 3rem; color: white; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 18px; }
+  .term-hero h1 .also { font-weight: 300; color: rgba(255,255,255,0.45); font-size: 1.4rem; display: block; margin-top: 6px; letter-spacing: 0; }
+  .term-tagline { font-size: 1.08rem; color: rgba(255,255,255,0.7); line-height: 1.65; max-width: 600px; }
+
+  .term-hero-right {}
+  .term-infobox { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 20px; }
+  .infobox-title { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .infobox-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.85rem; }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label { color: rgba(255,255,255,0.4); flex-shrink: 0; width: 110px; }
+  .infobox-value { color: rgba(255,255,255,0.85); font-weight: 400; }
+  .infobox-value a { color: rgba(255,255,255,0.85); }
+
+  /* BANNER TOP - leaderboard */
+  .banner-leaderboard { background: var(--light); padding: 16px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
+  .banner-728x90 { background: #f5f5f5; border: 2px dashed #ccc; width: 728px; height: 90px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #bbb; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 3px; flex-shrink: 0; }
+
+  /* MAIN LAYOUT */
+  .page-wrap { max-width: 1200px; margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: start; }
+
+  /* ARTICLE */
+  .section-heading { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; margin-top: 36px; }
+  .section-heading:first-child { margin-top: 0; }
+
+  .definition-block { background: white; border-radius: 4px; border: 1.5px solid var(--border); padding: 28px 32px; margin-bottom: 28px; }
+  .definition-block p { font-size: 1.02rem; line-height: 1.75; color: var(--dark); }
+  .definition-block p + p { margin-top: 14px; }
+
+  .highlight-box { background: rgba(225,31,38,0.05); border-left: 4px solid var(--accent); border-radius: 0 4px 4px 0; padding: 18px 22px; margin: 24px 0; }
+  .highlight-box p { font-size: 0.95rem; color: var(--dark); line-height: 1.7; }
+  .highlight-box strong { color: var(--accent); }
+
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .feature-item { background: white; border: 1.5px solid var(--border); border-radius: 4px; padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
+  .feature-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .feature-item p { font-size: 0.87rem; color: var(--mid); line-height: 1.55; }
+  .feature-item strong { display: block; font-size: 0.88rem; font-weight: 500; color: var(--dark); margin-bottom: 3px; }
+
+  .article-body { background: white; border-radius: 4px; border: 1.5px solid var(--border); padding: 28px 32px; }
+  .article-body p { font-size: 0.95rem; line-height: 1.75; color: #333; margin-bottom: 14px; }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body h3 { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--dark); margin: 24px 0 10px; }
+
+  /* source article link */
+  .source-link { display: flex; align-items: center; gap: 14px; background: var(--dark); border-radius: 4px; padding: 16px 20px; text-decoration: none; margin-top: 28px; transition: background 0.2s; }
+  .source-link:hover { background: #2a2a2a; }
+  .source-link-icon { font-size: 1.5rem; color: var(--accent); flex-shrink: 0; }
+  .source-link-text { flex: 1; }
+  .source-link-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
+  .source-link-title { font-family: 'Mukta Vaani', sans-serif; font-size: 0.95rem; font-weight: 600; color: white; line-height: 1.35; }
+  .source-link-arrow { color: var(--accent); font-size: 1.2rem; }
+
+  /* TAGS */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .tag { font-size: 0.75rem; background: white; border: 1.5px solid var(--border); border-radius: 2px; padding: 5px 12px; color: var(--mid); text-decoration: none; transition: all 0.15s; font-family: 'Roboto', sans-serif; letter-spacing: 0.02em; }
+  .tag:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 24px; }
+  .banner-placeholder { background: white; border: 2px dashed #ccc; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #bbb; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .banner-placeholder.w300h250 { height: 250px; }
+  .banner-placeholder.w300h600 { height: 600px; }
+  .banner-icon { font-size: 1.8rem; opacity: 0.4; }
+
+  .sidebar-widget { background: white; border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .widget-head { background: var(--dark); color: white; font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; }
+  .widget-body { padding: 16px; }
+  .widget-tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+  .widget-tag { font-size: 0.75rem; background: var(--base); border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; color: var(--mid); text-decoration: none; transition: all 0.15s; }
+  .widget-tag:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  .widget-list { list-style: none; }
+  .widget-list li { border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .widget-list li:last-child { border-bottom: none; }
+  .widget-list a { font-size: 0.85rem; color: var(--dark); text-decoration: none; line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; }
+  .widget-list a::before { content: '›'; color: var(--accent); font-size: 1rem; flex-shrink: 0; margin-top: -1px; }
+  .widget-list a:hover { color: var(--accent); }
+
+  /* related terms */
+  .related-term { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; }
+  .related-term:last-child { border-bottom: none; padding-bottom: 0; }
+  .related-term-icon { width: 36px; height: 36px; background: rgba(225,31,38,0.08); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; color: var(--accent); }
+  .related-term-name { font-family: 'Mukta Vaani', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--dark); display: block; }
+  .related-term-cat { font-size: 0.72rem; color: #aaa; letter-spacing: 0.04em; }
+  .related-term:hover .related-term-name { color: var(--accent); }
+
+  footer { background: var(--dark); color: rgba(255,255,255,0.5); padding: 32px 40px; margin-top: 40px; font-size: 0.8rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .footer-logo { font-family: 'Mukta Vaani', sans-serif; font-weight: 800; font-size: 1.2rem; color: white; }
+  .footer-logo span { color: var(--accent); }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .term-hero-inner, .page-wrap { grid-template-columns: 1fr; }
+    .term-hero { padding: 36px 20px; }
+    .term-hero h1 { font-size: 2.2rem; }
+    .feature-grid { grid-template-columns: 1fr; }
+    header, nav, .breadcrumb, .banner-leaderboard { padding: 0 20px; }
+    .topbar { padding: 6px 20px; }
+    .page-wrap { padding: 32px 20px; }
+    .banner-728x90 { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Biztech Wiki — Το Λεξιλόγιο της Επιχειρηματικής Τεχνολογίας</span>
+  <span><a href="https://biztech.gr" target="_blank">← Biztech.gr</a></span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <a href="index.html" class="logo-main">Biz<span>Tech</span> Wiki</a>
+      <div class="logo-sub">Εγκυκλοπαίδεια Τεχνολογίας &amp; Επιχειρήσεων</div>
+    </div>
+    <div class="header-search">
+      <input type="text" placeholder="Αναζήτηση όρου…">
+      <button>Αναζήτηση</button>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html">Αρχική</a>
+    <a href="#">Λογισμικό</a>
+    <a href="#">Hardware</a>
+    <a href="#">Cloud</a>
+    <a href="#">Πράσινη Τεχνολογία</a>
+    <a href="#" class="active">B2B &amp; ERP</a>
+    <a href="#">AI</a>
+    <a href="#">Ασφάλεια</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Wiki</a>
+    <span class="sep">/</span>
+    <a href="#">B2B &amp; ERP</a>
+    <span class="sep">/</span>
+    <span class="current">FlexiCommerce B2B</span>
+  </div>
+</div>
+
+<!-- TERM HERO -->
+<div class="term-hero">
+  <div class="term-hero-inner">
+    <div class="term-hero-left">
+      <div class="term-meta">
+        <span class="term-badge cat">Λογισμικό / B2B</span>
+        <span class="term-badge product">Προϊόν</span>
+        <span class="term-badge product">Digital4U</span>
+      </div>
+      <h1>FlexiCommerce B2B
+        <span class="also">παραγγελιοληψία · e-commerce · ERP integration</span>
+      </h1>
+      <p class="term-tagline">Ψηφιακή πλατφόρμα παραγγελιοληψίας για επιχειρήσεις χονδρικής που αυτοματοποιεί την εμπορική διαδικασία μέσω άμεσης διασύνδεσης με συστήματα ERP.</p>
+    </div>
+    <div class="term-hero-right">
+      <div class="term-infobox">
+        <div class="infobox-title">Στοιχεία Όρου</div>
+        <div class="infobox-row">
+          <span class="infobox-label">Κατηγορία</span>
+          <span class="infobox-value">B2B Λογισμικό</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Κατασκευαστής</span>
+          <span class="infobox-value">Digital4U (Epsilonnet)</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Τεχνολογία</span>
+          <span class="infobox-value">ERP Integration, Real-time data</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Στόχος</span>
+          <span class="infobox-value">Χονδρική / Επιχειρήσεις</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">ERP συμβατό</span>
+          <span class="infobox-value">Pylon Hybrid, Galaxy Hybrid, 3rd party</span>
+        </div>
+        <div class="infobox-row">
+          <span class="infobox-label">Διαθεσιμότητα</span>
+          <span class="infobox-value">24/7, web &amp; mobile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD BANNER -->
+<div class="banner-leaderboard">
+  <div class="banner-728x90">
+    <span style="font-size:1.4rem;opacity:0.3">▣</span>
+    <span>Banner 728×90 — Διαφημιστικό Πλαίσιο</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrap">
+  <main>
+
+    <div class="section-heading">Ορισμός</div>
+    <div class="definition-block">
+      <p>Το <strong>FlexiCommerce B2B</strong> είναι μια ψηφιακή πλατφόρμα παραγγελιοληψίας που αναπτύχθηκε από την <strong>Digital4U</strong>, μέλος του ομίλου Epsilonnet. Απευθύνεται σε επιχειρήσεις του τομέα χονδρικής που επιθυμούν να αντικαταστήσουν ανοργάνωτες, χειροκίνητες διαδικασίες (τηλεφωνικές παραγγελίες, email) με ένα πλήρως αυτοματοποιημένο και αξιόπιστο σύστημα.</p>
+      <p>Η λύση συνδέεται άμεσα με το ERP της επιχείρησης, παρέχοντας ενημέρωση αποθεμάτων, τιμών και πελατολογίου σε πραγματικό χρόνο, χωρίς την ανάγκη custom ανάπτυξης λόγω της productized αρχιτεκτονικής της.</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Βασικό χαρακτηριστικό:</strong> Η πλατφόρμα μειώνει σημαντικά τον χρόνο υλοποίησης σε σχέση με συνήθεις custom υλοποιήσεις, ενώ παρέχει εξατομικευμένους εμπορικούς όρους για κάθε πελάτη B2B — διαθέσιμη 24/7 από υπολογιστή ή κινητό.</p>
+    </div>
+
+    <div class="section-heading">Βασικές Λειτουργίες</div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Online B2B παραγγελιοληψία</strong>
+          <p>Εξατομικευμένοι εμπορικοί όροι ανά πελάτη με δυνατότητα παραγγελίας από οποιαδήποτε συσκευή, οποτεδήποτε.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Άμεση διασύνδεση με ERP</strong>
+          <p>Real-time ενημέρωση αποθεμάτων, τιμών και εμπορικών δεδομένων. Πλήρης συμβατότητα με Pylon Hybrid &amp; Galaxy Hybrid.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Μείωση λαθών</strong>
+          <p>Εξάλειψη χειροκίνητων καταχωρήσεων και λειτουργικών καθυστερήσεων που δημιουργούν αβεβαιότητα στην αλυσίδα παραγγελιών.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Ταχύτητα υλοποίησης</strong>
+          <p>Productized αρχιτεκτονική που δεν απαιτεί ειδικευμένη custom ανάπτυξη — γρήγορη εφαρμογή σε ήδη υπάρχον ERP.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Βελτιωμένη εμπειρία πελάτη</strong>
+          <p>Σύγχρονο B2B περιβάλλον με προσωποποιημένη αλληλεπίδραση που αναβαθμίζει τη σχέση με τους εμπορικούς συνεργάτες.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <strong>Αύξηση πωλήσεων</strong>
+          <p>Ευκολότερη και ταχύτερη διαδικασία παραγγελίας που ανοίγει νέα κανάλια εσόδων και μειώνει το λειτουργικό κόστος.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading">Πλαίσιο &amp; Σημασία</div>
+    <div class="article-body">
+      <h3>Από τη χειροκίνητη στην ψηφιακή παραγγελιοληψία</h3>
+      <p>Στον τομέα της χονδρικής, πολλές ελληνικές επιχειρήσεις εξακολουθούν να βασίζονται σε μη δομημένες διαδικασίες: τηλεφωνικές παραγγελίες, emails, χειροκίνητη καταχώρηση στοιχείων. Αυτό δημιουργεί λάθη, καθυστερήσεις και υψηλό λειτουργικό κόστος.</p>
+      <p>Το FlexiCommerce B2B αντιμετωπίζει αυτή την πρόκληση προσφέροντας ένα ενιαίο οικοσύστημα μεταξύ εμπορικής δραστηριότητας και back-office λειτουργιών, όπου όλα τα δεδομένα κυκλοφορούν σε πραγματικό χρόνο μεταξύ πλατφόρμας και ERP.</p>
+      <h3>Ψηφιακός Μετασχηματισμός Χονδρικής</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+    </div>
+
+    <!-- Source link -->
+    <a href="https://biztech.gr/flexicommerce-b2b-i-nea-platforma-parangeliolipsias-tis-digital4u/" target="_blank" class="source-link">
+      <div class="source-link-icon">📰</div>
+      <div class="source-link-text">
+        <div class="source-link-label">Πηγή — Biztech.gr</div>
+        <div class="source-link-title">FlexiCommerce B2B: Η νέα πλατφόρμα παραγγελιοληψίας της Digital4U</div>
+      </div>
+      <div class="source-link-arrow">↗</div>
+    </a>
+
+    <!-- Tags -->
+    <div class="tag-row">
+      <a href="#" class="tag">B2B</a>
+      <a href="#" class="tag">ERP</a>
+      <a href="#" class="tag">Digital4U</a>
+      <a href="#" class="tag">EpsilonNet</a>
+      <a href="#" class="tag">Παραγγελιοληψία</a>
+      <a href="#" class="tag">Χονδρική</a>
+      <a href="#" class="tag">Pylon</a>
+      <a href="#" class="tag">Galaxy</a>
+      <a href="#" class="tag">Digital Transformation</a>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="banner-placeholder w300h250">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×250</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+    <!-- Related terms -->
+    <div class="sidebar-widget">
+      <div class="widget-head">Σχετικοί Όροι</div>
+      <div class="widget-body">
+        <a href="ekpompes-anthhraka.html" class="related-term">
+          <div class="related-term-icon">🌿</div>
+          <div>
+            <span class="related-term-name">Εκπομπές Άνθρακα</span>
+            <span class="related-term-cat">Πράσινη Τεχνολογία</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">⚙️</div>
+          <div>
+            <span class="related-term-name">ERP</span>
+            <span class="related-term-cat">Λογισμικό — Σύντομα</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">🛒</div>
+          <div>
+            <span class="related-term-name">B2B Commerce</span>
+            <span class="related-term-cat">E-Commerce — Σύντομα</span>
+          </div>
+        </a>
+        <a href="#" class="related-term">
+          <div class="related-term-icon">☁️</div>
+          <div>
+            <span class="related-term-name">SaaS</span>
+            <span class="related-term-cat">Cloud — Σύντομα</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-head">Σχετικά Άρθρα</div>
+      <div class="widget-body">
+        <ul class="widget-list">
+          <li><a href="https://biztech.gr/flexicommerce-b2b-i-nea-platforma-parangeliolipsias-tis-digital4u/" target="_blank">FlexiCommerce B2B: Η νέα πλατφόρμα παραγγελιοληψίας της Digital4U</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum: Ψηφιακός μετασχηματισμός στη χονδρική αγορά</a></li>
+          <li><a href="https://biztech.gr" target="_blank">Lorem ipsum: ERP integration best practices 2024</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-head">Ετικέτες</div>
+      <div class="widget-body">
+        <div class="widget-tag-cloud">
+          <a href="#" class="widget-tag">B2B</a>
+          <a href="#" class="widget-tag">ERP</a>
+          <a href="#" class="widget-tag">Χονδρική</a>
+          <a href="#" class="widget-tag">Digital4U</a>
+          <a href="#" class="widget-tag">Automation</a>
+          <a href="#" class="widget-tag">Real-time</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-placeholder w300h600">
+      <div class="banner-icon">▣</div>
+      <span>Banner 300×600</span>
+      <span style="font-size:0.65rem;color:#ccc">Διαφημιστικό Πλαίσιο</span>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Biz<span>Tech</span> Wiki</div>
+    <div>Μέρος του <a href="https://biztech.gr" target="_blank">BizTech.gr</a> · Social Handlers · Αθήνα</div>
+    <div>&copy; 2024 Biztech Wiki. Με επιφύλαξη παντός δικαιώματος.</div>
+  </div>
+</footer>
+
+</body>
+</html>
