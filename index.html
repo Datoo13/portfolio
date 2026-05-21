@@ -1058,108 +1058,139 @@ footer {
   color: var(--accent);
 }
 
-/* ── Featured Mockup (TCP Awards Website) ── */
-.featured-mockup-wrap {
+/* ── Campaigns Section ── */
+.campaigns-section {
   position: relative;
   z-index: 1;
   max-width: 1140px;
   margin: 0 auto;
-  padding: 0 2rem 2rem;
+  padding: 0 2rem 5rem;
 }
 
-.featured-mockup {
-  position: relative;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 0;
-  min-height: 280px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, border-color .2s;
-  box-shadow: 0 2px 16px rgba(0,0,0,.06);
-}
-
-.featured-mockup:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(37,99,235,.1);
-  border-color: #bfdbfe;
-}
-
-.featured-mockup::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), #60a5fa);
-  z-index: 2;
-}
-
-.featured-mockup-info {
-  position: relative;
-  z-index: 1;
-  padding: 2rem 1.8rem 2rem 2.2rem;
+.campaigns-grid {
   display: flex;
   flex-direction: column;
-  gap: .9rem;
+  gap: 28px;
+}
+
+/* Rotating gradient border wrapper */
+.campaign-card-outer {
+  position: relative;
+  border-radius: 26px;
+  padding: 2px;
+  background: linear-gradient(var(--angle, 0deg), #2563EB, #60a5fa, #a855f7, #2563EB);
+  animation: border-spin 6s linear infinite;
+  box-shadow: 0 4px 32px rgba(37,99,235,.12);
+  transition: box-shadow .3s;
+}
+
+.campaign-card-outer:hover {
+  box-shadow: 0 8px 48px rgba(37,99,235,.22);
+  animation-duration: 3s;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-spin {
+  to { --angle: 360deg; }
+}
+
+.campaign-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+
+.campaign-card-outer:hover .campaign-card {
+  transform: translateY(-2px);
+}
+
+.campaign-card-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  min-height: 340px;
+}
+
+.campaign-info {
+  padding: 2.4rem 2rem 2.4rem 2.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   border-right: 1px solid var(--border);
 }
 
-.featured-mockup-label {
-  display: inline-flex;
+.campaign-top {
+  display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .7rem;
+  flex-wrap: wrap;
+}
+
+.campaign-client-badge {
+  font-family: 'Roboto', sans-serif;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  padding: .3rem .85rem;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+}
+
+.badge-dell { color: #007db8; background: rgba(0,125,184,.07); border-color: rgba(0,125,184,.25); }
+.badge-lenovo { color: #e2231a; background: rgba(226,35,26,.06); border-color: rgba(226,35,26,.2); }
+
+.campaign-type-badge {
   font-family: Tahoma, sans-serif;
   font-size: .58rem;
   font-weight: 700;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-glow);
-  border: 1px solid rgba(37,99,235,.18);
-  padding: .26rem .75rem;
+  padding: .26rem .7rem;
   border-radius: 999px;
-  align-self: flex-start;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(37,99,235,.18);
 }
 
-.featured-mockup-label::before { content: '◆'; font-size: .45rem; }
-
-.featured-mockup-title {
+.campaign-title {
   font-family: 'Roboto', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  letter-spacing: -.04em;
+  letter-spacing: -.03em;
   color: var(--text);
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
-.featured-mockup-title span { color: var(--accent); }
-
-.featured-mockup-subtitle {
-  font-size: .78rem;
+.campaign-period {
+  font-family: Tahoma, sans-serif;
+  font-size: .65rem;
   color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .08em;
   margin-top: -.4rem;
 }
 
-.featured-mockup-desc {
-  font-size: .82rem;
+.campaign-desc {
+  font-size: .84rem;
   color: var(--text-muted);
   line-height: 1.72;
   flex: 1;
 }
 
-.featured-mockup-tags {
+.campaign-platforms {
   display: flex;
   flex-wrap: wrap;
   gap: .4rem;
 }
 
-.featured-mockup-tag {
+.campaign-platform {
   font-family: Tahoma, sans-serif;
-  font-size: .58rem;
+  font-size: .6rem;
   padding: .22rem .6rem;
   border-radius: 6px;
   background: var(--surface);
@@ -1167,59 +1198,86 @@ footer {
   border: 1px solid var(--border);
 }
 
-.featured-mockup-cta {
-  display: inline-flex;
+.campaign-confidential {
+  font-family: Tahoma, sans-serif;
+  font-size: .6rem;
+  color: var(--text-dim);
+  display: flex;
   align-items: center;
-  gap: .5rem;
-  padding: .65rem 1.4rem;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
-  font-size: .82rem;
-  font-weight: 700;
-  align-self: flex-start;
-  box-shadow: 0 4px 14px rgba(37,99,235,.2);
-  transition: opacity .2s, transform .15s;
+  gap: .3rem;
+  padding-top: .8rem;
+  border-top: 1px solid var(--border);
 }
 
-.featured-mockup:hover .featured-mockup-cta {
-  opacity: .88;
-  transform: translateX(3px);
+.campaign-confidential::before {
+  content: '🔒';
+  font-size: .65rem;
 }
 
-.featured-mockup-visual {
-  position: relative;
-  z-index: 1;
-  background: var(--surface);
+/* Campaign visuals */
+.campaign-visuals {
   display: grid;
-  grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  padding: 14px;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface);
+  height: 100%;
 }
 
-.featured-mockup-visual img {
+.campaign-img {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  position: relative;
+  min-height: 100px;
+}
+
+.campaign-img.span-full {
+  grid-column: 1 / -1;
+  min-height: 140px;
+}
+
+.campaign-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  object-position: center;
   display: block;
-  transition: border-color .2s;
+  position: absolute;
+  inset: 0;
+  transition: transform .3s;
 }
 
-.featured-mockup-visual img:first-child {
-  grid-column: 1 / -1;
+.campaign-card-outer:hover .campaign-img img {
+  transform: scale(1.02);
 }
 
-.featured-mockup:hover .featured-mockup-visual img {
-  border-color: #bfdbfe;
+.campaign-img-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  background: var(--surface2);
+  color: var(--text-dim);
+}
+
+.campaign-img-placeholder span {
+  font-family: Tahoma, sans-serif;
+  font-size: .55rem;
+  text-align: center;
+  padding: 0 .5rem;
 }
 
 @media (max-width: 760px) {
-  .featured-mockup { grid-template-columns: 1fr; }
-  .featured-mockup-visual { display: none; }
-  .featured-mockup-wrap { padding: 0 1.2rem 2rem; }
+  .campaign-card-inner { grid-template-columns: 1fr; }
+  .campaign-visuals { display: none; }
+  .campaigns-section { padding: 0 1.2rem 4rem; }
 }
 
 
@@ -1435,6 +1493,7 @@ footer {
   <div class="nav-right">
     <div class="nav-pills">
       <a class="nav-pill" href="#about">About</a>
+      <a class="nav-pill" href="#campaigns">Campaigns</a>
       <a class="nav-pill" href="#apps">Apps</a>
       <a class="nav-pill" href="#mockups">Mockups</a>
       <a class="nav-pill" href="#games">Games</a>
@@ -1717,7 +1776,152 @@ footer {
   <div class="divider-line"></div>
 </div>
 
-<!-- Apps Section Header -->
+<!-- Divider -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+</div>
+
+<!-- Campaigns Section Header -->
+<div class="section-header" id="campaigns">
+  <div class="section-title-group">
+    <div class="section-label">◆ Selected Campaigns</div>
+    <div class="section-title">Campaigns that delivered</div>
+  </div>
+  <div class="section-desc">Real briefs, real budgets, real brands — a selection of work from over a decade in performance marketing.</div>
+</div>
+
+<!-- Campaigns Grid -->
+<section class="campaigns-section">
+  <div class="campaigns-grid">
+
+    <!-- Dell CEE — Merged -->
+    <div class="campaign-card-outer">
+    <div class="campaign-card">
+      <div class="campaign-card-inner">
+        <div class="campaign-info">
+          <div class="campaign-top">
+            <span class="campaign-client-badge badge-dell">Dell Technologies</span>
+            <span class="campaign-type-badge">B2B Lead Generation</span>
+          </div>
+          <div class="campaign-title">CEE Multi-Quarter Lead Gen Program</div>
+          <div class="campaign-period">2023 — 2024 · Central & Eastern Europe · 18+ Countries</div>
+          <div class="campaign-desc">
+            A sustained B2B lead generation program across Central and Eastern Europe promoting Dell's enterprise solutions — from Modern Storage to Generative AI — to IT decision-makers and business buyers. Campaigns ran across Facebook and LinkedIn simultaneously, combining in-media lead forms, traffic campaigns, and custom audience strategies across a highly fragmented multi-country region.<br><br>
+            Budget was dynamically reallocated mid-flight to highest-performing countries, a strategy that drove lead volumes well above KPI across multiple quarters. CTR consistently outperformed regional B2B industry benchmarks, while CPL and CPM remained low relative to audience quality. Each campaign iteration was sharper than the last — a direct result of quarter-on-quarter optimization and data-driven decisions.
+          </div>
+          <div class="campaign-platforms">
+            <span class="campaign-platform">Meta Ads</span>
+            <span class="campaign-platform">LinkedIn Ads</span>
+            <span class="campaign-platform">Lead Gen Forms</span>
+            <span class="campaign-platform">Custom Audiences</span>
+            <span class="campaign-platform">Landing Pages</span>
+            <span class="campaign-platform">18+ Countries</span>
+          </div>
+          <div class="campaign-confidential">Specific performance figures kept confidential</div>
+        </div>
+        <div class="campaign-visuals">
+          <div class="campaign-img span-full">
+            <img src="images/dell_campaign_1.jpg" alt="Dell CEE Campaign" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>dell_campaign_1.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/dell_campaign_2.jpg" alt="Dell Campaign Creative" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>dell_campaign_2.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/dell_campaign_3.jpg" alt="Dell Campaign Results" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>dell_campaign_3.jpg</span></div>'"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Lenovo Official Store -->
+    <div class="campaign-card-outer">
+    <div class="campaign-card">
+      <div class="campaign-card-inner">
+        <div class="campaign-info">
+          <div class="campaign-top">
+            <span class="campaign-client-badge badge-lenovo">Lenovo Official Store</span>
+            <span class="campaign-type-badge">Always-On Performance</span>
+          </div>
+          <div class="campaign-title">Greece E-Commerce Always-On Campaign</div>
+          <div class="campaign-period">Jan 2022 — Present · Greece · 40+ Monthly Reports</div>
+          <div class="campaign-desc">
+            A long-running always-on performance campaign for the Lenovo Official Store in Greece — one of the most competitive consumer electronics markets in the country. Running continuously since January 2022, the campaign spans Google Search, Google Display Network, Demand Gen, and paid social promotion, all optimized monthly against conversion and traffic KPIs.<br><br>
+            Google Search CTR has held near 12% consistently — a figure that places the store in direct competition with Greece's biggest retail chains for search impression share. Month after month, the campaign has maintained efficiency and delivery without degradation, a testament to ongoing optimization discipline rather than set-and-forget management.
+          </div>
+          <div class="campaign-platforms">
+            <span class="campaign-platform">Google Search</span>
+            <span class="campaign-platform">Google Display</span>
+            <span class="campaign-platform">Demand Gen</span>
+            <span class="campaign-platform">Meta Ads</span>
+            <span class="campaign-platform">Remarketing</span>
+            <span class="campaign-platform">GA4</span>
+          </div>
+          <div class="campaign-confidential">Specific performance figures kept confidential</div>
+        </div>
+        <div class="campaign-visuals">
+          <div class="campaign-img span-full">
+            <img src="images/lenovo_store_1.jpg" alt="Lenovo Store Campaign" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>lenovo_store_1.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/lenovo_store_2.jpg" alt="Lenovo Store Google Ads" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>lenovo_store_2.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/lenovo_store_3.jpg" alt="Lenovo Store Results" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>lenovo_store_3.jpg</span></div>'"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Lenovo KanenasMonos -->
+    <div class="campaign-card-outer">
+    <div class="campaign-card">
+      <div class="campaign-card-inner">
+        <div class="campaign-info">
+          <div class="campaign-top">
+            <span class="campaign-client-badge badge-lenovo">Lenovo Greece</span>
+            <span class="campaign-type-badge">Brand Awareness</span>
+          </div>
+          <div class="campaign-title">#KanenasMonos — Christmas Brand Campaign</div>
+          <div class="campaign-period">December 2021 · Greece · Multi-channel</div>
+          <div class="campaign-desc">
+            A deeply emotional brand awareness campaign built around Lenovo Greece's Christmas concept — "No One Alone" — using technology as a connector between people separated by distance. The campaign ran across five channels simultaneously: Facebook, Instagram, YouTube, Google Display, and a programmatic publisher network, each with tailored creative and a coordinated publication timeline.<br><br>
+            The results were exceptional for the budget: well over 2 million impressions, hundreds of thousands of video views and engagements, and thousands of new followers acquired in under two weeks. The campaign also included a €1,000 competition mechanic that amplified organic reach and reinforced the emotional message.
+          </div>
+          <div class="campaign-platforms">
+            <span class="campaign-platform">Meta Ads</span>
+            <span class="campaign-platform">Instagram</span>
+            <span class="campaign-platform">YouTube</span>
+            <span class="campaign-platform">Google Display</span>
+            <span class="campaign-platform">Programmatic</span>
+            <span class="campaign-platform">Video</span>
+          </div>
+          <div class="campaign-confidential">Specific performance figures kept confidential</div>
+        </div>
+        <div class="campaign-visuals">
+          <div class="campaign-img span-full">
+            <img src="images/kanenas_monos_1.jpg" alt="KanenasMonos Campaign" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>kanenas_monos_1.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/kanenas_monos_2.jpg" alt="KanenasMonos Creative" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>kanenas_monos_2.jpg</span></div>'"/>
+          </div>
+          <div class="campaign-img">
+            <img src="images/kanenas_monos_3.jpg" alt="KanenasMonos Results" onerror="this.parentElement.innerHTML='<div class=\'campaign-img-placeholder\'><span>kanenas_monos_3.jpg</span></div>'"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+</div>
+
 <div class="section-header" id="apps">
   <div class="section-title-group">
     <div class="section-label">◆ Projects &amp; Apps</div>
@@ -1923,39 +2127,9 @@ footer {
 <div class="section-header" id="mockups">
   <div class="section-title-group">
     <div class="section-label">◆ Web Design Projects</div>
-    <div class="section-title">Client work & mockups</div>
+    <div class="section-title">Client mockups</div>
   </div>
-  <div class="section-desc">From full multi-page websites to design explorations — all built from scratch.</div>
-</div>
-
-<!-- Featured: TCP Awards Website -->
-<div class="featured-mockup-wrap">
-  <a class="featured-mockup" href="https://datoo13.github.io/portfolio/tcp_awards_website/index.html" target="_blank" rel="noopener">
-    <div class="featured-mockup-info">
-      <div class="featured-mockup-label">Featured Project</div>
-      <div>
-        <div class="featured-mockup-title">Tech Channel Partner<br><span>Awards 2026</span></div>
-        <div class="featured-mockup-subtitle"><br>Full multi-page website — designed, structured and built from scratch</div>
-      </div>
-      <div class="featured-mockup-desc">
-        Not a mockup. A complete, production-ready multi-page website for one of the B2B tech industry's premier award ceremonies. Every section designed, every interaction considered, every page built — combining corporate credibility with modern web craft. This is the kind of project that takes most agencies weeks. Built with AI as a force multiplier.
-      </div>
-      <div class="featured-mockup-tags">
-        <span class="featured-mockup-tag">Multi-page Website</span>
-        <span class="featured-mockup-tag">HTML / CSS</span>
-        <span class="featured-mockup-tag">B2B</span>
-        <span class="featured-mockup-tag">Event Branding</span>
-        <span class="featured-mockup-tag">Corporate Design</span>
-        <span class="featured-mockup-tag">AI-assisted</span>
-      </div>
-      <div class="featured-mockup-cta">View website →</div>
-    </div>
-    <div class="featured-mockup-visual">
-      <img src="tcp_awards_website/tcp_preview_1.jpg" alt="TCP Awards Website screenshot 1"/>
-      <img src="tcp_awards_website/tcp_preview_2.jpg" alt="TCP Awards Website screenshot 2"/>
-      <img src="tcp_awards_website/tcp_preview_3.jpg" alt="TCP Awards Website screenshot 3"/>
-    </div>
-  </a>
+  <div class="section-desc">Modern business website designs built from the ground up with AI assistance — for the Tech Channel Partner Awards 2026.</div>
 </div>
 
 <!-- TCP Mockups Grid -->
@@ -2066,21 +2240,6 @@ footer {
 		<span class="tech-chip">Decision Architecture</span>
 	  </div>
 	</a>
-
-    <a class="app-card" href="https://datoo13.github.io/portfolio/biztech_wiki_mockup/index.html" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer;">
-      <div class="app-card-top">
-        <div class="app-icon">📖</div>
-        <span class="app-badge badge-ai">Web Design</span>
-      </div>
-      <div class="app-title">BizTech Wiki — Knowledge Base Mockup</div>
-      <div class="app-desc">A Wikipedia-style editorial platform concept built for biztech.gr — structured to surface and organise sourced B2B industry knowledge in a clean, navigable, media-grade format.</div>
-      <div class="app-tech">
-        <span class="tech-chip">HTML</span>
-        <span class="tech-chip">CSS</span>
-        <span class="tech-chip">Editorial Design</span>
-        <span class="tech-chip">AI-assisted</span>
-      </div>
-    </a>
 
   </div>
 </section>
