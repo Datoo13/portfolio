@@ -14,8 +14,14 @@ async function loadComponent(selector, file) {
     // Re-run inline scripts if any
     el.querySelectorAll('script').forEach(s => {
       const ns = document.createElement('script');
-      ns.textContent = s.textContent;
-      document.body.appendChild(ns);
+      // Copy all attributes (type, src, etc.)
+      Array.from(s.attributes).forEach(a => ns.setAttribute(a.name, a.value));
+      if (s.src) {
+        ns.src = s.src;
+      } else {
+        ns.textContent = s.textContent;
+      }
+      document.head.appendChild(ns);
     });
   } catch (e) {
     console.warn('Component load error:', e);
@@ -136,11 +142,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const base = 'components/';
 
   await Promise.all([
+    loadComponent('#intro-placeholder', base + 'intro.html'),
     loadComponent('#header-placeholder', base + 'header.html'),
     loadComponent('#sponsors-placeholder', base + 'sponsors.html'),
     loadComponent('#footer-placeholder', base + 'footer.html'),
-    loadComponent('#invitations-form-placeholder', base + 'form-invitations.html'),
-    loadComponent('#participations-form-placeholder', base + 'form-participations.html'),
+    loadComponent('#logo3d-placeholder', base + 'logo3d.html'),
   ]);
 
   // Init after components are loaded

@@ -846,7 +846,7 @@ p { max-width: 68ch; }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
@@ -904,10 +904,6 @@ p { max-width: 68ch; }
   font-size: 13px;
   color: var(--mid-gray);
   line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* ============================================================
@@ -1683,6 +1679,7 @@ p { max-width: 68ch; }
   .hero-deadline { position: static; margin-top: 40px; display: inline-block; }
   .categories-tabs { overflow-x: auto; padding-bottom: 0; }
   .tab-btn { font-size: 12px; padding: 10px 16px; }
+  .category-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 480px) {

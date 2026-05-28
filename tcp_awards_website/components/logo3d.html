@@ -1,0 +1,152 @@
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+
+  const canvas = document.getElementById('logo3d');
+  if (!canvas) throw new Error('No #logo3d canvas');
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas, antialias: true, alpha: true, logarithmicDepthBuffer: true
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 10000);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const key = new THREE.DirectionalLight(0xfff5cc, 2.2);
+  key.position.set(200, 400, 600);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xffeebb, 0.7);
+  fill.position.set(-400, 200, 200);
+  scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.4);
+  rim.position.set(0, -300, -400);
+  scene.add(rim);
+
+  // Gradient colours from SVG: #603d15 → #ffeb9b (left → right, x: 3.51 → 1065.31)
+  const colLeft  = new THREE.Color(0x603d15);
+  const colRight = new THREE.Color(0xffeb9b);
+  const SVG_X_MIN = 3.51;
+  const SVG_X_MAX = 1065.31;
+
+  // Apply horizontal gradient as vertex colours to a geometry
+  function applyGradient(geo) {
+    const pos = geo.attributes.position;
+    const count = pos.count;
+    const colors = new Float32Array(count * 3);
+    const c = new THREE.Color();
+    for (let i = 0; i < count; i++) {
+      // In SVG space x goes 0→1061.8; after flip y=-y, x unchanged
+      const x = pos.getX(i);
+      const t = Math.max(0, Math.min(1, (x - SVG_X_MIN) / (SVG_X_MAX - SVG_X_MIN)));
+      c.lerpColors(colLeft, colRight, t);
+      colors[i * 3]     = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
+    }
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  }
+
+  // Material with vertex colours + metallic shading
+  const mat = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    metalness: 0.8,
+    roughness: 0.28,
+    polygonOffset: true,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
+    side: THREE.FrontSide,
+  });
+
+  fetch('logos/tcp_awards_logo_2026_gold.svg')
+    .then(r => r.text())
+    .then(svgText => {
+      const loader = new SVGLoader();
+      const svgData = loader.parse(svgText);
+
+      const meshGroup = new THREE.Group();
+      const extrudeSettings = {
+        depth: 18, bevelEnabled: true,
+        bevelThickness: 2, bevelSize: 1.5, bevelSegments: 4
+      };
+
+      for (const path of svgData.paths) {
+        // createShapes handles winding/evenodd correctly when we pass true for isCCW
+        // and false for noHoles — this fixes the stray chunk between P and R
+        const shapes = SVGLoader.createShapes(path);
+        for (const shape of shapes) {
+          const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+          applyGradient(geo);
+          meshGroup.add(new THREE.Mesh(geo, mat));
+        }
+      }
+
+      // Flip SVG Y axis
+      meshGroup.scale.set(1, -1, 1);
+
+      // Pivot: offset meshGroup so its bbox centre = origin
+      const pivot = new THREE.Group();
+      pivot.add(meshGroup);
+
+      const box = new THREE.Box3().setFromObject(meshGroup);
+      const centre = new THREE.Vector3();
+      box.getCenter(centre);
+      meshGroup.position.set(-centre.x, -centre.y, -centre.z);
+
+      scene.add(pivot);
+
+      // --- Fit camera ---
+      function fitCamera() {
+        const w = canvas.clientWidth  || 800;
+        const h = canvas.clientHeight || 220;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        const b = new THREE.Box3().setFromObject(pivot);
+        const sz = new THREE.Vector3();
+        b.getSize(sz);
+
+        const fovRad = (camera.fov * Math.PI) / 180;
+        const fitH = (sz.y / 2) / Math.tan(fovRad / 2);
+        const fitW = (sz.x / 2) / Math.tan(fovRad / 2) / camera.aspect;
+        camera.position.set(0, 0, Math.max(fitH, fitW) * 1.12);
+        camera.lookAt(0, 0, 0);
+      }
+      fitCamera();
+      window.addEventListener('resize', fitCamera);
+
+      // --- Subtle floating animation ---
+      const PAN_AMOUNT  = 0.07;   // ±4° left-right tilt
+      const PAN_SPEED   = 0.4;    // Hz
+      const FLOAT_AMOUNT = 8;     // world units up/down
+      const FLOAT_SPEED  = 0.25;  // Hz
+
+      let t = 0, lastTime = performance.now();
+      (function animate(now) {
+        requestAnimationFrame(animate);
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+        t += dt;
+
+        pivot.rotation.y = Math.sin(t * PAN_SPEED * Math.PI * 2) * PAN_AMOUNT;
+        pivot.position.y = Math.sin(t * FLOAT_SPEED * Math.PI * 2) * FLOAT_AMOUNT;
+
+        renderer.render(scene, camera);
+      })(lastTime);
+
+      requestAnimationFrame(() => canvas.classList.add('visible'));
+    })
+    .catch(err => console.warn('logo3d: failed to load SVG', err));
+</script>

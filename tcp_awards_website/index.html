@@ -142,6 +142,22 @@
     }
 
     /* Award statue photo — full width, bottom aligned */
+
+    /* ── 3D Logo canvas ── */
+    .hero-logo-3d {
+      width: 100%;
+      height: 220px;
+      display: block;
+      cursor: grab;
+      margin: 28px auto 0;
+      opacity: 0;
+      transition: opacity 1.2s var(--ease-out) 0.8s;
+    }
+    .hero-logo-3d.visible { opacity: 1; }
+    @media (max-width: 600px) {
+      .hero-logo-3d { height: 140px; }
+    }
+
     .hero-statue-wrap {
       position: relative;
       width: 100%;
@@ -468,6 +484,8 @@
 </head>
 <body class="light-hero">
 
+  <div id="intro-placeholder"></div>
+
   <div id="header-placeholder"></div>
 
   <!-- ═══════════════════════════════════════════
@@ -487,7 +505,7 @@
     <p class="hero-desc" id="hp-desc">
       Τα μοναδικά βραβεία στα οποία <strong>η ίδια η αγορά</strong> ψηφίζει
       τους καλύτερους του καναλιού τεχνολογίας στην Ελλάδα.
-      36 κατηγορίες. 3 ενότητες. 1 βραδιά.
+      41 κατηγορίες. 3 ενότητες. 1 βραδιά.
     </p>
 
     <div class="hero-btns" id="hp-btns">
@@ -511,6 +529,11 @@
     </div>
     ============================================================ -->
 
+    <!-- 3D Logo — temporarily disabled (SVG path artifact under investigation)
+    <canvas id="logo3d" class="hero-logo-3d"></canvas>
+    <div id="logo3d-placeholder" style="display:none"></div>
+    -->
+
     <!-- Award statue photo — the star of the hero -->
     <div class="hero-statue-wrap" id="hp-statue">
       <img
@@ -529,7 +552,7 @@
   <div class="stats-bar">
     <div class="container" style="padding:0; max-width:none;">
       <div class="stats-bar-inner">
-        <div class="stats-bar-item reveal"><div class="stats-num">36</div><div class="stats-lbl">Κατηγορίες</div></div>
+        <div class="stats-bar-item reveal"><div class="stats-num">41</div><div class="stats-lbl">Κατηγορίες</div></div>
         <div class="stats-bar-item reveal reveal-delay-1"><div class="stats-num">3</div><div class="stats-lbl">Ενότητες</div></div>
         <div class="stats-bar-item reveal reveal-delay-2"><div class="stats-num">3η</div><div class="stats-lbl">Χρονιά διοργάνωσης</div></div>
         <div class="stats-bar-item reveal reveal-delay-3"><div class="stats-num"><img src="https://shpages.com/wp-content/uploads/2026/05/award.png" alt="Award" style="height:44px;width:auto;display:inline-block;vertical-align:middle;" /></div><div class="stats-lbl">Η αγορά ψηφίζει</div></div>
@@ -674,7 +697,7 @@
           </p>
           <p class="reveal reveal-delay-2">
             Πρόκειται για <strong>βραβεία για το κανάλι, από το ίδιο το κανάλι</strong>, τα οποία
-            αναδεικνύουν τους κορυφαίους της χρονιάς μέσα από 36 κατηγορίες.
+            αναδεικνύουν τους κορυφαίους της χρονιάς μέσα από 41 κατηγορίες.
           </p>
           <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:32px;" class="reveal reveal-delay-3">
             <a href="participations.html" class="btn btn-gold btn-lg">Δηλώστε υποψηφιότητα</a>
@@ -698,7 +721,7 @@
       <span class="section-label">Κατηγορίες</span>
       <span class="gold-rule gold-rule--left"></span>
       <h2 style="margin-bottom:12px;" class="reveal">Κατηγορίες βράβευσης</h2>
-      <p style="margin-bottom:40px; font-size:16px; color:var(--mid-gray);" class="reveal reveal-delay-1">36 κατηγορίες σε 3 βασικές ενότητες, συν Editor's Choice.</p>
+      <p style="margin-bottom:40px; font-size:16px; color:var(--mid-gray);" class="reveal reveal-delay-1">41 κατηγορίες σε 3 βασικές ενότητες, συν Editor's Choice.</p>
 
       <div class="categories-tabs reveal reveal-delay-2">
         <button class="tab-btn active" data-tab="tab-resellers">Resellers</button>
@@ -707,57 +730,74 @@
         <button class="tab-btn" data-tab="tab-editors">Editor's Choice</button>
       </div>
 
-      <div class="tab-panel active" id="tab-resellers"><div class="category-grid">
-        <div class="category-card"><div class="category-code">R1</div><h4>Public Sector VAR Award</h4><p>Για συνεργάτες που εστιάζουν στον δημόσιο τομέα — εκπαίδευση, υγεία, τοπική αυτοδιοίκηση, κυβέρνηση.</p></div>
-        <div class="category-card"><div class="category-code">R2</div><h4>Managed Services Provider (MSP) Award</h4><p>Για εταιρείες που παρέχουν υπηρεσίες MSP σε τελικούς πελάτες.</p></div>
-        <div class="category-card"><div class="category-code">R3</div><h4>Cloud Services Provider Award</h4><p>Για εταιρείες του καναλιού που παρέχουν cloud-based υπηρεσίες.</p></div>
-        <div class="category-card"><div class="category-code">R4</div><h4>Security Reseller Award</h4><p>Αναγνώριση για VARs/παρόχους υπηρεσιών ασφαλείας που επιδεικνύουν αριστεία στην κυβερνοασφάλεια.</p></div>
-        <div class="category-card"><div class="category-code">R5</div><h4>ESG Award</h4><p>Για πρωτοβουλίες περιβάλλοντος, κοινωνίας και διακυβέρνησης από μεταπωλητές.</p></div>
-        <div class="category-card"><div class="category-code">R6</div><h4>Printing & MPS</h4><p>Για επιχειρήσεις που προσφέρουν υπηρεσίες εκτύπωσης και διαχείρισης εκτυπώσεων.</p></div>
-        <div class="category-card"><div class="category-code">R7</div><h4>System Integration</h4><p>Για επιτεύγματα στην ολοκλήρωση συστήματος με καινοτομία και πολυπλοκότητα.</p></div>
-        <div class="category-card"><div class="category-code">R8</div><h4>AI Partner</h4><p>Για συνεργάτες που σχεδιάζουν και υλοποιούν έργα AI.</p></div>
-        <div class="category-card"><div class="category-code">R9</div><h4>Software Partner</h4><p>Αναδεικνύει τον συνεργάτη που ξεχωρίζει στον τομέα του business software.</p></div>
-        <div class="category-card"><div class="category-code">R10</div><h4>Defense Partner</h4><p>Για συνεργάτες με σημαντικά έργα στην αμυντική και στρατιωτική αγορά.</p></div>
-        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">R11</div><h4>Partner of the Year Award</h4><p>Ο κορυφαίος συνεργάτης της χρονιάς, ανεξάρτητα κατηγορίας και αγοράς.</p></div>
-      </div></div>
-
-      <div class="tab-panel" id="tab-vendors"><div class="category-grid">
-        <div class="category-card"><div class="category-code">V1</div><h4>Infrastructure Vendor Award</h4><p>Για προμηθευτές προϊόντων ή υπηρεσιών που σχετίζονται με την υποδομή.</p></div>
-        <div class="category-card"><div class="category-code">V2</div><h4>Devices Vendor Award</h4><p>Ο προμηθευτής που ξεχώρισε στο κανάλι σε desktops, laptops και tablets.</p></div>
-        <div class="category-card"><div class="category-code">V3</div><h4>Networking Vendor Award</h4><p>Για κατασκευαστές προϊόντων και υπηρεσιών που σχετίζονται με τη δικτύωση.</p></div>
-        <div class="category-card"><div class="category-code">V4</div><h4>Software Vendor Award</h4><p>Για προμηθευτές που αναπτύσσουν software σε οποιαδήποτε κατηγορία.</p></div>
-        <div class="category-card"><div class="category-code">V5</div><h4>Security Vendor Award</h4><p>Για προμηθευτές συστημάτων κυβερνοασφάλειας που ενισχύουν τους συνεργάτες τους.</p></div>
-        <div class="category-card"><div class="category-code">V6</div><h4>Printing Vendor Award</h4><p>Αναγνώριση του κορυφαίου κατασκευαστή εκτυπωτών και εκτυπωτικών συστημάτων.</p></div>
-        <div class="category-card"><div class="category-code">V7</div><h4>UC/Video Conference Vendor Award</h4><p>Ο κατασκευαστής που ξεχωρίζει στις λύσεις video conference και ενοποιημένης επικοινωνίας.</p></div>
-        <div class="category-card"><div class="category-code">V8</div><h4>AI Vendor Award</h4><p>Ο κατασκευαστής AI που αναγνωρίζει το κανάλι ως τον πλέον ώριμο.</p></div>
-        <div class="category-card"><div class="category-code">V9</div><h4>Specialist Vendor Award</h4><p>Για προμηθευτές εξειδικευμένων προϊόντων ή υπηρεσιών, συμπεριλαμβανομένων audio/video.</p></div>
-        <div class="category-card"><div class="category-code">V10</div><h4>Cloud Services Vendor Award</h4><p>Για κατασκευαστές/προμηθευτές cloud υπηρεσιών οποιουδήποτε τύπου.</p></div>
-        <div class="category-card"><div class="category-code">V11</div><h4>ESG Award</h4><p>Για εταιρείες τεχνολογίας που έχουν ενσωματώσει το ESG στη λειτουργία τους.</p></div>
-        <div class="category-card"><div class="category-code">V12</div><h4>Best Partner Program Award</h4><p>Το κορυφαίο πρόγραμμα συνεργατών, όπως το αξιολογούν οι ίδιοι οι συνεργάτες.</p></div>
-        <div class="category-card"><div class="category-code">V13</div><h4>Data Center Vendor Award</h4><p>Για κατασκευαστές που προσφέρουν υπηρεσίες και υποδομές DataCenter.</p></div>
-        <div class="category-card"><div class="category-code">V14</div><h4>Smart Building Vendor Award</h4><p>Ο κατασκευαστής που ξεχώρισε φέτος στην αγορά έξυπνων κτιρίων.</p></div>
-        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">V15</div><h4>Vendor of the Year Award</h4><p>Ο κορυφαίος κατασκευαστής της χρονιάς, ανεξαρτήτως κατηγορίας.</p></div>
-      </div></div>
-
-      <div class="tab-panel" id="tab-distributors"><div class="category-grid">
-        <div class="category-card"><div class="category-code">D1</div><h4>Broad Line Distributor Award</h4><p>Για διανομείς ευρέος φάσματος προϊόντων τεχνολογίας.</p></div>
-        <div class="category-card"><div class="category-code">D2</div><h4>Value Added Distributor Award</h4><p>Για διανομείς που προσφέρουν υπηρεσίες προστιθέμενης αξίας στο κανάλι.</p></div>
-        <div class="category-card"><div class="category-code">D3</div><h4>Cloud Distributor Award</h4><p>Για διανομείς που εστιάζουν σε cloud υπηρεσίες και λύσεις.</p></div>
-        <div class="category-card"><div class="category-code">D4</div><h4>Security Distributor Award</h4><p>Για διανομείς που εξειδικεύονται σε λύσεις και προϊόντα κυβερνοασφάλειας.</p></div>
-        <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">D5</div><h4>Distributor of the Year Award</h4><p>Ο κορυφαίος διανομέας της χρονιάς, ανεξαρτήτως ειδίκευσης.</p></div>
-      </div></div>
-
-      <div class="tab-panel" id="tab-editors"><div class="category-grid">
-        <div class="category-card" style="border-color:var(--red);background:var(--red-pale);"><div class="category-code" style="color:var(--red);">EC1</div><h4>Channel Manager of the Year</h4><p>Επιλογή της σύνταξης του Tech Channel Partner για τον κορυφαίο Channel Manager της χρονιάς.</p></div>
-        <div class="category-card" style="border-color:var(--red);background:var(--red-pale);"><div class="category-code" style="color:var(--red);">EC2</div><h4>Editor's Choice — Στελέχη που ξεχώρισαν</h4><p>Αναγνώριση στελεχών που ξεχωρίζουν για την προσφορά και τη συνεισφορά τους στο κανάλι.</p></div>
+      <div class="tab-panel active" id="tab-resellers">
+        <div class="category-grid">
+  <div class="category-card"><div class="category-code">R1</div><h4>Public Sector VAR Award</h4><p>Το βραβείο Public Sector VAR απευθύνεται σε συνεργάτες που εστιάζουν στον δημόσιο τομέα. Οι πελάτες Δημοσίου μπορεί να προέρχονται από οποιονδήποτε χώρο, όπως αυτόν της εκπαίδευσης, της υγείας, της τοπικής αυτοδιοίκησης, της κυβέρνησης κ.ο.κ.. Δικαίωμα συμμετοχής έχουν επιχειρήσεις με σημαντική δραστηριότητα στον δημόσιο τομέα επί του κύκλου εργασιών τους.</p></div>
+  <div class="category-card"><div class="category-code">R2</div><h4>Managed Services Provider (MSP) Award</h4><p>Το βραβείο Managed Services Provider (MSP) απευθύνεται σε εταιρείες που παρέχουν υπηρεσίες MSP σε τελικούς πελάτες. Δικαίωμα συμμετοχής έχουν οι επιχειρήσεις που: Ένα πολύ σημαντικό τμήμα των υπηρεσιών που προσφέρουν αφορούν υπηρεσίες πληροφορικής. Δεν είναι κατασκευαστές ή εταιρείες service/τεχνικής υποστήριξης. Η κατηγορία περιλαμβάνει κάθε είδους διαχειριζόμενη υπηρεσία όπως network management, security management, disaster recovery, backup &amp; recovery, software maintenance, hardware maintenance, helpdesk support και training.</p></div>
+  <div class="category-card"><div class="category-code">R3</div><h4>Tech Shop Award</h4><p>Εγκαινιάζοντας αυτή τη νέα κατηγορία, αναδεικνύουμε όλες αυτές τις επιχειρήσεις που δραστηριοποιούνται στην πολύ ανταγωνιστική αγορά του retail, προβάλλοντας την τεχνογνωσία και την εξειδίκευσή τους και συμβουλεύοντας προσωπικά κάθε καταναλωτή. Χαρακτηριστικό των "Tech Shops" είναι ότι διαθέτουν έντονη παρουσία, είτε ηλεκτρονική, είτε με φυσικό κατάστημα στην αγορά των καταναλωτών, ενώ παράλληλα συχνά-πυκνά σχεδιάζουν λύσεις για μικρές και πολύ μικρές επιχειρήσεις.</p></div>
+  <div class="category-card"><div class="category-code">R4</div><h4>Cloud Services Provider Award</h4><p>Το βραβείο Cloud Services Provider απευθύνεται στις εταιρείες του καναλιού, οι οποίες παρέχουν cloud-based υπηρεσίες σε τελικούς πελάτες. Οι παρεχόμενες υπηρεσίες μπορούν να ανήκουν σε οποιαδήποτε κάθετη αγορά και να περιλαμβάνουν οποιαδήποτε cloud τεχνολογία, όπως security, storage, infrastructure, υπηρεσίες data center ή συνδυασμός αυτών κ.λπ.</p></div>
+  <div class="category-card"><div class="category-code">R5</div><h4>Security Reseller Award</h4><p>Με το βραβείο Security Reseller αναγνωρίζουμε τους VARs/παρόχους υπηρεσιών ασφαλείας που μπορούν να επιδείξουν αριστεία στις υπηρεσίες και τις λύσεις κυβερνοασφάλειας. Η συγκεκριμένη κατηγορία αφορά όλους τους VARs/MSSPs/integrators που είτε εξειδικεύονται σε υπηρεσίες και λύσεις ασφαλείας, είτε το κομμάτι της κυβερνοασφάλειας είναι ιδιαίτερα σημαντικό, και οι οποίοι προσφέρουν λύσεις σε τελικούς πελάτες οποιουδήποτε βεληνεκούς (μικρές, μεσαίες και μεγάλες επιχειρήσεις ή Δημόσιο).</p></div>
+  <div class="category-card"><div class="category-code">R6</div><h4>ESG Award</h4><p>Οι πρωτοβουλίες για το Περιβάλλον, την Κοινωνία και τη Διακυβέρνηση (ESG) αποκτούν ολοένα και μεγαλύτερη σημασία για τους μεταπωλητές της πληροφορικής. Το βραβείο ESG αφορά σε ενέργειες που αναλαμβάνουν για να βοηθήσουν τις εταιρείες να βελτιώσουν τα αποτελέσματά τους, να προσελκύσουν και να διατηρήσουν κορυφαία ταλέντα, αλλά και να χτίσουν θετική φήμη στους πελάτες και τους επενδυτές. Τέτοιες πρωτοβουλίες μπορεί να είναι για παράδειγμα τα προγράμματα ανακύκλωσης, η συγκέντρωση χρημάτων για φιλανθρωπικό σκοπό, πρωτοβουλίες σε επίπεδο HR κ.λπ.</p></div>
+  <div class="category-card"><div class="category-code">R7</div><h4>Printing &amp; MPS</h4><p>Το βραβείο Printing &amp; MPS απευθύνεται σε επιχειρήσεις που προσφέρουν υπηρεσίες εκτύπωσης και διαχείρισης εκτυπώσεων (MPS) στο πελατολόγιό τους. Οι επιχειρήσεις που θα λάβουν μέρος, θα πρέπει να ασχολούνται κυρίως με την παροχή MPS, να παραδίδουν οι ίδιες την υπηρεσία στον τελικό πελάτη και όχι να παρέχουν μόνο υποστήριξη.</p></div>
+  <div class="category-card"><div class="category-code">R8</div><h4>System Integration</h4><p>Για την αναγνώριση των επιτευγμάτων στην ολοκλήρωση συστήματος τα οποία κατά τεκμήριο ενσωματώνουν καινοτομία και πολυπλοκότητα, έχει θεσπιστεί το βραβείο System Integration. Ως system integration θεωρούμε την αρμονική ευθυγράμμιση διαφορετικών υποσυστημάτων και τη δημιουργία ενός ενιαίου, ολοκληρωμένου κεντρικού συστήματος. Το integration μπορεί να περιλαμβάνει software, hardware, διαδικασίες, προϊόντα και υπηρεσίες.</p></div>
+  <div class="category-card"><div class="category-code">R9</div><h4>AI Partner</h4><p>Απευθύνεται σε συνεργάτες που σχεδιάζουν και υλοποιούν έργα ΑΙ, χωρίς απαραίτητα να είναι αυτή και η μοναδική τους δραστηριότητα. Δικαίωμα συμμετοχής έχουν όσοι: Υλοποιούν έργα ΑΙ σε οποιαδήποτε κατηγορία. Αναπτύσσουν οι ίδιοι ΑΙ τεχνολογία και προϊόντα. Υποστηρίζουν ή/και διαθέτουν υποδομές για έργα ΑΙ.</p></div>
+  <div class="category-card"><div class="category-code">R10</div><h4>Software Partner</h4><p>Το βραβείο Software έχει στόχο να αναδείξει τον συνεργάτη που ξεχωρίζει στον τομέα του λογισμικού, και ειδικότερα σε αυτόν του business software (π.χ. ERP, CRM, HCM κ.ο.κ.). Απευθύνεται σε όλους τους συνεργάτες που είτε υλοποιούν (χρησιμοποιώντας λύση τρίτων), είτε αναπτύσσουν οι ίδιοι επιχειρηματικό λογισμικό.</p></div>
+  <div class="category-card"><div class="category-code">R11</div><h4>Defense Partner</h4><p>Το βραβείο Defense Partner απευθύνεται σε συνεργάτες που δραστηριοποιούνται στον χώρο της άμυνας και της στρατιωτικής ασφάλειας, και έχουν να επιδείξουν σημαντικά έργα στην εν λόγω αγορά. Δικαίωμα συμμετοχής έχουν όσοι συνεργάτες διαθέτουν αντίστοιχο τμήμα ή ασχολούνται αποκλειστικά με την εν λόγω αγορά.</p></div>
+  <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">R12</div><h4>Partner of the Year Award</h4><p>Το βραβείο Partner of the Year έχει στόχο να αναδείξει τον κορυφαίο συνεργάτη της χρονιάς, ανεξάρτητα κατηγορίας και αγοράς. Απευθύνεται σε οποιονδήποτε reseller, VAR, MSP, System Integrator, ISV, Software House κ.λπ., ανεξαρτήτως εξειδίκευσης ή κατεύθυνσης.</p></div>
+</div>
       </div>
-      <div class="notice-banner" style="margin-top:32px;">
-        <span class="notice-icon">✏️</span>
-        <div class="notice-text">
-          <strong>Επιλογή σύνταξης</strong>
-          <span>Οι κατηγορίες Editor's Choice επιλέγονται αποκλειστικά από τους αναλυτές και δημοσιογράφους του Tech Channel Partner.</span>
-        </div>
-      </div></div>
+
+      <div class="tab-panel" id="tab-vendors">
+        <div class="category-grid">
+  <div class="category-card"><div class="category-code">V1</div><h4>Infrastructure Vendor Award</h4><p>Το βραβείο Infrastructure Vendor απευθύνεται σε όλους τους προμηθευτές που προσφέρουν προϊόντα ή υπηρεσίες που σχετίζονται με την υποδομή. Αυτό περιλαμβάνει για παράδειγμα, κατασκευαστές servers και λύσεων αποθήκευσης που έχουν βοηθήσει τους συνεργάτες να δημιουργήσουν και να αναπτύξουν μια κερδοφόρα επιχείρηση.</p></div>
+  <div class="category-card"><div class="category-code">V2</div><h4>Devices Vendor Award</h4><p>Το βραβείο Devices Vendor αναζητά τον προμηθευτή που έχει ξεχωρίσει στους κόλπους του καναλιού σε ό,τι αφορά τις computing "συσκευές", με άλλα λόγια τα desktop συστήματα, τα laptops και τα tablets. Ο κατασκευαστής θα πρέπει να έχει επιδείξει αφοσίωση και υποστήριξη στο κανάλι, ενισχύοντας τις προσπάθειες πώλησης σε όλα τα επίπεδα (π.χ. marketing, sales, support κ.λπ.).</p></div>
+  <div class="category-card"><div class="category-code">V3</div><h4>Networking Vendor Award</h4><p>Το βραβείο Networking Vendor απευθύνεται σε όλους τους κατασκευαστές που προσφέρουν προϊόντα και υπηρεσίες που σχετίζονται με τη δικτύωση. Αυτό περιλαμβάνει κατασκευαστές εξοπλισμού που παράλληλα διαθέτουν και αντίστοιχες υπηρεσίες δικτύωσης, τις οποίες προσφέρουν στην αγορά μέσω του δικτύου των συνεργατών τους.</p></div>
+  <div class="category-card"><div class="category-code">V4</div><h4>Software Vendor Award</h4><p>Το βραβείο Software Vendor of the Year απευθύνεται σε όλους τους προμηθευτές που αναπτύσσουν προϊόντα software ή που έχουν μια μονάδα ανάπτυξης software ως μέρος της επιχείρησής τους. Το βραβείο αυτό αφορά σε οποιαδήποτε κατηγορία business software, όπως ERP, CRM, virtualization, PSA/RMM, BI, αποθήκευση, διαχείριση δικτύου κ.ά.</p></div>
+  <div class="category-card"><div class="category-code">V5</div><h4>Security Vendor Award</h4><p>Το βραβείο Security Vendor αφορά στους προμηθευτές συστημάτων κυβερνοασφάλειας (cybersecurity, τόσο σε επίπεδο software, όσο και σε hardware) που έχουν βοηθήσει τους συνεργάτες τους να αναπτύξουν τις επιχειρήσεις τους. Αυτό μπορεί να περιλαμβάνει την παροχή εκπαίδευσης, διαφημιστικά υλικά ή τεχνική υποστήριξη.</p></div>
+  <div class="category-card"><div class="category-code">V6</div><h4>Printing Vendor Award</h4><p>Για την αναγνώριση του κορυφαίου κατασκευαστή εκτυπωτών και εκτυπωτικών συστημάτων της χρονιάς, έχει θεσπιστεί το βραβείο Printing Vendor. Νέες τεχνολογίες και επιχειρηματικά μοντέλα, καινοτόμα προγράμματα συνεργατών, καθώς και άλλες πρωτοβουλίες ανεβάζουν τον πήχη.</p></div>
+  <div class="category-card"><div class="category-code">V7</div><h4>UC/Video Conference Vendor Award</h4><p>Με την απομακρυσμένη επικοινωνία να βρίσκεται πλέον στην καθημερινότητα όλων μας, οι λύσεις video conference και γενικότερα ενοποιημένης επικοινωνίας/συνεργασίας, διανύουν μία από τις καλύτερες περιόδους της ιστορίας τους. Ποιος κατασκευαστής όμως είναι αυτός που ξεχωρίζει;</p></div>
+  <div class="category-card"><div class="category-code">V8</div><h4>AI Vendor Award</h4><p>Με την τεχνητή νοημοσύνη να αποτελεί ό,τι πιο "hot" υπάρχει αυτήν τη στιγμή στην τεχνολογία, όλοι οι κατασκευαστές ερίζουν για την πρωτοκαθεδρία. Ποιος είναι όμως αυτός που το ίδιο το κανάλι και η διανομή αναγνωρίζουν ως τον πλέον προσανατολισμένο και ώριμο κατασκευαστή στον χώρο του AI;</p></div>
+  <div class="category-card"><div class="category-code">V9</div><h4>Specialist Vendor Award</h4><p>Το βραβείο Specialist Vendor απευθύνεται στους προμηθευτές που κατασκευάζουν ή εμπορεύονται εξειδικευμένα προϊόντα ή υπηρεσίες. Στην εν λόγω κατηγορία μπορούν να συμμετάσχουν όλοι οι κατασκευαστές εξειδικευμένων λύσεων, συμπεριλαμβανομένων όσων διαθέτουν προϊόντα στην κατηγορία audio/video.</p></div>
+  <div class="category-card"><div class="category-code">V10</div><h4>Digital Signage Vendor Award</h4><p>Η αγορά του digital signage έχει μετατραπεί σε μία αυτόνομη αγορά, με μεγάλους διεθνείς παίκτες αλλά και εξειδικευμένους κατασκευαστές για κάθετες αγορές, retail, εστιατόρια, ξενοδοχεία, εξωτερικούς χώρους, γήπεδα κ.ο.κ. Μπορούν να συμμετάσχουν όσοι διαθέτουν προϊόντα και λύσεις ψηφιακής σήμανσης, συμπεριλαμβανομένων συστημάτων/software διαχείρισης.</p></div>
+  <div class="category-card"><div class="category-code">V11</div><h4>Power &amp; Energy Vendor Award</h4><p>Πιο επίκαιρο από ποτέ, το θέμα της ενέργειας αφορά καταναλωτές και επιχειρήσεις που αναζητούν εναλλακτικούς τρόπους παροχής ενέργειας. Εντάσσονται κατασκευαστές από τον χώρο των φωτοβολταϊκών, inverters, power stations και λύσεων παροχής και διαχείρισης ενέργειας, για οικιακή ή επαγγελματική χρήση.</p></div>
+  <div class="category-card"><div class="category-code">V12</div><h4>Cloud Services Vendor Award</h4><p>Είστε κατασκευαστής/προμηθευτής υπηρεσιών cloud; Τότε το βραβείο Cloud Services Vendor μπορεί να είναι δικό σας! Απευθύνεται σε όλους τους προμηθευτές cloud υπηρεσιών, συμπεριλαμβανομένων κατασκευαστών και προγραμματιστών cloud-based λογισμικών, καθώς και παρόχων οποιουδήποτε τύπου cloud υπηρεσίας.</p></div>
+  <div class="category-card"><div class="category-code">V13</div><h4>ESG Award</h4><p>Το βραβείο ESG αφορά εταιρείες τεχνολογίας που έχουν ενσωματώσει το ESG στη λειτουργία τους. Οι πρωτοβουλίες μπορεί να αφορούν σε οποιονδήποτε τομέα του ESG, όπως στην προστασία του περιβάλλοντος, στην εταιρική κοινωνική ευθύνη, στη χρηστή διακυβέρνηση κ.λπ.</p></div>
+  <div class="category-card"><div class="category-code">V14</div><h4>Best Partner Program Award</h4><p>Κάθε κατασκευαστής έχει αναπτύξει το δικό του πρόγραμμα συνεργατών, το οποίο περιλαμβάνει εξειδικεύσεις, επίπεδα συνεργατών, θέματα εκπαίδευσης, marketing, υποστήριξη πωλήσεων κ.ο.κ. Ποιο από όλα αυτά τα προγράμματα θεωρείται το κορυφαίο από τους ίδιους τους συνεργάτες που αποτελούν μέλη του;</p></div>
+  <div class="category-card"><div class="category-code">V15</div><h4>Data Center Vendor Award</h4><p>Το βραβείο Data Center Vendor απευθύνεται σε κατασκευαστές που προσφέρουν υπηρεσίες Data Center. Αυτό περιλαμβάνει τους παρόχους Data Center, καθώς και κατασκευαστές που ασχολούνται κατά κύριο λόγο με τις αντίστοιχες υποδομές και την υποστήριξή τους.</p></div>
+  <div class="category-card"><div class="category-code">V16</div><h4>SmartBuilding Vendor Award</h4><p>Με την έννοια των "έξυπνων κτιρίων" να έχει κερδίσει τεράστιο έδαφος, αρκετοί κατασκευαστές παρέχουν λύσεις smart building με χαρακτηριστικά ενεργειακής αυτονομίας, πλήρους λειτουργίας όλων των υποδομών μέσω δικτύου, προηγμένες λειτουργίες καθαρισμού αέρα κ.ο.κ. Αναζητάμε τον κατασκευαστή που ξεχώρισε αυτήν τη χρονιά.</p></div>
+  <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">V17</div><h4>Vendor of the Year Award</h4><p>Ποιος θα είναι ο κορυφαίος κατασκευαστής της χρονιάς, ανεξαρτήτως κατηγορίας, προϊόντων ή υπηρεσιών; Το βραβείο Vendor of the Year εξετάζει αυτό ακριβώς, απευθυνόμενο σε κάθε προμηθευτή, ανεξαρτήτως ειδίκευσης ή εστίασης.</p></div>
+</div>
+      </div>
+
+      <div class="tab-panel" id="tab-distributors">
+        <div class="category-grid">
+  <div class="category-card"><div class="category-code">D1</div><h4>Cloud Distributor Award</h4><p>Το βραβείο Cloud-Based Business απονέμεται σε έναν διανομέα, ο οποίος έχει επιδείξει υπεροχή στη βοήθεια των μεταπωλητών να εισέλθουν στις υπηρεσίες cloud ή να αναπτύξουν περαιτέρω τις υπάρχουσες προσφορές τους στο cloud. Οι υποψήφιοι θα πρέπει να έχουν βοηθήσει τους συνεργάτες-μεταπωλητές να αναπτύξουν μια κερδοφόρα επιχείρηση και να έχουν προσθέσει αξία γύρω από τις υπηρεσίες cloud.</p></div>
+  <div class="category-card"><div class="category-code">D2</div><h4>Infrastructure Distributor Award</h4><p>Το βραβείο Infrastructure Distributor αφορά σε όλους τους διανομείς που δραστηριοποιούνται στην αγορά των servers και της αποθήκευσης, συμπεριλαμβανομένου του software, του hardware, των περιφερειακών συσκευών, του cloud-based και του data center storage και των σχετικών υπηρεσιών.</p></div>
+  <div class="category-card"><div class="category-code">D3</div><h4>Security Distributor Award</h4><p>Με τη διάκριση Cybersecurity Distributor, ξεχωρίζουμε τον διανομέα που αρίστευσε στη διάθεση λύσεων κυβερνοασφάλειας, συμπεριλαμβανομένου hardware, software, περιφερειακών συσκευών ή συναφών υπηρεσιών. Οι υποψήφιοι μπορούν είτε να ασχολούνται αποκλειστικά με την ασφάλεια, είτε να διαθέτουν σημαντικό τμήμα cybersecurity.</p></div>
+  <div class="category-card"><div class="category-code">D4</div><h4>Networking Distributor Award</h4><p>Η εν λόγω κατηγορία αφορά σε όλους τους διανομείς που δραστηριοποιούνται στην αγορά δικτύων και λύσεων επικοινωνίας. Αυτό συμπεριλαμβάνει τους διανομείς networking (routers, switches, access points, firewalls κ.λπ.), αλλά και SDN, UC, Wi-Fi, υποδομών δικτύου και περιφερειακών και συναφών υπηρεσιών.</p></div>
+  <div class="category-card"><div class="category-code">D5</div><h4>Telecom Distributor Award</h4><p>Με έμφαση στην αγορά τηλεφωνίας, η εν λόγω κατηγορία εγκαινιάζει την προβολή των επιχειρήσεων που παρέχουν λύσεις τηλεφωνικών κέντρων κάθε τύπου, αντίστοιχες συσκευές, software και υπηρεσίες. Από Cloud τηλεφωνικά κέντρα, μέχρι πιο παραδοσιακά PBX αλλά και συστήματα διαχείρισης τηλεφωνίας.</p></div>
+  <div class="category-card"><div class="category-code">D6</div><h4>Specialist Distributor Award</h4><p>Το βραβείο "Specialist" απευθύνεται σε εξειδικευμένους διανομείς που δραστηριοποιούνται σε συγκεκριμένες κάθετες αγορές ή σε περιορισμένες και συγκεκριμένες προϊοντικές κατηγορίες όπως η φωτογραφία, το A/V, αξεσουάρ και περιφερειακά, συστήματα surveillance κ.ο.κ.</p></div>
+  <div class="category-card"><div class="category-code">D7</div><h4>Software Distributor Award</h4><p>Διαφορετικά συμβόλαια διανομής, εμπλοκή του Cloud, εξειδίκευση σε διάφορους τομείς όπως η ασφάλεια, το backup, η παραγωγικότητα κ.λπ., καθιστούν έναν διανομέα software σημαντικό συνεργάτη κάθε επιχείρησης.</p></div>
+  <div class="category-card"><div class="category-code">D8</div><h4>ESG Award</h4><p>Το βραβείο ESG αφορά διανομείς πληροφορικής που ενσωματώνουν πρωτοβουλίες ESG στη λειτουργία τους, αποδεικνύοντας τη δέσμευσή τους στη βιωσιμότητα, την υπευθυνότητα και τη χρηστή διακυβέρνηση (π.χ. περιβάλλον, ΕΚΕ, governance κ.λπ.).</p></div>
+  <div class="category-card" style="border-color:var(--gold-light);background:var(--gold-pale);"><div class="category-code">D9</div><h4>Distributor of the Year Award</h4><p>Το βραβείο Distributor of the Year έχει στόχο να αναδείξει τον κορυφαίο διανομέα της χρονιάς, ανεξαρτήτως εξειδίκευσης ή εστίασης. Οι υποψήφιοι θα πρέπει να έχουν βοηθήσει το κανάλι να αυξήσει τις πωλήσεις του και να είναι κερδοφόρο.</p></div>
+</div>
+      </div>
+
+      <div class="tab-panel" id="tab-editors">
+        <div class="category-grid">
+  <div class="category-card"><div class="category-code">E1</div><h4>Channel Chief Award</h4><p>Αναγνωρίζει τον προϊστάμενο του καναλιού σε έναν κατασκευαστή ή διανομέα, ο οποίος ξεχώρισε μέσα στη χρονιά. Ο υποψήφιος θα πρέπει να έχει δώσει τον καλύτερό του εαυτό, βοηθώντας τους συνεργάτες να αναπτυχθούν, να λύσουν προβλήματα, να κλείσουν νέους πελάτες κ.ο.κ.</p></div>
+  <div class="category-card"><div class="category-code">E2</div><h4>Channel Marketing Award</h4><p>Με το βραβείο Channel Marketing αναδεικνύουμε το στέλεχος που έχει συμβάλει καθοριστικά στη σχεδίαση και εκτέλεση πρωτοποριακών ενεργειών marketing, έχοντας επιτύχει αξιοσημείωτα αποτελέσματα. Βραβεύουμε ανθρώπους με καινοτόμο σκέψη που κατανοούν σε βάθος τις ανάγκες του δικτύου συνεργατών.</p></div>
+  <div class="category-card"><div class="category-code">E3</div><h4>Life Achievement Award</h4><p>Με το βραβείο Life Achievement τιμούμε τον άνθρωπο που έχει συνεισφέρει διαχρονικά και με αντίκτυπο στον κλάδο της τεχνολογίας στην Ελλάδα, κατά τη διάρκεια της καριέρας του. Αναγνωρίζει άτομα των οποίων οι καινοτομίες, η ηγεσία και η δέσμευση επηρέασαν σημαντικά την ελληνική αγορά ICT.</p></div>
+</div>
+<div class="notice-banner" style="margin-top:32px;">
+  <span class="notice-icon">✏️</span>
+  <div class="notice-text">
+    <strong>Επιλογή σύνταξης</strong>
+    <span>Τα βραβεία Editor's Choice επιλέγονται από τους αναλυτές και δημοσιογράφους του Tech Channel Partner, αναγνωρίζοντας στελέχη που ξεχώρισαν είτε ως επικεφαλής του δικτύου συνεργατών, είτε με την πολυετή προσφορά τους. Οι κατηγορίες αυτές επιλέγονται αποκλειστικά από τη σύνταξη και δεν αποτελούν αντικείμενο ψηφοφορίας.</span>
+  </div>
+</div>
+      
+      </div>
 
     </div>
   </section>
@@ -841,5 +881,6 @@
       });
     });
   </script>
+
 </body>
 </html>
