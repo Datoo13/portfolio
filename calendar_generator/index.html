@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #fafafa;
+      --surface2: #f3f4f6;
+      --border: #e5e7eb;
+      --border-light: #d1d5db;
+      --text: #0d1117;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --accent: #2563EB;
+      --accent-glow: rgba(37,99,235,.12);
+      --accent-2: #7c3aed;
+      --accent-2-glow: rgba(124,58,237,.08);
+      --green: #059669;
+      --green-glow: rgba(5,150,105,.08);
+      --red: #dc2626;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, #2563EB0d 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      height: 60vh;
+      background: radial-gradient(ellipse, rgba(37,99,235,.04) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: .9rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+    }
+
+    .nav-logo-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .nav-logo-text {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--text);
+    }
+
+    .nav-logo-text span { color: var(--accent); }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp .5s ease both;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: Tahoma, sans-serif;
+      font-size: .68rem;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid rgba(91,138,240,.25);
+      padding: .32rem .9rem;
+      border-radius: 999px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-eyebrow::before { content: '📅'; font-size: .7rem; }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.1;
+      margin-bottom: .8rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: .92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.2rem;
+      animation: fadeUp .5s .1s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    .card-title {
+      font-size: .62rem;
+      font-family: Tahoma, sans-serif;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── Form ── */
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .4rem;
+      letter-spacing: -.01em;
+    }
+
+    label .req { color: var(--red); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select {
+      width: 100%;
+      padding: .65rem .9rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: 10px;
+      font-size: .88rem;
+      font-family: 'Roboto', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color .18s, box-shadow .18s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    textarea { resize: vertical; min-height: 72px; }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+    }
+
+    .hint {
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-top: .35rem;
+    }
+
+    /* ── Toggle ── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .toggle-label {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .toggle {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--border-light);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .toggle input:checked + .toggle-track { background: var(--accent); }
+
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform .2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.18);
+    }
+
+    .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
+
+    /* ── Timezone badge ── */
+    .tz-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: Tahoma, sans-serif;
+      font-size: .62rem;
+      color: var(--green);
+      background: var(--green-glow);
+      border: 1px solid rgba(5,150,105,.2);
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      margin-left: auto;
+    }
+
+    .tz-badge::before { content: '🌍'; font-size: .7rem; }
+
+    /* ── Timezone searchable dropdown ── */
+    .tz-search-wrap { position: relative; }
+
+    .tz-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--bg);
+      border: 1.5px solid var(--accent);
+      border-radius: 10px;
+      max-height: 210px;
+      overflow-y: auto;
+      z-index: 200;
+      box-shadow: 0 8px 32px rgba(37,99,235,.13);
+    }
+
+    .tz-dropdown.open { display: block; }
+
+    .tz-option {
+      padding: .52rem .9rem;
+      font-size: .83rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: background .1s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tz-option:hover { background: var(--accent-glow); color: var(--accent); }
+    .tz-option-none { padding: .52rem .9rem; font-size: .82rem; color: var(--text-dim); }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: .7rem;
+      flex-wrap: wrap;
+      margin-top: 1.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .7rem 1.4rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      cursor: pointer;
+      border: none;
+      transition: opacity .18s, transform .15s, box-shadow .18s;
+    }
+
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #4070e0);
+      color: #fff;
+      box-shadow: 0 4px 18px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--accent-2), #9333ea);
+      color: #fff;
+      box-shadow: 0 4px 18px var(--accent-2-glow);
+    }
+
+    /* ── Output card ── */
+    .output-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.6rem;
+      margin-bottom: 1.2rem;
+      animation: fadeUp .4s ease both;
+      display: none;
+    }
+
+    .output-card.visible { display: block; }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .output-title {
+      font-size: .62rem;
+      font-family: Tahoma, sans-serif;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .copy-btn {
+      font-family: Tahoma, sans-serif;
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: .28rem .8rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-light);
+      background: var(--bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    .output-url {
+      font-family: 'Roboto Mono', 'Courier New', monospace;
+      font-size: .74rem;
+      color: var(--accent);
+      word-break: break-all;
+      line-height: 1.6;
+      padding: .9rem 1rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .output-url a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .8rem;
+      padding: .55rem 1.1rem;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      border: 1.5px solid rgba(37,99,235,.2);
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all .18s;
+    }
+
+    .open-btn:hover { background: var(--accent); color: #fff; }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .8rem;
+      padding: .55rem 1.1rem;
+      border-radius: 999px;
+      background: var(--accent-2-glow);
+      border: 1.5px solid rgba(124,58,237,.2);
+      color: var(--accent-2);
+      font-size: .78rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .download-btn:hover { background: var(--accent-2); color: #fff; }
+
+    /* ── Error ── */
+    .error-msg {
+      display: none;
+      background: rgba(220,38,38,.06);
+      border: 1px solid rgba(220,38,38,.2);
+      border-radius: 10px;
+      padding: .7rem 1rem;
+      font-size: .82rem;
+      color: var(--red);
+      margin-top: 1rem;
+    }
+
+    .error-msg.visible { display: block; }
+
+    /* ── Footer / disclaimer ── */
+    .disclaimer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: .75rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+      animation: fadeUp .5s .3s ease both;
+    }
+
+    .disclaimer a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.3rem 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 520px) {
+      .row-2 { grid-template-columns: 1fr; }
+      nav { padding: .8rem 1.2rem; }
+      .page { padding: 2rem 1.1rem 4rem; }
+      .card { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo-icon">📅</div>
+    <div class="nav-logo-text">Event <span>Calendar</span> Generator</div>
+  </nav>
+
+  <div class="page">
+
+    <div class="hero">
+      <div class="hero-eyebrow">Calendar Tool</div>
+      <h1>Create <em>Calendar Events</em><br>in seconds</h1>
+      <p>Generate a Google Calendar link or downloadable .ics file for any event — ready to share instantly.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; margin-bottom:1.4rem;">
+        <div class="card-title" style="margin-bottom:0;">Event Details</div>
+      </div>
+
+      <div class="field" style="margin-bottom:1.4rem;">
+        <label for="tz-search">Timezone <span class="req">*</span></label>
+        <div class="tz-search-wrap">
+          <input type="text" id="tz-search" placeholder="Search… e.g. Athens, London, New_York" autocomplete="off" oninput="filterTimezones()" onfocus="openTZDropdown()" onblur="closeTZDropdown()">
+          <div class="tz-dropdown" id="tz-dropdown"></div>
+        </div>
+        <input type="hidden" id="tz-value">
+        <div class="hint">🌍 Auto-detected: <strong id="tz-detected"></strong> — change if needed</div>
+      </div>
+
+      <!-- All-day toggle -->
+      <div class="toggle-row">
+        <label class="toggle" for="allday-toggle">
+          <input type="checkbox" id="allday-toggle" onchange="toggleAllDay()">
+          <div class="toggle-track"></div>
+        </label>
+        <span class="toggle-label">All-day event (no specific time)</span>
+      </div>
+
+      <div class="field">
+        <label for="event-title">Event Title <span class="req">*</span></label>
+        <input type="text" id="event-title" placeholder="e.g. Lenovo Data Center Workshop">
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="start-date">Start Date <span class="req">*</span></label>
+          <input type="date" id="start-date">
+        </div>
+        <div class="field" id="start-time-wrap">
+          <label for="start-time">Start Time <span class="req">*</span></label>
+          <input type="time" id="start-time">
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="end-date">End Date</label>
+          <input type="date" id="end-date">
+        </div>
+        <div class="field" id="end-time-wrap">
+          <label for="end-time">End Time</label>
+          <input type="time" id="end-time">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label for="event-location">Location</label>
+        <input type="text" id="event-location" placeholder="Address or Google Maps link">
+      </div>
+
+      <div class="field">
+        <label for="event-description">Description</label>
+        <textarea id="event-description" placeholder="Event details, agenda, links…"></textarea>
+      </div>
+
+      <div class="error-msg" id="error-msg">⚠ Please fill in all required fields: Title and Start Date (and Start Time for timed events).</div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="generateAll()">
+          <span>⚡</span> Generate Links
+        </button>
+      </div>
+    </div>
+
+    <!-- Google Calendar Output -->
+    <div class="output-card" id="gcal-card">
+      <div class="output-header">
+        <div class="output-title">📆 Google Calendar Link</div>
+        <button class="copy-btn" id="copy-gcal-btn" onclick="copyText('gcal-url-text', 'copy-gcal-btn')">Copy Link</button>
+      </div>
+      <div class="output-url" id="gcal-url-text"></div>
+      <a class="open-btn" id="gcal-open-link" href="#" target="_blank" rel="noopener">
+        ↗ Open in Google Calendar
+      </a>
+    </div>
+
+    <!-- ICS Output -->
+    <div class="output-card" id="ics-card">
+      <div class="output-header">
+        <div class="output-title" style="color: var(--accent-2);">📁 ICS File (Apple / Outlook / any app)</div>
+        <button class="copy-btn" id="copy-ics-btn" onclick="copyText('ics-content-text', 'copy-ics-btn')">Copy ICS</button>
+      </div>
+      <div class="output-url" id="ics-content-text" style="color: var(--text-muted); font-size:.7rem; white-space:pre;"></div>
+      <button class="download-btn" onclick="downloadICS()">
+        ⬇ Download .ics File
+      </button>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      Made by <a href="https://datoo13.github.io/portfolio/" target="_blank" rel="noopener">Konstantinos Doukakis</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/konstantinos-doukakis/" target="_blank" rel="noopener">LinkedIn</a>
+      <br>
+      Timezone is auto-detected from your browser and can be changed per event.
+    </div>
+
+  </div>
+
+  <script>
+    // ─── State ───────────────────────────────────────────────────────────
+    // ─── State ────────────────────────────────────────────────────────────
+    let currentICSData = '';
+
+    // ─── Timezone list ────────────────────────────────────────────────────
+    const ALL_TZ = Intl.supportedValuesOf('timeZone');
+    let selectedTZ = '';
+    let tzCloseTimer = null;
+
+    function initTimezone() {
+      const detected = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Athens';
+      selectedTZ = detected;
+      document.getElementById('tz-value').value = detected;
+      document.getElementById('tz-search').value = detected.replace(/_/g, ' ');
+      document.getElementById('tz-detected').textContent = detected.replace(/_/g, ' ');
+    }
+
+    function renderTZOptions(list) {
+      const dd = document.getElementById('tz-dropdown');
+      if (!list.length) {
+        dd.innerHTML = '<div class="tz-option-none">No matches</div>';
+        return;
+      }
+      dd.innerHTML = list.map(tz =>
+        `<div class="tz-option" onmousedown="selectTZ('${tz}')">${tz.replace(/_/g, ' ')}</div>`
+      ).join('');
+    }
+
+    function filterTimezones() {
+      const raw = document.getElementById('tz-search').value;
+      const q = raw.toLowerCase().replace(/\s+/g, '_');
+      const matches = q ? ALL_TZ.filter(tz => tz.toLowerCase().includes(q)) : ALL_TZ;
+      renderTZOptions(matches.slice(0, 100));
+      document.getElementById('tz-dropdown').classList.add('open');
+      // Unset selection if user is typing something different
+      if (raw.replace(/_/g, ' ') !== selectedTZ.replace(/_/g, ' ')) {
+        selectedTZ = '';
+        document.getElementById('tz-value').value = '';
+      }
+    }
+
+    function selectTZ(tz) {
+      selectedTZ = tz;
+      document.getElementById('tz-value').value = tz;
+      document.getElementById('tz-search').value = tz.replace(/_/g, ' ');
+      document.getElementById('tz-dropdown').classList.remove('open');
+    }
+
+    function openTZDropdown() {
+      clearTimeout(tzCloseTimer);
+      const q = document.getElementById('tz-search').value.toLowerCase().replace(/\s+/g, '_');
+      const matches = q ? ALL_TZ.filter(tz => tz.toLowerCase().includes(q)) : ALL_TZ;
+      renderTZOptions(matches.slice(0, 100));
+      document.getElementById('tz-dropdown').classList.add('open');
+    }
+
+    function closeTZDropdown() {
+      tzCloseTimer = setTimeout(() => {
+        document.getElementById('tz-dropdown').classList.remove('open');
+      }, 180);
+    }
+
+    // ─── All-day toggle ───────────────────────────────────────────────────
+    function toggleAllDay() {
+      const allDay = document.getElementById('allday-toggle').checked;
+      document.getElementById('start-time-wrap').style.display = allDay ? 'none' : '';
+      document.getElementById('end-time-wrap').style.display   = allDay ? 'none' : '';
+    }
+
+    // ─── Validation ───────────────────────────────────────────────────────
+    function validate() {
+      const title     = document.getElementById('event-title').value.trim();
+      const startDate = document.getElementById('start-date').value;
+      const startTime = document.getElementById('start-time').value;
+      const allDay    = document.getElementById('allday-toggle').checked;
+      const tz        = document.getElementById('tz-value').value;
+
+      if (!title || !startDate || !tz) return false;
+      if (!allDay && !startTime) return false;
+      return true;
+    }
+
+    // ─── Generate both ────────────────────────────────────────────────────
+    async function generateAll() {
+      const errorEl = document.getElementById('error-msg');
+
+      if (!validate()) {
+        errorEl.classList.add('visible');
+        return;
+      }
+      errorEl.classList.remove('visible');
+
+      const btn = document.querySelector('.btn-primary');
+      btn.innerHTML = '⏳ Generating…';
+      btn.disabled = true;
+
+      try {
+        buildGoogleCalendarLink();
+        await buildICS();
+        document.getElementById('gcal-card').classList.add('visible');
+        document.getElementById('ics-card').classList.add('visible');
+        setTimeout(() => {
+          document.getElementById('gcal-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      } finally {
+        btn.innerHTML = '<span>⚡</span> Generate Links';
+        btn.disabled = false;
+      }
+    }
+
+    // ─── Intl-based local→UTC conversion ──────────────────────────────────
+    // Uses the browser's Intl API — handles DST for every timezone automatically.
+    function localToUTCDate(dateStr, timeStr, tz) {
+      const [y, mo, d] = dateStr.split('-').map(Number);
+      const [h, m]     = timeStr.split(':').map(Number);
+
+      const fmt = new Intl.DateTimeFormat('en-CA', {
+        timeZone: tz,
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      });
+
+      // Start with a naive UTC estimate, then iterate to correct for the offset
+      let guess = Date.UTC(y, mo - 1, d, h, m, 0);
+      for (let i = 0; i < 3; i++) {
+        const parts = fmt.formatToParts(new Date(guess));
+        const p = {};
+        parts.forEach(x => { p[x.type] = parseInt(x.value, 10); });
+        const diffMs =
+          (p.year   - y)  * 365.25 * 86400000 +
+          (p.month  - mo) * 30.44  * 86400000 +
+          (p.day    - d)  * 86400000 +
+          (p.hour   - h)  * 3600000 +
+          (p.minute - m)  * 60000;
+        guess -= diffMs;
+      }
+      return new Date(Math.round(guess / 60000) * 60000); // round to nearest minute
+    }
+
+    function toGCalStamp(dateStr, timeStr, tz) {
+      const utc = localToUTCDate(dateStr, timeStr, tz);
+      return utc.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+    }
+
+    function toGCalDate(dateStr) { return dateStr.replace(/-/g, ''); }
+
+    function addDays(dateStr, n) {
+      const d = new Date(dateStr + 'T12:00:00Z');
+      d.setUTCDate(d.getUTCDate() + n);
+      return d.toISOString().split('T')[0];
+    }
+
+    // ─── Google Calendar link ─────────────────────────────────────────────
+    function buildGoogleCalendarLink() {
+      const title       = document.getElementById('event-title').value.trim();
+      const startDate   = document.getElementById('start-date').value;
+      const endDate     = document.getElementById('end-date').value;
+      const startTime   = document.getElementById('start-time').value;
+      const endTime     = document.getElementById('end-time').value;
+      const location    = document.getElementById('event-location').value.trim();
+      const description = document.getElementById('event-description').value.trim();
+      const allDay      = document.getElementById('allday-toggle').checked;
+      const tz          = document.getElementById('tz-value').value;
+
+      const effEndDate = endDate || startDate;
+      let effEndTime = endTime;
+      if (!allDay && !effEndTime) {
+        const [sh, sm] = startTime.split(':').map(Number);
+        const total = sh * 60 + sm + 60;
+        effEndTime = String(Math.floor(total / 60) % 24).padStart(2, '0') + ':' + String(total % 60).padStart(2, '0');
+      }
+
+      let datesPart;
+      if (allDay) {
+        datesPart = `${toGCalDate(startDate)}/${toGCalDate(addDays(effEndDate, 1))}`;
+      } else {
+        datesPart = `${toGCalStamp(startDate, startTime, tz)}/${toGCalStamp(effEndDate, effEndTime, tz)}`;
+      }
+
+      const link = [
+        'https://www.google.com/calendar/event?action=TEMPLATE',
+        `dates=${datesPart}`,
+        `text=${encodeURIComponent(title)}`,
+        location    ? `location=${encodeURIComponent(location)}`   : null,
+        description ? `details=${encodeURIComponent(description)}` : null,
+        !allDay     ? `ctz=${encodeURIComponent(tz)}`              : null,
+      ].filter(Boolean).join('&');
+
+      document.getElementById('gcal-url-text').textContent = link;
+      document.getElementById('gcal-open-link').href = link;
+    }
+
+    // ─── ICS helpers ─────────────────────────────────────────────────────
+    function toICSLocalStamp(dateStr, timeStr) {
+      return dateStr.replace(/-/g, '') + 'T' + timeStr.replace(':', '') + '00';
+    }
+
+    function toICSDate(dateStr) { return dateStr.replace(/-/g, ''); }
+
+    function nowUTCStamp() {
+      return new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    }
+
+    function generateUID() {
+      return Date.now() + '-' + Math.floor(Math.random() * 1e9) + '@calendar-generator';
+    }
+
+    function icsEscape(str) {
+      return str
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\n/g, '\\n');
+    }
+
+    function icsFold(line) {
+      const CRLF = '\r\n';
+      if (line.length <= 75) return line;
+      let result = line.substring(0, 75);
+      let pos = 75;
+      while (pos < line.length) {
+        result += CRLF + ' ' + line.substring(pos, pos + 74);
+        pos += 74;
+      }
+      return result;
+    }
+
+    // Fetch VTIMEZONE block from tzurl.org for any IANA timezone
+    async function fetchVTimezone(tz) {
+      try {
+        const url = `https://www.tzurl.org/zoneinfo-outlook/${encodeURIComponent(tz)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('not ok');
+        const text = await res.text();
+        const match = text.match(/BEGIN:VTIMEZONE[\s\S]*?END:VTIMEZONE/);
+        return match ? match[0] : null;
+      } catch {
+        return null;
+      }
+    }
+
+    // ─── ICS file ─────────────────────────────────────────────────────────
+    async function buildICS() {
+      const title       = document.getElementById('event-title').value.trim();
+      const startDate   = document.getElementById('start-date').value;
+      const endDate     = document.getElementById('end-date').value;
+      const startTime   = document.getElementById('start-time').value;
+      const endTime     = document.getElementById('end-time').value;
+      const location    = document.getElementById('event-location').value.trim();
+      const description = document.getElementById('event-description').value.trim();
+      const allDay      = document.getElementById('allday-toggle').checked;
+      const tz          = document.getElementById('tz-value').value;
+
+      const effEndDate = endDate || startDate;
+      let effEndTime = endTime;
+      if (!allDay && !effEndTime) {
+        const [sh, sm] = startTime.split(':').map(Number);
+        const total = sh * 60 + sm + 60;
+        effEndTime = String(Math.floor(total / 60) % 24).padStart(2, '0') + ':' + String(total % 60).padStart(2, '0');
+      }
+
+      const CRLF = '\r\n';
+      const dtstamp = nowUTCStamp();
+      const uid = generateUID();
+
+      let dtstart, dtend;
+      if (allDay) {
+        dtstart = `DTSTART;VALUE=DATE:${toICSDate(startDate)}`;
+        dtend   = `DTEND;VALUE=DATE:${toICSDate(addDays(effEndDate, 1))}`;
+      } else {
+        dtstart = `DTSTART;TZID=${tz}:${toICSLocalStamp(startDate, startTime)}`;
+        dtend   = `DTEND;TZID=${tz}:${toICSLocalStamp(effEndDate, effEndTime)}`;
+      }
+
+      // Fetch the correct VTIMEZONE block from tzurl.org
+      let vtimezone = null;
+      if (!allDay) {
+        vtimezone = await fetchVTimezone(tz);
+      }
+
+      const parts = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Event Calendar Generator//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+      ];
+
+      if (vtimezone) parts.push(vtimezone);
+
+      parts.push(
+        'BEGIN:VEVENT',
+        `DTSTAMP:${dtstamp}`,
+        `UID:${uid}`,
+        dtstart,
+        dtend,
+        icsFold(`SUMMARY:${icsEscape(title)}`),
+        location    ? icsFold(`LOCATION:${icsEscape(location)}`)       : null,
+        description ? icsFold(`DESCRIPTION:${icsEscape(description)}`) : null,
+        'END:VEVENT',
+        'END:VCALENDAR',
+      );
+
+      const lines = parts.filter(Boolean).join(CRLF) + CRLF;
+      currentICSData = lines;
+      document.getElementById('ics-content-text').textContent = lines;
+    }
+
+    // ─── Download ICS ─────────────────────────────────────────────────────
+    function downloadICS() {
+      if (!currentICSData) return;
+      const blob = new Blob([currentICSData], { type: 'text/calendar;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      const title = (document.getElementById('event-title').value.trim() || 'event')
+                      .replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      a.href     = url;
+      a.download = title + '.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
+
+    // ─── Copy text ────────────────────────────────────────────────────────
+    function copyText(elId, btnId) {
+      const text = document.getElementById(elId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(btnId);
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = elId === 'gcal-url-text' ? 'Copy Link' : 'Copy ICS';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        const el = document.getElementById(elId);
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+      });
+    }
+
+    // ─── Init ─────────────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', initTimezone);
+
+  </script>
+
+</body>
+</html>
