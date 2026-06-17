@@ -297,38 +297,6 @@
 
     .tz-badge::before { content: '🌍'; font-size: .7rem; }
 
-    /* ── Timezone searchable dropdown ── */
-    .tz-search-wrap { position: relative; }
-
-    .tz-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0; right: 0;
-      background: var(--bg);
-      border: 1.5px solid var(--accent);
-      border-radius: 10px;
-      max-height: 210px;
-      overflow-y: auto;
-      z-index: 200;
-      box-shadow: 0 8px 32px rgba(37,99,235,.13);
-    }
-
-    .tz-dropdown.open { display: block; }
-
-    .tz-option {
-      padding: .52rem .9rem;
-      font-size: .83rem;
-      cursor: pointer;
-      color: var(--text);
-      transition: background .1s;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .tz-option:hover { background: var(--accent-glow); color: var(--accent); }
-    .tz-option-none { padding: .52rem .9rem; font-size: .82rem; color: var(--text-dim); }
 
     /* ── Buttons ── */
     .btn-row {
@@ -544,13 +512,8 @@
       </div>
 
       <div class="field" style="margin-bottom:1.4rem;">
-        <label for="tz-search">Timezone <span class="req">*</span></label>
-        <div class="tz-search-wrap">
-          <input type="text" id="tz-search" placeholder="Search… e.g. Athens, London, New_York" autocomplete="off" oninput="filterTimezones()" onfocus="openTZDropdown()" onblur="closeTZDropdown()">
-          <div class="tz-dropdown" id="tz-dropdown"></div>
-        </div>
         <input type="hidden" id="tz-value">
-        <div class="hint">🌍 Auto-detected: <strong id="tz-detected"></strong> — change if needed</div>
+        <div class="hint">🌍 Timezone auto-detected: <strong id="tz-detected"></strong></div>
       </div>
 
       <!-- All-day toggle -->
@@ -564,7 +527,7 @@
 
       <div class="field">
         <label for="event-title">Event Title <span class="req">*</span></label>
-        <input type="text" id="event-title" placeholder="e.g. Lenovo Data Center Workshop">
+        <input type="text" id="event-title" placeholder="My Event Title">
       </div>
 
       <div class="row-2">
@@ -614,24 +577,28 @@
     <div class="output-card" id="gcal-card">
       <div class="output-header">
         <div class="output-title">📆 Google Calendar Link</div>
-        <button class="copy-btn" id="copy-gcal-btn" onclick="copyText('gcal-url-text', 'copy-gcal-btn')">Copy Link</button>
       </div>
-      <div class="output-url" id="gcal-url-text"></div>
-      <a class="open-btn" id="gcal-open-link" href="#" target="_blank" rel="noopener">
-        ↗ Open in Google Calendar
-      </a>
+      <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+        <a class="open-btn" id="gcal-open-link" href="#" target="_blank" rel="noopener">
+          ↗ Open in Google Calendar
+        </a>
+        <button class="copy-btn" id="copy-gcal-btn" onclick="copyGCalLink()" style="margin-top:.8rem;">Copy Link</button>
+      </div>
+      <span id="gcal-url-text" style="display:none;"></span>
     </div>
 
     <!-- ICS Output -->
     <div class="output-card" id="ics-card">
       <div class="output-header">
         <div class="output-title" style="color: var(--accent-2);">📁 ICS File (Apple / Outlook / any app)</div>
-        <button class="copy-btn" id="copy-ics-btn" onclick="copyText('ics-content-text', 'copy-ics-btn')">Copy ICS</button>
       </div>
-      <div class="output-url" id="ics-content-text" style="color: var(--text-muted); font-size:.7rem; white-space:pre;"></div>
-      <button class="download-btn" onclick="downloadICS()">
-        ⬇ Download .ics File
-      </button>
+      <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+        <button class="download-btn" onclick="downloadICS()">
+          ⬇ Download .ics File
+        </button>
+        <button class="copy-btn" id="copy-ics-btn" onclick="copyICS()" style="margin-top:.8rem;">Copy ICS</button>
+      </div>
+      <span id="ics-content-text" style="display:none;"></span>
     </div>
 
     <!-- Disclaimer -->
@@ -651,61 +618,10 @@
     let currentICSData = '';
 
     // ─── Timezone list ────────────────────────────────────────────────────
-    const ALL_TZ = Intl.supportedValuesOf('timeZone');
-    let selectedTZ = '';
-    let tzCloseTimer = null;
-
     function initTimezone() {
       const detected = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Athens';
-      selectedTZ = detected;
       document.getElementById('tz-value').value = detected;
-      document.getElementById('tz-search').value = detected.replace(/_/g, ' ');
       document.getElementById('tz-detected').textContent = detected.replace(/_/g, ' ');
-    }
-
-    function renderTZOptions(list) {
-      const dd = document.getElementById('tz-dropdown');
-      if (!list.length) {
-        dd.innerHTML = '<div class="tz-option-none">No matches</div>';
-        return;
-      }
-      dd.innerHTML = list.map(tz =>
-        `<div class="tz-option" onmousedown="selectTZ('${tz}')">${tz.replace(/_/g, ' ')}</div>`
-      ).join('');
-    }
-
-    function filterTimezones() {
-      const raw = document.getElementById('tz-search').value;
-      const q = raw.toLowerCase().replace(/\s+/g, '_');
-      const matches = q ? ALL_TZ.filter(tz => tz.toLowerCase().includes(q)) : ALL_TZ;
-      renderTZOptions(matches.slice(0, 100));
-      document.getElementById('tz-dropdown').classList.add('open');
-      // Unset selection if user is typing something different
-      if (raw.replace(/_/g, ' ') !== selectedTZ.replace(/_/g, ' ')) {
-        selectedTZ = '';
-        document.getElementById('tz-value').value = '';
-      }
-    }
-
-    function selectTZ(tz) {
-      selectedTZ = tz;
-      document.getElementById('tz-value').value = tz;
-      document.getElementById('tz-search').value = tz.replace(/_/g, ' ');
-      document.getElementById('tz-dropdown').classList.remove('open');
-    }
-
-    function openTZDropdown() {
-      clearTimeout(tzCloseTimer);
-      const q = document.getElementById('tz-search').value.toLowerCase().replace(/\s+/g, '_');
-      const matches = q ? ALL_TZ.filter(tz => tz.toLowerCase().includes(q)) : ALL_TZ;
-      renderTZOptions(matches.slice(0, 100));
-      document.getElementById('tz-dropdown').classList.add('open');
-    }
-
-    function closeTZDropdown() {
-      tzCloseTimer = setTimeout(() => {
-        document.getElementById('tz-dropdown').classList.remove('open');
-      }, 180);
     }
 
     // ─── All-day toggle ───────────────────────────────────────────────────
@@ -971,26 +887,27 @@
       setTimeout(() => URL.revokeObjectURL(url), 2000);
     }
 
-    // ─── Copy text ────────────────────────────────────────────────────────
-    function copyText(elId, btnId) {
-      const text = document.getElementById(elId).textContent;
+    // ─── Copy helpers ─────────────────────────────────────────────────────
+    function copyToClipboard(text, btnId, label) {
       navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById(btnId);
         btn.textContent = '✓ Copied!';
         btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = elId === 'gcal-url-text' ? 'Copy Link' : 'Copy ICS';
-          btn.classList.remove('copied');
-        }, 2000);
+        setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
       }).catch(() => {
-        const el = document.getElementById(elId);
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        window.getSelection().removeAllRanges();
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
       });
+    }
+
+    function copyGCalLink() {
+      copyToClipboard(document.getElementById('gcal-url-text').textContent, 'copy-gcal-btn', 'Copy Link');
+    }
+
+    function copyICS() {
+      copyToClipboard(currentICSData, 'copy-ics-btn', 'Copy ICS');
     }
 
     // ─── Init ─────────────────────────────────────────────────────────────
