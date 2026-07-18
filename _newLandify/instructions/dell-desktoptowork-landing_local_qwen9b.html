@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesktopToWork & Dell PowerStore Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base Styles */
+        :root {
+            --primary: #0b2d4f; /* Deep Dell-like Navy */
+            --secondary: #0f4c75; /* Accent Blue */
+            --accent: #bbe1fa; /* Light Blue */
+            --text-dark: #1f2937;
+            --text-light: #4b5563;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Layout Utilities */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-padding {
+            padding: 4rem 0;
+        }
+
+        .text-center { text-align: center; }
+        .text-white { color: var(--white); }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #08223b;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 4rem;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--white) 0%, var(--bg-light) 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1.125rem;
+        }
+
+        /* Form Styles */
+        .form-wrapper {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
+            text-align: left;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-footer {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            line-height: 1.4;
+        }
+
+        /* Informational Row A: Icons */
+        .variants-row-a {
+            background-color: var(--white);
+        }
+
+        .variants-a-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .variants-a-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-light);
+            transition: transform 0.2s;
+        }
+
+        .variants-a-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            width: 3rem;
+            height: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Informational Row B: Image/Text */
+        .variants-row-b {
+            background-color: var(--bg-light);
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .variants-b-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .img-placeholder {
+            background-color: #e5e7eb;
+            height: 300px;
+            width: 100%;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            position: relative;
+        }
+        
+        /* Overlay for better visual hierarchy on placeholder */
+        .img-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: var(--radius);
+        }
+
+        /* Informational Row C: Cards */
+        .variants-row-c {
+            background-color: var(--white);
+        }
+
+        .variants-c-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .variants-c-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.2s;
+        }
+
+        .variants-c-card:hover {
+            box-shadow: var(--shadow);
+            border-color: var(--secondary);
+        }
+
+        .variants-c-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .variants-c-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Bio Section */
+        .bio-section {
+            background-color: var(--bg-light);
+            padding: 3rem 0;
+        }
+
+        .quote-block {
+            border-left: 4px solid var(--secondary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 2rem 0;
+            font-size: 0.9rem;
+        }
+        
+        footer p {
+            color: #93c5fd;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero, .variants-b-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .variants-row-a, .variants-c-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .variants-a-grid, .variants-b-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 { font-size: 2rem; }
+            .hero-content p { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-item">
+                    <!-- Placeholder for DesktopToWork Logo -->
+                    <img src="" alt="DesktopToWork Logo" width="150" height="auto">
+                </div>
+                <div class="logo-item">
+                    <!-- Placeholder for Dell Logo -->
+                    <img src="" alt="Dell Logo" width="120" height="auto">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero container">
+        <div class="hero-content">
+            <h1>Championing the future of work with Dell</h1>
+            <p>DesktopToWork supports thousands of customers with online and digital workspaces — from VOIP to security and cloud hosting. Discover how they transformed their IT infrastructure with Dell PowerStore to support surging demand for remote work, reduce latency, and cut their data center footprint dramatically.</p>
+            <a href="#form-anchor" class="btn btn-primary">Get the full case study</a>
+        </div>
+
+        <div id="form-anchor" class="hero-form">
+            <div class="form-wrapper">
+                <h3 class="text-center" style="font-size: 1.25rem; color: var(--primary); margin-bottom: 0.5rem;">Free download — no commitment required</h3>
+                <form action="#" method="post" id="download-form">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Work Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" class="form-control" placeholder="Your company">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" class="form-control">
+                            <option value="">Select country</option>
+                            <!-- Filled dynamically or statically, keeping generic option for demo -->
+                            <option value="US">United States</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="DE">Germany</option>
+                            <!-- Add other countries as needed -->
+                        </select>
+                    </div>
+                    <div class="form-footer">
+                        Your information is kept private and used only to send the requested content.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Informational Row A: Why DesktopToWork chose Dell (Icons) -->
+    <section class="variants-row-a section-padding">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 2rem;">Four critical requirements for a modern storage solution</h2>
+            <div class="variants-a-grid">
+                <!-- Item 1 -->
+                <div class="variants-a-item">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"/></svg>
+                    <h3>Scalable IT Infrastructure</h3>
+                    <p>A powerful, scalable, and reliable storage solution capable of growing with surging customer demand.</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="variants-a-item">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.5 16.5L13.75 13.75L15.17 12.33L18.17 15.33L16.5 16.5ZM15.17 12.33L16.5 11L12.33 6.83L11 8.167L15.17 12.33ZM4.22 18.22L5.5 16.94L8.5 13.94L6.83 12.27L5.5 13.55L4.22 18.22ZM18.78 5.78L17.5 7.06L14.5 10.06L16.17 11.73L17.45 10.45L18.78 5.78ZM20 11C20 14.86 16.86 18 13 18C9.14 18 6 14.86 6 11C6 7.14 9.14 4 13 4C16.86 4 20 7.14 20 11Z"/></svg>
+                    <h3>Seamless Digital Workspaces</h3>
+                    <p>Enable customers across the globe to work securely from anywhere — anytime and on any device.</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="variants-a-item">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.43 12.98C19.43 12.98 18.46 14.32 17 15.5L16.31 13.11C15.41 11.43 13.95 10.37 12.44 10.37V15H10.5V10.37C9 10.37 7.54 11.43 6.64 13.11L5.96 10.72C4.5 9.54 3.53 8.2 3.53 6.22C3.53 4.05 5.21 2.22 7.43 2.22C9.37 2.22 11 3.93 11 5.92V7.88C13.5 7.98 15.73 9.33 17.31 11.57L19.43 12.98ZM11 10.5H12.34V6.33C12.34 5.25 11.44 4.38 10.33 4.38C8.85 4.38 7.65 5.52 7.65 6.92V12.25C9.5 12.25 11 13.83 11 15.5V21H13V15.5C13 13.83 14.5 12.25 16.35 12.25V9.67C15.24 9.67 14.34 8.79 14.34 7.68V6.38C14.34 5.29 15.24 4.42 16.35 4.42C17.45 4.42 18.35 5.3 18.35 6.38V7.78C18.35 9.05 17.45 10.32 15.77 10.83L14.36 11.67L12 13.25L9.64 11.67L7.24 13.3L5.82 12.46L5.82 8.92V6.22C5.82 5.55 6.45 5 7.15 5C7.21 5.05 7.27 5.1 7.33 5.15C8.36 4.92 9.43 5.15 10.33 5.78V10.5Z"/></svg>
+                    <h3>Virtualized Environments</h3>
+                    <p>Support a wide variety of workloads — from 3D software systems and SQL databases, all with minimal latency.</p>
+                </div>
+                <!-- Item 4 -->
+                <div class="variants-a-item">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 3H9V5H7V3H5V7H3V9H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V9H21V7H19V5H17V3H13M19 19H7V9H19V19ZM13 9H9V15H13V9Z"/></svg>
+                    <h3>Automated Workloads</h3>
+                    <p>Reduce management effort through automation — from self-service portals to user provisioning in virtual environments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Informational Row B: About DesktopToWork (Image + Text) -->
+    <section class="variants-row-b section-padding">
+        <div class="container">
+            <div class="variants-b-grid">
+                <div class="text-content">
+                    <h2>About DesktopToWork</h2>
+                    <p>Remote work made simple — since 2011. Founded in 2011 and based in The Hague, Netherlands, DesktopToWork is an IT services company specializing in online and digital workspaces.</p>
+                    <p>It provides customers with solutions ranging from VOIP, online workspace hosting, and security to comprehensive managed IT services.</p>
+                    <p>With the motto "Work better, live better", DesktopToWork is committed to enabling productive, safe, and simple online working environments for thousands of customers in both small and large businesses.</p>
+                    <p>When the demand for remote work surged globally, DesktopToWork needed a storage infrastructure that could scale with it.</p>
+                    <div class="quote-block">
+                        "We really care about the goals of our customers. We are always looking at what they want to achieve and how we can help them the best."
+                        <br><span style="display:block; margin-top:0.5rem; font-weight: 500;">— Jorrit Roskam, Operations Manager</span>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="img-placeholder">
+                        <!-- Placeholder for Office/IT Environment Image -->
+                        <span>Image: Modern IT Office / Remote Work Setup</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Informational Row C: Solutions Deployed (Cards) -->
+    <section class="variants-row-c section-padding">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 2rem;">Dell Solutions Deployed</h2>
+            <div class="variants-c-grid">
+                <div class="variants-c-card">
+                    <h4>Dell PowerStore</h4>
+                    <p>Primary storage — the heart of DesktopToWork's infrastructure.</p>
+                </div>
+                <div class="variants-c-card">
+                    <h4>Dell PowerEdge</h4>
+                    <p>Server platform supporting virtualized environments and workloads.</p>
+                </div>
+                <div class="variants-c-card">
+                    <h4>Dell CloudIQ</h4>
+                    <p>AI-driven monitoring and management for proactive insights.</p>
+                </div>
+                <div class="variants-c-card">
+                    <h4>Dell ProSupport</h4>
+                    <p>24/7 expert support to keep operations running at all times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2024 DesktopToWork. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

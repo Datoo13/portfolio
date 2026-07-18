@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landify — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0f1117;
+    --surface:  #181c27;
+    --border:   #252a38;
+    --muted:    #3a3f52;
+    --text:     #e8eaf0;
+    --sub:      #7a8099;
+    --accent:   #4f6ef7;
+    --accent-h: #6b85ff;
+    --green:    #2dd87a;
+    --amber:    #f5a623;
+    --red:      #f05252;
+    --mono:     'DM Mono', monospace;
+    --sans:     'Inter', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+  }
+
+  .logo {
+    padding: 0 24px 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .logo span {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .logo span em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    color: var(--sub);
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
+  .nav-item.active {
+    color: var(--text);
+    border-left-color: var(--accent);
+    background: rgba(79,110,247,0.07);
+  }
+
+  .nav-item svg { flex-shrink: 0; opacity: 0.8; }
+
+  .sidebar-bottom {
+    margin-top: auto;
+    padding: 20px 24px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .plan-badge {
+    background: rgba(79,110,247,0.12);
+    border: 1px solid rgba(79,110,247,0.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .plan-badge .plan-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .plan-bar-wrap {
+    background: var(--border);
+    border-radius: 99px;
+    height: 4px;
+    margin: 8px 0 6px;
+    overflow: hidden;
+  }
+
+  .plan-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: var(--accent);
+    width: 26.6%; /* 4 of 15 */
+    transition: width 0.4s ease;
+  }
+
+  .plan-count {
+    font-size: 12px;
+    color: var(--sub);
+  }
+
+  .plan-count strong { color: var(--text); }
+
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 36px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+
+  .page-sub {
+    color: var(--sub);
+    font-size: 13.5px;
+    margin-top: 3px;
+  }
+
+  /* BUTTON */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s;
+    font-family: var(--sans);
+  }
+
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: var(--accent-h); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--sub);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+  .btn-sm {
+    padding: 5px 12px;
+    font-size: 12.5px;
+    border-radius: 6px;
+  }
+
+  /* PAGES LIST */
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--sub);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .page-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.15s;
+  }
+
+  .page-card:hover { border-color: var(--muted); }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot.active { background: var(--green); box-shadow: 0 0 6px rgba(45,216,122,0.5); }
+  .status-dot.inactive { background: var(--muted); }
+  .status-dot.pending { background: var(--amber); box-shadow: 0 0 6px rgba(245,166,35,0.4); }
+
+  .page-info { flex: 1; min-width: 0; }
+
+  .page-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .page-url {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--sub);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .page-url a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .page-url a:hover { text-decoration: underline; }
+
+  .page-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .status-label {
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 99px;
+  }
+
+  .status-label.active { background: rgba(45,216,122,0.1); color: var(--green); }
+  .status-label.inactive { background: rgba(58,63,82,0.4); color: var(--sub); }
+  .status-label.pending { background: rgba(245,166,35,0.1); color: var(--amber); }
+
+  .toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--sub);
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+
+  .toggle-btn:hover { border-color: var(--muted); color: var(--text); }
+  .toggle-btn.deactivate:hover { border-color: var(--red); color: var(--red); }
+  .toggle-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .pending-note {
+    font-size: 12px;
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* FORM SECTION */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+  }
+
+  .form-card .form-header {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-card .form-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .form-card .form-desc {
+    font-size: 13px;
+    color: var(--sub);
+    margin-top: 4px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+
+  label .hint {
+    font-weight: 400;
+    color: var(--sub);
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13.5px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    resize: none;
+  }
+
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  textarea:focus {
+    border-color: var(--accent);
+  }
+
+  textarea.mono {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .char-count {
+    text-align: right;
+    font-size: 11.5px;
+    color: var(--sub);
+    margin-top: 5px;
+  }
+
+  .char-count.warn { color: var(--amber); }
+  .char-count.over { color: var(--red); }
+
+  /* FILE UPLOAD */
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--accent);
+    background: rgba(79,110,247,0.04);
+  }
+
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon { color: var(--sub); margin-bottom: 8px; }
+
+  .upload-text {
+    font-size: 13px;
+    color: var(--sub);
+  }
+
+  .upload-text strong { color: var(--text); }
+
+  .upload-previews {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .upload-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--sub);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .upload-preview .remove {
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+    font-size: 14px;
+  }
+
+  .upload-preview .remove:hover { color: var(--red); }
+
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .eta-note {
+    font-size: 12.5px;
+    color: var(--sub);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .eta-note svg { color: var(--accent); flex-shrink: 0; }
+
+  /* MODAL OVERLAY */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    width: 420px;
+    max-width: 90vw;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .modal-body {
+    color: var(--sub);
+    font-size: 13.5px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  /* SUCCESS STATE */
+  .success-banner {
+    display: none;
+    background: rgba(45,216,122,0.08);
+    border: 1px solid rgba(45,216,122,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    color: var(--green);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .success-banner.show { display: flex; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--sub);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--sub);
+  }
+
+  .empty-state svg { margin-bottom: 14px; opacity: 0.4; }
+  .empty-state p { font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <span>land<em>ify</em></span>
+  </div>
+
+  <nav>
+    <div class="nav-item active" onclick="showTab('pages')">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      My Pages
+    </div>
+    <div class="nav-item" onclick="showTab('request')">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      New Request
+    </div>
+    <div class="nav-item" onclick="">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Account
+    </div>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="plan-badge">
+      <div class="plan-name">Growth Plan</div>
+      <div class="plan-bar-wrap"><div class="plan-bar" id="planBar"></div></div>
+      <div class="plan-count"><strong id="usedCount">4</strong> / 15 active pages</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PAGES TAB -->
+  <div class="tab-content active" id="tab-pages">
+    <div class="page-header">
+      <div>
+        <div class="page-title">My Pages</div>
+        <div class="page-sub">Manage your active campaign landing pages.</div>
+      </div>
+      <button class="btn btn-primary" onclick="showTab('request')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Request
+      </button>
+    </div>
+
+    <div id="successBanner" class="success-banner">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Your request has been submitted. We'll have your page ready within 1–2 working days.
+    </div>
+
+    <div class="section-label">Active & Pending</div>
+    <div class="pages-list" id="pagesList"></div>
+  </div>
+
+  <!-- REQUEST TAB -->
+  <div class="tab-content" id="tab-request">
+    <div class="page-header">
+      <div>
+        <div class="page-title">New Page Request</div>
+        <div class="page-sub">Fill in the details below and we'll take it from there.</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-title">Campaign Details</div>
+        <div class="form-desc">All fields are required unless marked optional.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Asset download link <span class="hint">The file users receive after submitting the form</span></label>
+        <input type="url" id="assetLink" placeholder="https://example.com/ebook.pdf">
+      </div>
+
+      <div class="form-group">
+        <label>Form embed code <span class="hint">Paste your MailerLite, HubSpot, or Mailchimp embed snippet</span></label>
+        <textarea class="mono" id="formEmbed" rows="5" placeholder="<div id='mlb2-...'></div>&#10;<script>...</script>"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Logos <span class="hint">Up to 3 files — SVG or PNG preferred</span></label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="logoInput" accept=".svg,.png,.jpg,.jpeg" multiple onchange="handleFiles(this)">
+          <div class="upload-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+          <div id="uploadPreviews" class="upload-previews"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Comments <span class="hint">Optional — anything we should know</span></label>
+        <textarea id="comments" rows="4" maxlength="600" placeholder="e.g. Use the blue logo variant, hero background should feel tech-forward, the ebook covers Microsoft Copilot for SMBs..." oninput="updateCharCount()"></textarea>
+        <div class="char-count" id="charCount">0 / 600</div>
+      </div>
+
+      <div class="form-footer">
+        <div class="eta-note">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Ready within 1–2 working days
+        </div>
+        <button class="btn btn-primary" onclick="submitRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- DEACTIVATE MODAL -->
+<div class="overlay" id="deactivateModal">
+  <div class="modal">
+    <div class="modal-title">Deactivate this page?</div>
+    <div class="modal-body">The page will go offline immediately. You can reactivate it anytime from your dashboard as long as you're within your plan limit.</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" style="background:var(--red)" onclick="confirmDeactivate()">Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- STATE ---
+  const PLAN_MAX = 15;
+
+  let pages = [
+    { id: 1, name: 'InfoQuest — Microsoft Copilot', url: 'landify.io/p/infoquest-copilot', status: 'active' },
+    { id: 2, name: 'LG B2B Academy — Spring 2026', url: 'landify.io/p/lg-b2b-spring', status: 'active' },
+    { id: 3, name: 'Sungrow — Solar Solutions Guide', url: 'landify.io/p/sungrow-solar', status: 'inactive' },
+    { id: 4, name: 'Oktabit — Ergonomic Chairs', url: 'landify.io/p/oktabit-chairs', status: 'active' },
+    { id: 5, name: 'Fujitsu — Cloud Migration Checklist', url: null, status: 'pending' },
+  ];
+
+  let pendingDeactivateId = null;
+  let uploadedFiles = [];
+
+  // --- RENDER ---
+  function render() {
+    const activeCount = pages.filter(p => p.status === 'active').length;
+    document.getElementById('usedCount').textContent = activeCount;
+    const pct = Math.min((activeCount / PLAN_MAX) * 100, 100);
+    document.getElementById('planBar').style.width = pct + '%';
+
+    const list = document.getElementById('pagesList');
+
+    const visible = pages.filter(p => p.status !== 'inactive' || true);
+
+    if (visible.length === 0) {
+      list.innerHTML = `<div class="empty-state"><svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/></svg><p>No pages yet. Submit a request to get started.</p></div>`;
+      return;
+    }
+
+    list.innerHTML = pages.map(p => {
+      const isActive = p.status === 'active';
+      const isPending = p.status === 'pending';
+      const isInactive = p.status === 'inactive';
+      const atLimit = pages.filter(x => x.status === 'active').length >= PLAN_MAX;
+
+      let toggleBtn = '';
+      if (isPending) {
+        toggleBtn = `<span class="pending-note"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Building…</span>`;
+      } else if (isActive) {
+        toggleBtn = `<button class="toggle-btn deactivate" onclick="openDeactivate(${p.id})">Deactivate</button>`;
+      } else {
+        const disabled = atLimit ? 'disabled title="Plan limit reached"' : '';
+        toggleBtn = `<button class="toggle-btn" ${disabled} onclick="activatePage(${p.id})">Activate</button>`;
+      }
+
+      const urlPart = p.url
+        ? `<div class="page-url"><a href="#" onclick="return false">${p.url}</a></div>`
+        : `<div class="page-url" style="color:var(--amber)">URL assigned on completion</div>`;
+
+      return `
+        <div class="page-card">
+          <div class="status-dot ${p.status}"></div>
+          <div class="page-info">
+            <div class="page-name">${p.name}</div>
+            ${urlPart}
+          </div>
+          <div class="page-meta">
+            <span class="status-label ${p.status}">${isPending ? 'Generating' : p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span>
+            ${toggleBtn}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // --- TABS ---
+  function showTab(name) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    const navItems = document.querySelectorAll('.nav-item');
+    const map = { pages: 0, request: 1 };
+    if (map[name] !== undefined) navItems[map[name]].classList.add('active');
+  }
+
+  // --- TOGGLE ---
+  function openDeactivate(id) {
+    pendingDeactivateId = id;
+    document.getElementById('deactivateModal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('deactivateModal').classList.remove('open');
+    pendingDeactivateId = null;
+  }
+
+  function confirmDeactivate() {
+    const p = pages.find(x => x.id === pendingDeactivateId);
+    if (p) p.status = 'inactive';
+    closeModal();
+    render();
+  }
+
+  function activatePage(id) {
+    const activeCount = pages.filter(p => p.status === 'active').length;
+    if (activeCount >= PLAN_MAX) return;
+    const p = pages.find(x => x.id === id);
+    if (p) p.status = 'active';
+    render();
+  }
+
+  // --- FILE UPLOAD ---
+  function handleFiles(input) {
+    const files = Array.from(input.files);
+    const remaining = 3 - uploadedFiles.length;
+    const toAdd = files.slice(0, remaining);
+    uploadedFiles = [...uploadedFiles, ...toAdd];
+    renderPreviews();
+  }
+
+  function renderPreviews() {
+    const container = document.getElementById('uploadPreviews');
+    container.innerHTML = uploadedFiles.map((f, i) => `
+      <div class="upload-preview">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+        ${f.name}
+        <span class="remove" onclick="removeFile(${i})">×</span>
+      </div>`).join('');
+
+    const zone = document.getElementById('uploadZone');
+    const input = document.getElementById('logoInput');
+    if (uploadedFiles.length >= 3) {
+      input.disabled = true;
+      zone.style.opacity = '0.5';
+      zone.style.pointerEvents = 'none';
+    } else {
+      input.disabled = false;
+      zone.style.opacity = '';
+      zone.style.pointerEvents = '';
+    }
+  }
+
+  function removeFile(i) {
+    uploadedFiles.splice(i, 1);
+    renderPreviews();
+    document.getElementById('logoInput').value = '';
+  }
+
+  // --- CHAR COUNT ---
+  function updateCharCount() {
+    const el = document.getElementById('comments');
+    const count = el.value.length;
+    const display = document.getElementById('charCount');
+    display.textContent = count + ' / 600';
+    display.className = 'char-count' + (count > 550 ? ' warn' : '') + (count >= 600 ? ' over' : '');
+  }
+
+  // --- SUBMIT ---
+  function submitRequest() {
+    const asset = document.getElementById('assetLink').value.trim();
+    const embed = document.getElementById('formEmbed').value.trim();
+
+    if (!asset || !embed) {
+      alert('Please fill in the asset link and form embed code.');
+      return;
+    }
+
+    if (uploadedFiles.length === 0) {
+      alert('Please upload at least one logo.');
+      return;
+    }
+
+    const newId = pages.length + 1;
+    const comments = document.getElementById('comments').value.trim();
+    const name = 'New Campaign — ' + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+    pages.unshift({ id: newId, name, url: null, status: 'pending' });
+
+    // Reset form
+    document.getElementById('assetLink').value = '';
+    document.getElementById('formEmbed').value = '';
+    document.getElementById('comments').value = '';
+    uploadedFiles = [];
+    renderPreviews();
+    updateCharCount();
+
+    showTab('pages');
+    document.getElementById('successBanner').classList.add('show');
+    setTimeout(() => document.getElementById('successBanner').classList.remove('show'), 6000);
+    render();
+  }
+
+  // --- INIT ---
+  render();
+</script>
+</body>
+</html>

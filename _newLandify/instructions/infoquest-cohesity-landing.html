@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5 Critical Steps to Improve Your Organization's Cyber Resilience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #3DDC84;
+      --green-dark:  #2db96d;
+      --dark:        #2A2A3A;
+      --darker:      #1E1E2C;
+      --darkest:     #14141F;
+      --gray-bg:     #F4F6F8;
+      --gray-mid:    #E2E6EC;
+      --gray-text:   #64748B;
+      --white:       #FFFFFF;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .site-header {
+      background: var(--darkest);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      border-bottom: 1px solid rgba(61,220,132,0.15);
+    }
+
+    .logo-cohesity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-cohesity-mark {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo-cohesity-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-cohesity-name span {
+      color: var(--green);
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .logo-infoquest {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.3px;
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      background: var(--darker);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(61,220,132,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 72px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.12;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .hero-body {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 36px;
+      max-width: 500px;
+      line-height: 1.75;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--green);
+      color: var(--darkest);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      letter-spacing: 0.2px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .hero-cta:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    .hero-form-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 36px 32px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+
+    .form-card-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .form-card-sub {
+      font-size: 13px;
+      color: var(--gray-text);
+      margin-bottom: 24px;
+    }
+
+    .pseudo-form .field { margin-bottom: 14px; }
+
+    .pseudo-form label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    .pseudo-form input,
+    .pseudo-form select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--gray-mid);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--dark);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .pseudo-form input:focus,
+    .pseudo-form select:focus {
+      border-color: var(--green);
+    }
+
+    .pseudo-form .submit-btn {
+      width: 100%;
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 13px;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+      letter-spacing: 0.2px;
+    }
+
+    .pseudo-form .submit-btn:hover { background: var(--darker); }
+
+    .form-disclaimer {
+      font-size: 11px;
+      color: var(--gray-text);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ── ICONS BLOCK ────────────────────────────────── */
+    .steps-section {
+      background: var(--gray-bg);
+      padding: 80px 40px;
+    }
+
+    .section-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 48px;
+      max-width: 600px;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .step-item {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 28px 22px;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .step-item:hover {
+      border-bottom-color: var(--green);
+      transform: translateY(-3px);
+    }
+
+    .step-number {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .step-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(61,220,132,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .step-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--green-dark);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.35;
+    }
+
+    /* ── TEXT + IMAGE BLOCK ─────────────────────────── */
+    .insight-section {
+      background: var(--white);
+      padding: 80px 40px;
+    }
+
+    .insight-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .insight-content .section-title { margin-bottom: 24px; }
+
+    .insight-body {
+      font-size: 15px;
+      color: #475569;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .insight-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .insight-points li {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .insight-points li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 8px;
+    }
+
+    .insight-visual {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #1a1a26;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .insight-img-placeholder {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .insight-visual-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px;
+      background: linear-gradient(to top, rgba(20,20,31,0.95) 0%, transparent 100%);
+    }
+
+    .insight-quote {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .insight-quote-attr {
+      font-size: 12px;
+      color: var(--green);
+      margin-top: 8px;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── CARDS BLOCK: Stats ─────────────────────────── */
+    .stats-section {
+      background: var(--darkest);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(61,220,132,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .stats-section .section-label { color: var(--green); }
+    .stats-section .section-title { color: var(--white); margin-bottom: 48px; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-card {
+      background: var(--darker);
+      border-radius: 12px;
+      padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(61,220,132,0.25);
+      transform: translateY(-3px);
+    }
+
+    .stat-card.featured {
+      border-color: rgba(61,220,132,0.2);
+      background: rgba(61,220,132,0.05);
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 8px;
+    }
+
+    .stat-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .stat-body {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+    }
+
+    .stat-source {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .site-footer {
+      background: var(--dark);
+      padding: 26px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .footer-brand span { color: var(--green); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .insight-inner { grid-template-columns: 1fr; gap: 40px; }
+      .insight-visual { min-height: 280px; }
+      .insight-img-placeholder { height: 280px; }
+    }
+
+    @media (max-width: 768px) {
+      .site-header { padding: 16px 20px; flex-wrap: wrap; }
+
+      .hero { padding: 48px 20px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-body { max-width: 100%; }
+
+      .steps-section,
+      .insight-section,
+      .stats-section { padding: 56px 20px; }
+
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: 1fr; }
+
+      .site-footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="logo-cohesity">
+      <svg class="logo-cohesity-mark" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="14" fill="#3DDC84" opacity="0.15"/>
+        <path d="M16 6 L26 11 L26 21 L16 26 L6 21 L6 11 Z" stroke="#3DDC84" stroke-width="1.8" fill="none"/>
+        <circle cx="16" cy="16" r="4" fill="#3DDC84"/>
+      </svg>
+      <div class="logo-cohesity-name">Co<span>hesity</span></div>
+    </div>
+    <div class="logo-divider"></div>
+    <div class="logo-infoquest">Info Quest</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <span class="hero-eyebrow">Free eBook</span>
+        <h1 class="hero-title">5 Critical Steps to Improve Your Organization's <em>Cyber Resilience</em></h1>
+        <p class="hero-body">
+          Prevention alone isn't enough. Ransomware attacks aren't going away — and they won't stay the same in frequency, severity, or scale. Download this eBook to discover a proven five-step playbook that organizations are using to rethink their approach to cyber response and recovery.
+        </p>
+        <a href="#form" class="hero-cta">Download the Free eBook →</a>
+      </div>
+      <div class="hero-right" id="form">
+        <div class="hero-form-card">
+          <div class="form-card-title">Get instant access</div>
+          <div class="form-card-sub">Download the eBook — free, no commitment</div>
+          <!-- PSEUDO FORM — replace with real embed code -->
+          <div class="pseudo-form">
+            <div class="field">
+              <label>First Name</label>
+              <input type="text" placeholder="John" />
+            </div>
+            <div class="field">
+              <label>Last Name</label>
+              <input type="text" placeholder="Smith" />
+            </div>
+            <div class="field">
+              <label>Work Email</label>
+              <input type="email" placeholder="john@company.com" />
+            </div>
+            <div class="field">
+              <label>Company</label>
+              <input type="text" placeholder="Your organization" />
+            </div>
+            <div class="field">
+              <label>Job Title</label>
+              <input type="text" placeholder="IT Manager, CISO, CTO..." />
+            </div>
+            <button class="submit-btn">Download Now →</button>
+          </div>
+          <p class="form-disclaimer">Your information is kept private and used only to deliver the requested content.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICONS BLOCK: The 5 Steps -->
+  <section class="steps-section">
+    <div class="section-inner">
+      <div class="section-label">What's inside</div>
+      <h2 class="section-title">A five-step progression towards cyber resilience</h2>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-number">Step 01</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="step-title">Understand why cyber recovery differs from disaster recovery</div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">Step 02</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div class="step-title">Identify and close the gaps in your current recovery posture</div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">Step 03</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="step-title">Protect your backups from compromise and encryption</div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">Step 04</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </div>
+          <div class="step-title">Enable fast, clean, and confident recovery at scale</div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">Step 05</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="step-title">Align with best practices in cyber response and recovery</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEXT + IMAGE BLOCK: Why cyber recovery is different -->
+  <section class="insight-section">
+    <div class="insight-inner">
+      <div class="insight-content">
+        <div class="section-label">Key Insight</div>
+        <h2 class="section-title">Cyber recovery is not like disaster recovery</h2>
+        <p class="insight-body">
+          Even if your organization has solid disaster recovery processes in place, you can't rely on these same processes to recover from cyberattacks. In a disaster — whether a fire, flood, power outage, or misconfiguration — you can quickly do a root cause analysis to figure out what went wrong.
+        </p>
+        <p class="insight-body">
+          In a cyberattack, hundreds of things may have transpired that require thorough investigation and remediation. You also have an adversary actively undermining your recovery efforts and pressuring you to pay ransom.
+        </p>
+        <ul class="insight-points">
+          <li>The very systems you rely on to investigate may be down, evaded, or compromised</li>
+          <li>When good data intermingles with bad, the road to recovery becomes longer and more difficult</li>
+          <li>Even savvy organizations and experts may underestimate how destructive a ransomware attack can be</li>
+        </ul>
+      </div>
+      <div class="insight-visual">
+        <img src="" class="insight-img-placeholder" />
+        <div class="insight-visual-overlay">
+          <div class="insight-quote">"Like it or not, cyberattacks aren't going away. And they'll never stay the same — not in frequency, severity, or scale."</div>
+          <div class="insight-quote-attr">Cohesity — Resilience Everywhere eBook</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS BLOCK: Hard Stats -->
+  <section class="stats-section">
+    <div class="section-inner">
+      <div class="section-label">The Threat Landscape</div>
+      <h2 class="section-title">The numbers organizations can no longer ignore</h2>
+      <div class="stats-grid">
+        <div class="stat-card featured">
+          <div class="stat-number">94%</div>
+          <div class="stat-title">of ransomware victims had their backups targeted</div>
+          <p class="stat-body">Of the 59% of organizations hit by ransomware in the last year, 94% said attackers targeted their backups — and 57% of those backup compromise attempts were successful.</p>
+          <div class="stat-source">Source: Sophos, The State of Ransomware 2024</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">70%</div>
+          <div class="stat-title">of attacks resulted in data encryption</div>
+          <p class="stat-body">Seven in ten ransomware attacks successfully encrypted organizational data, with attackers demanding an average of $2M in ransom payment.</p>
+          <div class="stat-source">Source: Sophos, The State of Ransomware 2024</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">34%</div>
+          <div class="stat-title">of organizations took more than a month to recover</div>
+          <p class="stat-body">Recovery from a ransomware attack is far slower than most organizations anticipate — more than a third needed over a month to restore normal operations.</p>
+          <div class="stat-source">Source: Sophos, The State of Ransomware 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-brand"><span>Cohesity</span> × Info Quest</div>
+    <div class="footer-copy">© 2025 Cohesity, Inc. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
