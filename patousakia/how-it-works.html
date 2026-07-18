@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Πώς Λειτουργεί — Πατουσάκια στον Παράδεισο</title>
+  <meta name="description" content="Μάθετε πώς λειτουργεί η δημιουργία ψηφιακού μνημείου για το αγαπημένο σας ζωάκι.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #fff8f6 0%, #fff0f4 100%);
+      padding: 100px 32px 60px;
+      text-align: center;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .page-hero .ribbon { margin-bottom: 20px; }
+
+    /* ── TIMELINE ── */
+    .timeline-section { padding: 80px 32px; }
+    .timeline {
+      max-width: 720px;
+      margin: 60px auto 0;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 40px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--orange), var(--pink));
+      border-radius: 2px;
+    }
+    .timeline-step {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 52px;
+      position: relative;
+    }
+    .timeline-step:last-child { margin-bottom: 0; }
+    .timeline-num {
+      width: 80px;
+      min-width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 4px 20px rgba(244,132,95,0.2);
+    }
+    .timeline-num-orange { background: linear-gradient(135deg, var(--orange-light), var(--orange)); }
+    .timeline-num-pink   { background: linear-gradient(135deg, var(--pink-light),   var(--pink)); }
+    .timeline-num-sage   { background: linear-gradient(135deg, #e8f0df, var(--sage)); }
+    .timeline-num-charcoal { background: linear-gradient(135deg, #eee, #bbb); }
+    .timeline-content { padding-top: 16px; }
+    .timeline-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .timeline-desc { font-size: 0.93rem; color: var(--gray); line-height: 1.75; }
+    .timeline-note {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: var(--off-white);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.84rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* ── WHAT'S INCLUDED ── */
+    .includes-section {
+      background: var(--off-white);
+      padding: 80px 32px;
+    }
+    .includes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .include-item {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      border: 1px solid var(--gray-light);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .include-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+    .include-icon {
+      font-size: 1.6rem;
+      min-width: 40px;
+      text-align: center;
+    }
+    .include-title { font-weight: 600; font-size: 0.95rem; color: var(--charcoal); margin-bottom: 6px; }
+    .include-desc  { font-size: 0.84rem; color: var(--gray); line-height: 1.6; }
+
+    /* ── PRICING ── */
+    .pricing-section { padding: 80px 32px; text-align: center; }
+    .pricing-card {
+      max-width: 420px;
+      margin: 48px auto 0;
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      border: 2px solid var(--orange-light);
+    }
+    .pricing-header {
+      background: linear-gradient(135deg, var(--orange), var(--pink-dark));
+      padding: 36px 32px 28px;
+      color: white;
+    }
+    .pricing-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.85;
+    }
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .pricing-price sup { font-size: 1.5rem; vertical-align: top; margin-top: 10px; }
+    .pricing-period { font-size: 0.85rem; opacity: 0.75; margin-top: 8px; }
+    .pricing-body { padding: 32px; }
+    .pricing-features { text-align: left; margin-bottom: 28px; }
+    .pricing-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+    }
+    .pricing-feature::before {
+      content: '🐾';
+      font-size: 0.9rem;
+      min-width: 20px;
+    }
+
+    /* ── FAQ ── */
+    .faq-section {
+      background: var(--off-white);
+      padding: 80px 32px;
+    }
+    .faq-list {
+      max-width: 720px;
+      margin: 48px auto 0;
+    }
+    .faq-item {
+      background: white;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      border: 1px solid var(--gray-light);
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 20px 24px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-q:hover { color: var(--orange); }
+    .faq-arrow { color: var(--orange); font-size: 1.1rem; transition: var(--transition); min-width: 20px; text-align: center; }
+    .faq-a {
+      padding: 0 24px 20px;
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.75;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(90deg); }
+
+    @media (max-width: 600px) {
+      .timeline::before { left: 28px; }
+      .timeline-num { width: 56px; min-width: 56px; height: 56px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- ══ PAGE HERO ══════════════════════════════════════════════ -->
+<section class="page-hero">
+  <span class="ribbon ribbon-pink" style="margin-bottom:20px; display:inline-block;">Η Διαδικασία</span>
+  <h1 class="section-title" style="max-width:600px; margin:0 auto 20px;">Πώς δημιουργείται ένα <em>μνημείο αγάπης</em></h1>
+  <p class="section-subtitle" style="margin:0 auto;">Από την αίτηση ως τη δημοσίευση — σας καθοδηγούμε σε κάθε βήμα με προσοχή και σεβασμό.</p>
+</section>
+
+<!-- ══ TIMELINE ══════════════════════════════════════════════ -->
+<section class="timeline-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <p class="section-label">Βήμα Βήμα</p>
+      <h2 class="section-title">Η διαδρομή <em>της μνήμης</em></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-step fade-in">
+        <div class="timeline-num timeline-num-orange">📩</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Επικοινωνείτε μαζί μας</div>
+          <p class="timeline-desc">Μας στέλνετε email ή καλείτε για να εκφράσετε το ενδιαφέρον σας. Δεν χρειάζεστε τίποτα έτοιμο σε αυτό το στάδιο — απλά επικοινωνήστε μαζί μας.</p>
+          <div class="timeline-note">Απαντάμε εντός 24 ωρών σε κάθε αίτηση.</div>
+        </div>
+      </div>
+
+      <div class="timeline-step fade-in fade-in-delay-1">
+        <div class="timeline-num timeline-num-pink">📦</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Στέλνετε το υλικό σας</div>
+          <p class="timeline-desc">Μοιράζεστε μαζί μας τα στοιχεία του αγαπημένου σας ζωακιού: φωτογραφίες, ημερομηνίες, το όνομά του, και το κείμενο-αφιέρωση που θέλετε. Αναλαμβάνουμε εμείς τα υπόλοιπα.</p>
+          <div class="timeline-note">Φωτογραφίες: αποστέλλονται μέσω email ή WeTransfer.</div>
+        </div>
+      </div>
+
+      <div class="timeline-step fade-in fade-in-delay-2">
+        <div class="timeline-num timeline-num-sage">🎨</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Δημιουργούμε το μνημείο</div>
+          <p class="timeline-desc">Η ομάδα μας κατασκευάζει με φροντίδα μια μοναδική σελίδα — με το όνομά του, τις φωτογραφίες, το αφιέρωμά σας και ένα ειδικό, μόνιμο URL.</p>
+          <div class="timeline-note">Ο χρόνος δημιουργίας είναι 2–3 εργάσιμες ημέρες.</div>
+        </div>
+      </div>
+
+      <div class="timeline-step fade-in fade-in-delay-3">
+        <div class="timeline-num timeline-num-charcoal">🔗</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Λαμβάνετε τον σύνδεσμο σας</div>
+          <p class="timeline-desc">Σας στέλνουμε τον μοναδικό σύνδεσμο του μνημείου. Από εκεί μπορείτε να τον μοιραστείτε με οικογένεια και φίλους, να τον προσθέσετε σε αναρτήσεις, ή να τον κρατήσετε για πάντα.</p>
+          <div class="timeline-note">Το μνημείο παραμένει διαδικτυακά για όσο υπάρχει η υπηρεσία.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DIVIDER ═══════════════════════════════════════════════ -->
+<div class="divider-ribbon" style="background:var(--pink);">
+  <span>Τι Περιλαμβάνει</span>
+</div>
+
+<!-- ══ WHAT'S INCLUDED ══════════════════════════════════════ -->
+<section class="includes-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <p class="section-label">Στο Μνημείο Περιλαμβάνεται</p>
+      <h2 class="section-title">Ένα πλήρες <em>αφιέρωμα</em></h2>
+      <p class="section-subtitle">Κάθε μνημείο είναι μια ολοκληρωμένη σελίδα με όλα όσα χρειάζεται για να τιμηθεί η μνήμη του.</p>
+    </div>
+    <div class="includes-grid">
+      <div class="include-item fade-in">
+        <div class="include-icon">📸</div>
+        <div>
+          <div class="include-title">Φωτογραφίες</div>
+          <p class="include-desc">Γκαλερί φωτογραφιών που ζωντανεύουν τις αναμνήσεις σας.</p>
+        </div>
+      </div>
+      <div class="include-item fade-in">
+        <div class="include-icon">✍️</div>
+        <div>
+          <div class="include-title">Κείμενο Αφιέρωσης</div>
+          <p class="include-desc">Το αφιέρωμά σας, όπως ακριβώς το γράψατε, σε εμφανές σημείο.</p>
+        </div>
+      </div>
+      <div class="include-item fade-in">
+        <div class="include-icon">📅</div>
+        <div>
+          <div class="include-title">Ημερομηνίες Ζωής</div>
+          <p class="include-desc">Το όνομα, η ημερομηνία γέννησης και η ημερομηνία που έφυγε.</p>
+        </div>
+      </div>
+      <div class="include-item fade-in">
+        <div class="include-icon">🔗</div>
+        <div>
+          <div class="include-title">Μοναδικό URL</div>
+          <p class="include-desc">Ένας αποκλειστικός σύνδεσμος για κοινοποίηση σε οποιονδήποτε.</p>
+        </div>
+      </div>
+      <div class="include-item fade-in">
+        <div class="include-icon">🕯️</div>
+        <div>
+          <div class="include-title">Κινούμενο Κερί</div>
+          <p class="include-desc">Ένα κινούμενο κερί στο μνημείο — σύμβολο αναμμένης μνήμης.</p>
+        </div>
+      </div>
+      <div class="include-item fade-in">
+        <div class="include-icon">♾️</div>
+        <div>
+          <div class="include-title">Μόνιμη Φιλοξενία</div>
+          <p class="include-desc">Το μνημείο παραμένει διαδικτυακά χωρίς χρέωση ανανέωσης.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══════════════════════════════════════════════ -->
+<section class="pricing-section">
+  <div class="section-inner">
+    <p class="section-label">Τιμολόγηση</p>
+    <h2 class="section-title">Απλή, ξεκάθαρη <em>τιμή</em></h2>
+    <p class="section-subtitle" style="margin:0 auto;">Μία εφάπαξ πληρωμή, μόνιμο αποτέλεσμα. Χωρίς κρυφές χρεώσεις.</p>
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <div class="pricing-label">Πλήρες Μνημείο</div>
+        <div class="pricing-price"><sup>€</sup>29</div>
+        <div class="pricing-period">Εφάπαξ πληρωμή</div>
+      </div>
+      <div class="pricing-body">
+        <ul class="pricing-features">
+          <li class="pricing-feature">Μοναδική σελίδα αφιερωμένη στο ζωάκι σας</li>
+          <li class="pricing-feature">Γκαλερί φωτογραφιών</li>
+          <li class="pricing-feature">Κείμενο αφιέρωσης της επιλογής σας</li>
+          <li class="pricing-feature">Κινούμενο κερί μνήμης</li>
+          <li class="pricing-feature">Αποκλειστικό, μόνιμο URL</li>
+          <li class="pricing-feature">Δημοσίευση εντός 2–3 εργάσιμων ημερών</li>
+          <li class="pricing-feature">Μόνιμη διαδικτυακή παρουσία</li>
+        </ul>
+        <a href="request.html" class="btn btn-primary" style="width:100%; justify-content:center;">🐾 Αίτηση Μνημείου</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ═══════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="text-center">
+      <p class="section-label">Ερωτήσεις & Απαντήσεις</p>
+      <h2 class="section-title">Συχνές <em>ερωτήσεις</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Για πόσο καιρό παραμένει διαδικτυακό το μνημείο;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Το μνημείο παραμένει διαδικτυακό για όσο υπάρχει η υπηρεσία. Δεν υπάρχει ετήσια χρέωση ή ανανέωση. Η εφάπαξ πληρωμή καλύπτει τη μόνιμη φιλοξενία.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Ποια ζώα μπορούν να αποκτήσουν μνημείο;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Όλα! Σκύλοι, γάτες, κουνέλια, πουλιά, ψάρια — κάθε ζωάκι που αγαπήσατε και που σας έλειψε αξίζει τη δική του σελίδα μνήμης.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Πόσες φωτογραφίες μπορώ να στείλω;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Συνήθως χρησιμοποιούμε 4–8 φωτογραφίες για να δημιουργηθεί μια όμορφη γκαλερί. Μπορείτε να στείλετε περισσότερες και εμείς επιλέγουμε τις καλύτερες — ή μας λέτε ποιες προτιμάτε.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Μπορώ να αλλάξω κάτι αφού δημοσιευτεί;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Ναι. Αν θέλετε να αλλάξετε κάτι μετά τη δημοσίευση (κείμενο, φωτογραφίες), επικοινωνήστε μαζί μας και το τακτοποιούμε χωρίς επιπλέον χρέωση εντός 5 εργάσιμων ημερών.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Πώς γίνεται η πληρωμή;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Δεχόμαστε μεταφορά μέσω τραπεζικού εμβάσματος ή PayPal. Τα στοιχεία πληρωμής σας αποστέλλονται μόλις επικοινωνήσετε μαζί μας.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Μπορεί κάποιος άλλος να αφήσει μήνυμα στο μνημείο;
+          <span class="faq-arrow">›</span>
+        </div>
+        <div class="faq-a">Προς το παρόν τα μνημεία είναι σελίδες προβολής. Σχεδιάζουμε μελλοντικά να προσθέσουμε δυνατότητα αφήγησης αναμνήσεων από φίλους και οικογένεια.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="assets/js/site-root.js"></script>
+<script src="assets/js/header.js"></script>
+<script src="assets/js/footer.js"></script>
+<script>
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+  // Fix links for root level
+  document.querySelectorAll('#site-header a[href^="../"]').forEach(a => {
+    a.href = a.getAttribute('href').replace('../', '');
+  });
+  document.querySelectorAll('#site-footer a[href^="../"]').forEach(a => {
+    a.href = a.getAttribute('href').replace('../', '');
+  });
+</script>
+</body>
+</html>

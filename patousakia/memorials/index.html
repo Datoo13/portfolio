@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μνημεία — Πατουσάκια στον Παράδεισο</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #fff8f6 0%, #fff0f4 100%);
+      padding: 100px 32px 56px;
+      text-align: center;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--orange);
+      color: white;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    /* ── CONTROLS BAR ── */
+    .controls-bar {
+      background: white;
+      border-bottom: 1px solid var(--gray-light);
+      padding: 18px 32px;
+      position: sticky;
+      top: 72px;
+      z-index: 50;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .controls-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: var(--gray);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      background: var(--off-white);
+      transition: var(--transition);
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--orange);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(244,132,95,0.1);
+    }
+    .search-input::placeholder { color: #b0a8a4; }
+
+    .sort-select {
+      padding: 10px 36px 10px 14px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      background: var(--off-white);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B6B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .sort-select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244,132,95,0.1); }
+
+    .results-label {
+      font-size: 0.82rem;
+      color: var(--gray);
+      white-space: nowrap;
+    }
+    .results-label strong { color: var(--charcoal); }
+
+    /* ── MAIN SECTION ── */
+    .memorials-section {
+      padding: 48px 32px 80px;
+      background: var(--off-white);
+      min-height: 60vh;
+    }
+    .memorials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    /* ── SPECIES TAG ── */
+    .memorial-species-tag {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--orange-light);
+      color: var(--orange-dark);
+      margin-bottom: 10px;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 32px;
+      color: var(--gray);
+    }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: var(--charcoal);
+    }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 52px;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      min-width: 40px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--charcoal);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: var(--pink-light);
+    }
+    .page-btn.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: white;
+      font-weight: 700;
+    }
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .page-info {
+      font-size: 0.82rem;
+      color: var(--gray);
+      padding: 0 8px;
+    }
+    .page-ellipsis {
+      color: var(--gray);
+      padding: 0 4px;
+      font-size: 1rem;
+      line-height: 40px;
+    }
+
+    /* ── CTA BOTTOM ── */
+    .cta-bottom {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-light);
+    }
+    .cta-bottom p { color: var(--gray); margin-bottom: 20px; font-size: 0.92rem; }
+
+    @media (max-width: 600px) {
+      .controls-inner { flex-direction: column; align-items: stretch; }
+      .sort-select { width: 100%; }
+      .results-label { text-align: center; }
+      .memorials-section { padding: 32px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section class="page-hero">
+  <span class="ribbon ribbon-orange" style="display:inline-block; margin-bottom:20px;">Ο Κήπος της Μνήμης</span>
+  <h1 class="section-title" style="max-width:580px; margin:0 auto 16px;">
+    Όλα τα <em>αγαπημένα ζωάκια</em>
+    <span class="count-badge" id="memorial-count">…</span>
+  </h1>
+  <p class="section-subtitle" style="margin:0 auto;">Κάθε σελίδα εδώ είναι μια ιστορία αγάπης που συνεχίζεται.</p>
+</section>
+
+<!-- ══ CONTROLS ══════════════════════════════════════════════ -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search"
+             id="search-input"
+             class="search-input"
+             placeholder="Αναζήτηση με όνομα…"
+             autocomplete="off">
+    </div>
+    <select id="sort-select" class="sort-select">
+      <option value="newest">Νεότερη καταχώρηση πρώτα</option>
+      <option value="oldest">Παλαιότερη καταχώρηση πρώτα</option>
+      <option value="name-az">Όνομα Α→Ω</option>
+      <option value="name-za">Όνομα Ω→Α</option>
+    </select>
+    <span class="results-label" id="results-label"></span>
+  </div>
+</div>
+
+<!-- ══ GRID ══════════════════════════════════════════════════ -->
+<section class="memorials-section">
+  <div class="section-inner">
+    <div class="memorials-grid" id="memorials-all-grid"></div>
+    <div id="pagination-wrap" class="pagination"></div>
+    <div class="cta-bottom">
+      <p>Θέλετε να προσθέσετε το αγαπημένο σας ζωάκι στον κήπο μας;</p>
+      <a href="javascript:void(0)" onclick="window.location=SITE_ROOT+'request.html'" class="btn btn-primary">🐾 Αίτηση Μνημείου</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="../assets/js/site-root.js"></script>
+<script src="../assets/js/header.js"></script>
+<script src="../assets/js/footer.js"></script>
+<script src="../assets/js/memorials-registry.js"></script>
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+const PER_PAGE = 12;
+
+// ── STATE ─────────────────────────────────────────────────────
+let currentPage  = 1;
+let currentQuery = '';
+let currentSort  = 'newest';
+
+// ── SORT ──────────────────────────────────────────────────────
+function sortMemorials(list, mode) {
+  const copy = [...list];
+  switch (mode) {
+    case 'oldest':  return copy.sort((a, b) => a.death - b.death || a.birth - b.birth);
+    case 'name-az': return copy.sort((a, b) => a.name.localeCompare(b.name, 'el'));
+    case 'name-za': return copy.sort((a, b) => b.name.localeCompare(a.name, 'el'));
+    case 'newest':
+    default:        return copy.sort((a, b) => b.death - a.death || b.birth - a.birth);
+  }
+}
+
+// ── FILTER ────────────────────────────────────────────────────
+function filterMemorials(list, query) {
+  if (!query.trim()) return list;
+  const q = query.trim().toLowerCase();
+  return list.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.species.toLowerCase().includes(q)
+  );
+}
+
+// ── BUILD CARD ────────────────────────────────────────────────
+function buildCard(pet) {
+  const years  = pet.death - pet.birth;
+  const root   = (typeof SITE_ROOT !== 'undefined') ? SITE_ROOT : '../';
+  const imgSrc = root + `assets/images/memorials/${pet.photo}`;
+  return `
+  <a href="${root}memorials/${pet.slug}.html" class="memorial-card" style="display:block;">
+    <div class="memorial-card-photo-wrap">
+      <img src="${imgSrc}" alt="${pet.name}" class="memorial-card-img"
+           onerror="this.parentElement.innerHTML='<div class=\\'memorial-card-img-placeholder\\'>${pet.icon}</div>'">
+    </div>
+    <div class="memorial-card-body">
+      <span class="memorial-species-tag">${pet.icon} ${pet.species}</span>
+      <div class="memorial-card-name">${pet.name}</div>
+      <div class="memorial-card-dates">${pet.birth} – ${pet.death} &nbsp;·&nbsp; ${years} χρόνια αγάπης</div>
+      <p class="memorial-card-excerpt">«${pet.tagline}»</p>
+      <span class="memorial-card-link">Δείτε το μνημείο →</span>
+    </div>
+  </a>`;
+}
+
+// ── PAGINATION CONTROLS ───────────────────────────────────────
+function buildPagination(total, page, perPage) {
+  const totalPages = Math.ceil(total / perPage);
+  if (totalPages <= 1) return '';
+
+  let html = '';
+
+  // Prev
+  html += `<button class="page-btn" id="btn-prev" onclick="goPage(${page - 1})" ${page === 1 ? 'disabled' : ''}>← Προηγ.</button>`;
+
+  // Page numbers with ellipsis
+  const range = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
+      range.push(i);
+    }
+  }
+
+  let prev = null;
+  for (const p of range) {
+    if (prev !== null && p - prev > 1) {
+      html += `<span class="page-ellipsis">…</span>`;
+    }
+    html += `<button class="page-btn ${p === page ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+    prev = p;
+  }
+
+  // Next
+  html += `<button class="page-btn" id="btn-next" onclick="goPage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>Επόμ. →</button>`;
+
+  return html;
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render() {
+  const grid       = document.getElementById('memorials-all-grid');
+  const paginWrap  = document.getElementById('pagination-wrap');
+  const countBadge = document.getElementById('memorial-count');
+  const resLabel   = document.getElementById('results-label');
+
+  // Filter → sort → paginate
+  const filtered = filterMemorials(MEMORIALS, currentQuery);
+  const sorted   = sortMemorials(filtered, currentSort);
+  const total    = sorted.length;
+  const totalPages = Math.ceil(total / PER_PAGE);
+
+  // Clamp page
+  if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+
+  const start  = (currentPage - 1) * PER_PAGE;
+  const slice  = sorted.slice(start, start + PER_PAGE);
+
+  // Count badge (always total in registry)
+  const totalAll = MEMORIALS.length;
+  countBadge.textContent = `${totalAll} μνημεί${totalAll === 1 ? 'ο' : 'α'}`;
+
+  // Results label
+  if (currentQuery) {
+    resLabel.innerHTML = total === 0
+      ? 'Δεν βρέθηκαν αποτελέσματα'
+      : `<strong>${total}</strong> αποτέλεσμ${total === 1 ? 'α' : 'ατα'}`;
+  } else {
+    resLabel.innerHTML = `<strong>${total}</strong> μνημεί${total === 1 ? 'ο' : 'α'}`;
+  }
+
+  // Cards
+  if (slice.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h3>Δεν βρέθηκαν αποτελέσματα</h3>
+        <p>Δοκιμάστε διαφορετικό όνομα ή αφαιρέστε την αναζήτηση.</p>
+      </div>`;
+  } else {
+    grid.innerHTML = slice.map(buildCard).join('');
+  }
+
+  // Pagination
+  paginWrap.innerHTML = buildPagination(total, currentPage, PER_PAGE);
+
+  // Scroll to grid top on page change (skip on first load)
+  if (window._firstRender === false) {
+    const top = document.querySelector('.controls-bar').getBoundingClientRect().top + window.scrollY - 16;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  window._firstRender = false;
+}
+
+function goPage(p) {
+  currentPage = p;
+  render();
+}
+
+// ── EVENTS ────────────────────────────────────────────────────
+let searchTimer;
+document.getElementById('search-input').addEventListener('input', function () {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    currentQuery = this.value;
+    currentPage  = 1;
+    render();
+  }, 220);
+});
+
+document.getElementById('sort-select').addEventListener('change', function () {
+  currentSort = this.value;
+  currentPage = 1;
+  render();
+});
+
+// ── INIT ──────────────────────────────────────────────────────
+window._firstRender = true;
+render();
+</script>
+</body>
+</html>
