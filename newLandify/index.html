@@ -14,6 +14,9 @@
       --accent:    #5b7fff;
       --accent-lt: #edf0ff;
       --accent-md: #c5cef7;
+      --accent2:    #16a172;
+      --accent2-lt: #e8f7f1;
+      --accent2-md: #a6e2c8;
       --ink:       #111827;
       --ink-mid:   #4b5563;
       --ink-lt:    #9ca3af;
@@ -420,6 +423,7 @@
     .pkg:hover { box-shadow: 0 12px 40px var(--shadow-md); transform: translateY(-3px); }
 
     .pkg.featured { border-color: var(--accent); border-width: 2px; background: var(--accent-lt); }
+    .pkg.featured-alt { border-color: var(--accent2); border-width: 2px; background: var(--accent2-lt); }
 
     .pkg-tag {
       position: absolute; top: -12px; left: 24px;
@@ -428,6 +432,8 @@
       letter-spacing: .07em; text-transform: uppercase;
       padding: 3px 12px; border-radius: 100px;
     }
+
+    .pkg-tag.tag-alt { background: var(--accent2); }
 
     .pkg-label {
       font-size: 10px; font-weight: 700;
@@ -449,9 +455,9 @@
       display: flex; align-items: baseline; gap: 3px; margin-bottom: 3px;
     }
 
-    .pkg-curr { font-size: 18px; font-weight: 700; color: var(--ink-lt); }
+    .pkg-curr { font-size: 18px; font-weight: 700; color: var(--ink); }
     .pkg-amt  { font-size: 40px; font-weight: 900; color: var(--ink); letter-spacing: -2px; }
-    .pkg-vat  { font-size: 12px; color: var(--ink-lt); }
+    .pkg-vat  { font-size: 12px; color: var(--ink); }
 
     .pkg-note { font-size: 11px; color: var(--ink-lt); margin-bottom: 20px; }
 
@@ -466,6 +472,7 @@
     }
 
     .ck { color: var(--accent); font-weight: 900; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+    .ck.ck-alt { color: var(--accent2); }
 
     .pkg-cta {
       display: block; text-align: center;
@@ -479,6 +486,10 @@
     .pkg-cta.solid:hover { opacity: .88; }
     .pkg-cta.outline { border: 1.5px solid var(--accent); color: var(--accent); }
     .pkg-cta.outline:hover { background: var(--accent); color: #fff; }
+    .pkg-cta.solid-alt { background: var(--accent2); color: #fff; }
+    .pkg-cta.solid-alt:hover { opacity: .88; }
+    .pkg-cta.outline-alt { border: 1.5px solid var(--accent2); color: var(--accent2); }
+    .pkg-cta.outline-alt:hover { background: var(--accent2); color: #fff; }
 
     .pkg-flex { text-align: center; font-size: 11px; color: var(--ink-lt); margin-top: 10px; }
 
@@ -807,39 +818,40 @@
 
     <div class="packages-grid">
 
-      <div class="pkg">
+      <div class="pkg featured-alt">
+        <div class="pkg-tag tag-alt">Best value</div>
         <div class="pkg-label">Starter</div>
         <div class="pkg-name">Temp-Hosted Page</div>
         <div class="pkg-desc">Για campaigns που τρέχουν για περιορισμένο χρονικό διάστημα. Live γρήγορα, δεν χρειάζεσαι δικό σου hosting. Any or none CTA.</div>
         <div class="pkg-price-row">
           <span class="pkg-curr">€</span>
-          <span class="pkg-amt">149</span>
+          <span class="pkg-amt">169</span>
           <span class="pkg-vat">+ ΦΠΑ</span>
         </div>
         <div class="pkg-note">Συμπεριλαμβάνεται φιλοξενία για περιορισμένο χρονικό διάστημα.</div>
         <hr class="pkg-div"/>
         <ul class="pkg-features">
-          <li><span class="ck">✓</span> Modern responsive design</li>
-          <li><span class="ck">✓</span> Lead form integration (MailerLite, HubSpot, Mailchimp)</li>
-          <li><span class="ck">✓</span> Custom branding &amp; copy</li>
-          <li><span class="ck">✓</span> Γρήγορη παράδοση</li>
-          <li><span class="ck">✓</span> Hosting &amp; uptime included</li>
+          <li><span class="ck ck-alt">✓</span> Modern responsive design</li>
+          <li><span class="ck ck-alt">✓</span> Lead form integration (MailerLite, HubSpot, Mailchimp)</li>
+          <li><span class="ck ck-alt">✓</span> Custom branding &amp; copy</li>
+          <li><span class="ck ck-alt">✓</span> Γρήγορη παράδοση</li>
+          <li><span class="ck ck-alt">✓</span> Hosting &amp; uptime included</li>
         </ul>
-        <a class="pkg-cta outline" href="mailto:ksdoukakis@gmail.com?subject=Νέο request - Starter">Στείλε αίτημα</a>
+        <a class="pkg-cta solid-alt" href="mailto:ksdoukakis@gmail.com?subject=Νέο request - Starter">Στείλε αίτημα</a>
         <div class="pkg-flex">"Θέλω μία σελίδα, γρήγορα"</div>
       </div>
 
       <div class="pkg featured">
-        <div class="pkg-tag">Πιο δημοφιλές</div>
+        <div class="pkg-tag">Most popular</div>
         <div class="pkg-label">Pro</div>
         <div class="pkg-name">Full Page on your Website</div>
         <div class="pkg-desc">Παραλαμβάνεις όλα τα αρχεία και τη φιλοξενείς όπου θέλεις. Advanced design, πολλαπλά CTAs.</div>
         <div class="pkg-price-row">
           <span class="pkg-curr">€</span>
-          <span class="pkg-amt">299</span>
+          <span class="pkg-amt">399</span>
           <span class="pkg-vat">+ ΦΠΑ</span>
         </div>
-        <div class="pkg-note">Παράδοση HTML/CSS/JS αρχείων</div>
+        <div class="pkg-note">Παράδοση HTML/CSS/JS αρχείων. Προαιρετικό integration με το υπάρχον website σας.</div>
         <hr class="pkg-div"/>
         <ul class="pkg-features">
           <li><span class="ck">✓</span> Advanced design &amp; animations</li>
@@ -858,8 +870,9 @@
         <div class="pkg-name">Full dev - Custom PHP</div>
         <div class="pkg-desc">PHP app, dashboard, multi-page, custom logic. Παράδοση αρχείων ή ανάληψη της εγκατάστασης από εμάς.</div>
         <div class="pkg-price-row">
+          <span style="color:var(--ink); font-weight:700; font-size:16px; margin-right:4px;">από</span>
           <span class="pkg-curr">€</span>
-          <span class="pkg-amt">599</span>
+          <span class="pkg-amt">899</span>
           <span class="pkg-vat">+ ΦΠΑ</span>
         </div>
         <div class="pkg-note">Τελική τιμή μετά το scoping του project</div>
