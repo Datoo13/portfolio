@@ -1,6 +1,0 @@
-# Πατουσάκια στον Παράδεισο — Admin Protection
-# Deny direct access to config.php
-<Files "config.php">
-    Order Allow,Deny
-    Deny from all
-</Files>
